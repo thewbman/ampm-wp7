@@ -1,0 +1,15 @@
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\ApplicationIcon.png
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Background.png
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AppManifest.xaml
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.xap
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\MyAudioPlaybackAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\MyAudioPlaybackAgent.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\App.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\MainPage.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.g.resources
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\XapCacheFile.xml
