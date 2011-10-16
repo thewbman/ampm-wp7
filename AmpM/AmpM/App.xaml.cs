@@ -18,11 +18,29 @@ namespace AmpM
 {
     public partial class App : Application
     {
+
+        private static MainViewModel viewModel = null;
+
+        
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
+
+
+        public static MainViewModel ViewModel
+        {
+            get
+            {
+                // Delay creation of the view model until necessary
+                if (viewModel == null)
+                    viewModel = new MainViewModel();
+
+                return viewModel;
+            }
+        }
+
 
         /// <summary>
         /// Constructor for the Application object.
