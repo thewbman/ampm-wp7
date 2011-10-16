@@ -36,19 +36,19 @@ namespace MyAudioPlaybackAgent
                             "If I die young", 
                             "The Band Perry", 
                             "Perry Album", 
-                            null),
+                            new Uri("http://userserve-ak.last.fm/serve/300x300/47426161.jpg", UriKind.Absolute)),
 
             new AudioTrack(new Uri("http://192.168.1.105/ampache/play/index.php?ssid=fdeb8787291eacce965afb59abc92304&oid=12762&uid=1&name=/Sara%20Bareilles%20-%20Gonna%20Get%20Over%20You.mp3", UriKind.Absolute), 
                             "Gonna get over you", 
                             "Sara Bareilis", 
                             "Sara Album", 
-                            null),
+                            new Uri("http://userserve-ak.last.fm/serve/300x300/54844581.png", UriKind.Absolute)),
                             
             new AudioTrack(new Uri("http://192.168.1.105/ampache/play/index.php?ssid=fdeb8787291eacce965afb59abc92304&oid=12458&uid=1&name=/Hot%20Chelle%20Rae%20-%20Tonight%20Tonight.mp3", UriKind.Absolute), 
                             "Tonight Tonight", 
                             "Hot Chelle Rae", 
                             "Hot Album", 
-                            null)
+                            new Uri("http://userserve-ak.last.fm/serve/300x300/58083365.png", UriKind.Absolute))
         };
 
         /// Code to execute on Unhandled Exceptions

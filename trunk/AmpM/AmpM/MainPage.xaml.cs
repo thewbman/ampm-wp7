@@ -22,79 +22,47 @@ namespace AmpM
         {
             InitializeComponent();
 
-            BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
+            hostsList.ItemsSource = App.ViewModel.Hosts;
+
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
+        }
+
+        // Load data for the ViewModel Items
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            if (!App.ViewModel.IsDataLoaded)
+            {
+                App.ViewModel.LoadData();
+
+                if ((App.ViewModel.AppSettings.FirstRunSetting) || (false))
+                {
+                    MessageBox.Show("Welcome to AmpM.  This is an app for listening to music from an Ampache system.  If you do not know what that means this app is not for you.", "AmpM", MessageBoxButton.OK);
+
+                    App.ViewModel.AppSettings.FirstRunSetting = false;
+
+                }
+
+            }
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
-            {
-                playButton.Content = "pause";
-                txtCurrentTrack.Text = BackgroundAudioPlayer.Instance.Track.Title +
-                                 " by " +
-                                 BackgroundAudioPlayer.Instance.Track.Artist;
-
-            }
-            else
-            {
-                playButton.Content = "play";
-                txtCurrentTrack.Text = "";
-            }
+            
         }
 
-
-        void Instance_PlayStateChanged(object sender, EventArgs e)
+        private void hostsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (BackgroundAudioPlayer.Instance.PlayerState)
-            {
-                case PlayState.Playing:
-                    playButton.Content = "pause";
-                    break;
+            if (hostsList.SelectedItem == null)
+                return;
 
-                case PlayState.Paused:
-                case PlayState.Stopped:
-                    playButton.Content = "play";
-                    break;
-            }
+            App.ViewModel.AppSettings.HostIndexSetting = hostsList.SelectedIndex;
 
-            if (null != BackgroundAudioPlayer.Instance.Track)
-            {
-                txtCurrentTrack.Text = BackgroundAudioPlayer.Instance.Track.Title +
-                                       " by " +
-                                       BackgroundAudioPlayer.Instance.Track.Artist;
-            }
+            NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
         }
 
 
-        #region Button Click Event Handlers
-
-        private void prevButton_Click(object sender, RoutedEventArgs e)
-        {
-            BackgroundAudioPlayer.Instance.SkipPrevious();
-        }
-
-        private void playButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
-            {
-                BackgroundAudioPlayer.Instance.Pause();
-            }
-            else
-            {
-                BackgroundAudioPlayer.Instance.Play();
-            }
-        }
-
-        private void nextButton_Click(object sender, RoutedEventArgs e)
-        {
-            BackgroundAudioPlayer.Instance.SkipNext();
-        }
-
-        private void killButton_Click(object sender, RoutedEventArgs e)
-        {
-            BackgroundAudioPlayer.Instance.Close();
-        }
-
-        #endregion Button Click Event Handlers
+        
     }
 }

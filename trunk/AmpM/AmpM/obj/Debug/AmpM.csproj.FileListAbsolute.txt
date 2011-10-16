@@ -13,3 +13,10 @@ C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.g.resources
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.pdb
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\XapCacheFile.xml
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.Toolkit.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.Toolkit.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.Toolkit.xml
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Home.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Playlists.g.i.cs
