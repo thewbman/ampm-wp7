@@ -75,6 +75,9 @@
       <DependentUpon>Playlists.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Songs.xaml.cs">
+      <DependentUpon>Songs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettingsModel.cs" />
     <Compile Include="ViewModels\DataItemViewModel.cs" />
     <Compile Include="ViewModels\FunctionsViewModel.cs" />
@@ -97,6 +100,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Playlists.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Songs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

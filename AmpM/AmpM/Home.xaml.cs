@@ -188,6 +188,8 @@ namespace AmpM
                     MessageBox.Show("unknown choice: " + s.Name);
                     break;
             }
+
+            itemsList.SelectedItem = null;
         }
     }
 }

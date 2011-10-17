@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
+using Microsoft.Phone.BackgroundAudio;
 
 
 namespace AmpM
@@ -27,7 +28,9 @@ namespace AmpM
         {
             this.Hosts = new ObservableCollection<HostViewModel>();
 
-            this.Playlists = new List<DataItemViewModel>();
+            this.Nowplaying = new List<AudioTrack>();
+
+            this.Playlists = new ObservableCollection<DataItemViewModel>();
 
             this.AppSettings = new AppSettingsModel();
 
@@ -44,9 +47,11 @@ namespace AmpM
         /// <summary>
         /// A collection of objects.
         /// </summary>
-        public ObservableCollection<HostViewModel> Hosts { get; private set; }
+        public ObservableCollection<HostViewModel> Hosts { get; set; }
 
-        public List<DataItemViewModel> Playlists { get; private set; }
+        public List<AudioTrack> Nowplaying { get; set; }
+
+        public ObservableCollection<DataItemViewModel> Playlists { get; set; }
 
         public AppSettingsModel AppSettings;
 

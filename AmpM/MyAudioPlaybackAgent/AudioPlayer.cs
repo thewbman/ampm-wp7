@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Microsoft.Phone.BackgroundAudio;
 
 namespace MyAudioPlaybackAgent
@@ -10,6 +13,9 @@ namespace MyAudioPlaybackAgent
         private static volatile bool _classInitialized;
 
         static int currentTrackNumber = 0;
+
+        public static List<AudioTrack> _playList = new List<AudioTrack>();
+        static List<AudioTrack> _playList2 = new List<AudioTrack>();
 
         /// <remarks>
         /// AudioPlayer instances can share the same process. 
@@ -21,6 +27,9 @@ namespace MyAudioPlaybackAgent
             if (!_classInitialized)
             {
                 _classInitialized = true;
+
+                //_playList = new List<AudioTrack>();
+
                 // Subscribe to the managed exception handler
                 Deployment.Current.Dispatcher.BeginInvoke(delegate
                 {
@@ -30,26 +39,62 @@ namespace MyAudioPlaybackAgent
 
         }
 
-        private static List<AudioTrack> _playList = new List<AudioTrack>
+        public static void resetList()
         {
-            new AudioTrack(new Uri("http://192.168.1.105/ampache/play/index.php?ssid=fdeb8787291eacce965afb59abc92304&oid=12714&uid=1&name=/The%20Band%20Perry%20-%20If%20I%20Die%20Young.mp3", UriKind.Absolute), 
-                            "If I die young", 
-                            "The Band Perry", 
-                            "Perry Album", 
-                            new Uri("http://userserve-ak.last.fm/serve/300x300/47426161.jpg", UriKind.Absolute)),
 
-            new AudioTrack(new Uri("http://192.168.1.105/ampache/play/index.php?ssid=fdeb8787291eacce965afb59abc92304&oid=12762&uid=1&name=/Sara%20Bareilles%20-%20Gonna%20Get%20Over%20You.mp3", UriKind.Absolute), 
-                            "Gonna get over you", 
-                            "Sara Bareilis", 
-                            "Sara Album", 
-                            new Uri("http://userserve-ak.last.fm/serve/300x300/54844581.png", UriKind.Absolute)),
-                            
-            new AudioTrack(new Uri("http://192.168.1.105/ampache/play/index.php?ssid=fdeb8787291eacce965afb59abc92304&oid=12458&uid=1&name=/Hot%20Chelle%20Rae%20-%20Tonight%20Tonight.mp3", UriKind.Absolute), 
-                            "Tonight Tonight", 
-                            "Hot Chelle Rae", 
-                            "Hot Album", 
-                            new Uri("http://userserve-ak.last.fm/serve/300x300/58083365.png", UriKind.Absolute))
-        };
+            //BackgroundAudioPlayer.Instance.Stop();
+
+            //_playList.Clear();
+            _playList = new List<AudioTrack>();
+            _playList2 = new List<AudioTrack>();
+
+            //if (_playList == null) _playList = new List<AudioTrack>();
+            /*
+            foreach (AudioTrack t in _playList)
+            {
+                _playList.Remove(t);
+            }
+             */
+
+            currentTrackNumber = 0;
+
+            return;
+        }
+
+        public static void addSongs(List<AudioTrack> inTracks)
+        {
+            foreach (AudioTrack t in inTracks)
+            {
+                _playList.Add(t);
+                _playList2.Add(t);
+            }
+
+            return;
+        }
+
+        public static void startPlaying(int inIndex)
+        {
+            if (inIndex == -1)
+            {
+                BackgroundAudioPlayer.Instance.Play();
+            }
+            else
+            {
+                currentTrackNumber = inIndex;
+
+                AudioTrack t = new AudioTrack();
+                t = _playList[currentTrackNumber];
+
+                BackgroundAudioPlayer.Instance.Track = t;
+                BackgroundAudioPlayer.Instance.Play();
+            }
+
+            List<AudioTrack> asdf1 = _playList;
+
+            //AudioTrack adsf = _playList[1000];
+
+            return;
+        }
 
         /// Code to execute on Unhandled Exceptions
         private void AudioPlayer_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
@@ -264,7 +309,7 @@ namespace MyAudioPlaybackAgent
         {
             if (++currentTrackNumber >= _playList.Count)
             {
-                //currentTrackNumber = 0;
+                currentTrackNumber = 0;
             }
 
             PlayTrack(player);

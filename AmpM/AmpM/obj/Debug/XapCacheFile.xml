@@ -1,10 +1,10 @@
-﻿<xapCache source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="10/16/2011 12:45:20 AM">
+﻿<xapCache source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="10/16/2011 9:35:23 PM">
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="10/15/2011 12:40:03 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Background.png" archivePath="Background.png" lastWriteTime="10/13/2011 7:02:09 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="10/13/2011 7:02:09 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll" archivePath="AmpM.dll" lastWriteTime="10/16/2011 12:45:19 AM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll" archivePath="AmpM.dll" lastWriteTime="10/16/2011 9:35:22 PM" />
   <file source="C:\Program Files\Microsoft SDKs\Windows Phone\v7.1\Toolkit\Aug11\Bin\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="8/12/2011 6:19:16 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll" archivePath="MyAudioPlaybackAgent.dll" lastWriteTime="10/15/2011 12:39:58 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll" archivePath="MyAudioPlaybackAgent.dll" lastWriteTime="10/16/2011 9:12:10 PM" />
   <file source="C:\Program Files\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="7/28/2011 8:20:42 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="10/13/2011 7:02:09 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="10/15/2011 10:34:01 PM" />
