@@ -32,14 +32,14 @@ namespace AmpM
 
             //DataContext = App.ViewModel;
 
-            this._Items = new ObservableCollection<DataItemViewModel>();
+            _items = new ObservableCollection<DataItemViewModel>();
 
-            this._Items.Add(new DataItemViewModel() { PlaylistId = -1, PlaylistName = "test data name", PlaylistItems = 44 });
+            _items.Add(new DataItemViewModel() { PlaylistId = -1, PlaylistName = "playlist name", PlaylistItems = 44, AlbumId = -1, AlbumName = "album name", AlbumTracks = 34, ArtistAlbums = 2, ArtistId = 32, ArtistName = "artist name", ArtistTracks = 23, ArtUrl = "http://www.google.com/", SongId = 343, SongName = "song name", Type = "playlist" });
 
-            itemsList.ItemsSource = this._Items;
+            playlistList.ItemsSource = _items;
         }
 
-        private ObservableCollection<DataItemViewModel> _Items;
+        public ObservableCollection<DataItemViewModel> _items;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -47,15 +47,24 @@ namespace AmpM
 
             if (App.ViewModel.Playlists.Count == 0)
             {
-                //this.GetPlaylists();
+                this.GetPlaylists();
+
+                //this.SortAndDisplay();
             }
             else
             {
                 //this.GetPlaylists();
 
-                //this._Items.Clear();
+                _items.Clear();
 
-                //this._Items = App.ViewModel.Playlists;
+                //_items = App.ViewModel.Playlists;
+
+                foreach (DataItemViewModel s in App.ViewModel.Playlists)
+                {
+                    _items.Add(s);
+                }
+
+                playlistList.ItemsSource = _items;
 
                 //this.SortAndDisplay();
             }
@@ -64,7 +73,7 @@ namespace AmpM
         private void GetPlaylists()
         {
 
-            this._Items.Clear();
+            this._items.Clear();
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("playlists", "")));
             webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
@@ -110,22 +119,22 @@ namespace AmpM
                     //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
                 });
 
-                foreach (XElement singlePlaylistElement in xdoc.Element("root").Descendants("playlist"))
+                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("playlist"))
                 {
                     DataItemViewModel newItem = new DataItemViewModel();
 
-                    newItem.PlaylistId = int.Parse(singlePlaylistElement.Attribute("id").Value);
+                    newItem.PlaylistId = int.Parse(singleDataElement.Attribute("id").Value);
 
-                    newItem.PlaylistName = singlePlaylistElement.Element("name").FirstNode.ToString();
-                    newItem.PlaylistItems = int.Parse(singlePlaylistElement.Element("items").FirstNode.ToString());
+                    newItem.PlaylistName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[","").Replace("]]>","").Trim();
+                    newItem.PlaylistItems = int.Parse(singleDataElement.Element("items").FirstNode.ToString());
                     
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        this._Items.Add(newItem);
+                        _items.Add(newItem);
 
-                        MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
+                        //MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
 
-                        itemsList.ItemsSource = this._Items;
+                        playlistList.ItemsSource = _items;
                     });
 
                 }
@@ -147,23 +156,29 @@ namespace AmpM
 
         private void SortAndDisplay()
         {
-            //App.ViewModel.Playlists.Clear();
+            App.ViewModel.Playlists.Clear();
 
-            foreach (DataItemViewModel s in this._Items)
+            foreach (DataItemViewModel s in _items)
             {
-                //App.ViewModel.Playlists.Add(s);
+                App.ViewModel.Playlists.Add(s);
             }
 
-            itemsList.ItemsSource = this._Items;
+            playlistList.ItemsSource = _items;
 
         }
 
 
 
 
-        private void itemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
+        private void playlistList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (playlistList.SelectedItem == null)
+                return;
+
+            var s = (DataItemViewModel)playlistList.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/Songs.xaml?Playlist="+s.PlaylistId, UriKind.Relative));
         }
     }
 }

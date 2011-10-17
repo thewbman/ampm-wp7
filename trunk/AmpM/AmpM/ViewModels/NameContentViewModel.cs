@@ -16,10 +16,6 @@ namespace AmpM
     public class NameContentViewModel : INotifyPropertyChanged
     {
         private string _Name;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Name
         {
             get
@@ -37,10 +33,6 @@ namespace AmpM
         }
 
         private string _Content;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Content
         {
             get
@@ -58,10 +50,6 @@ namespace AmpM
         }
 
         private string _First;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string First
         {
             get
@@ -79,10 +67,6 @@ namespace AmpM
         }
 
         private string _Second;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Second
         {
             get
@@ -100,10 +84,6 @@ namespace AmpM
         }
 
         private string _Third;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Third
         {
             get
@@ -121,10 +101,6 @@ namespace AmpM
         }
 
         private string _Fourth;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
         public string Fourth
         {
             get

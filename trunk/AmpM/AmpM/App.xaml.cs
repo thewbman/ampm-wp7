@@ -76,6 +76,8 @@ namespace AmpM
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+
+
         }
 
         // Code to execute when the application is launching (eg, from Start)

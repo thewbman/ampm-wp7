@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -17,6 +18,7 @@ using System.Threading;
 using System.ComponentModel;
 using Microsoft.Phone;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.BackgroundAudio;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 
@@ -64,6 +66,30 @@ namespace AmpM
             url += "&rand=" + App.ViewModel.randText();
 
             return url;
+        }
+
+        public List<AudioTrack> SongsToTracks(ObservableCollection<DataItemViewModel> inSongs)
+        {
+            List<AudioTrack> outTracks = new List<AudioTrack>();
+
+            AudioTrack t = new AudioTrack();
+
+            foreach(DataItemViewModel s in inSongs)
+            {
+                t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
+
+                //t.Album = s.AlbumName;
+                //t.AlbumArt = new Uri(s.ArtUrl);
+                //t.Artist = s.ArtistName;
+                //t.Source = new Uri(s.SongUrl);
+                //t.Tag = s.SongId.ToString();
+                //t.Title = s.SongName;
+
+                outTracks.Add(t);
+            }
+
+
+            return outTracks;
         }
 
     }
