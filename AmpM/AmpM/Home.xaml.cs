@@ -56,6 +56,8 @@ namespace AmpM
             PageTitle.Text = SelectedHost.Name;
             PageSubtitle.Text = SelectedHost.Address;
 
+            Items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
+
             if (App.ViewModel.Connected == false)
             {
                 //MessageBox.Show("AmpacheConnectUrl: " + App.ViewModel.Functions.GetAmpacheConnectUrl());
@@ -160,7 +162,8 @@ namespace AmpM
             switch (s.Name)
             {
                 case "now playing":
-                    MessageBox.Show("now playing");
+                    //MessageBox.Show("now playing");
+                    NavigationService.Navigate(new Uri("/Nowplaying.xaml", UriKind.Relative));
                     break;
                 case "search":
                     MessageBox.Show("search");

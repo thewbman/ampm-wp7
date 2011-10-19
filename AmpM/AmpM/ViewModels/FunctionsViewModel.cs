@@ -21,6 +21,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.BackgroundAudio;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using MyAudioPlaybackAgent;
 
 namespace AmpM
 {

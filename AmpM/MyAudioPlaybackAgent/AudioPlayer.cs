@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Phone.BackgroundAudio;
+using System.Xml.Serialization;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Runtime.Serialization;
 
 namespace MyAudioPlaybackAgent
 {
@@ -12,10 +17,11 @@ namespace MyAudioPlaybackAgent
     {
         private static volatile bool _classInitialized;
 
-        static int currentTrackNumber = 0;
+        private static UTF8Encoding encoder = new UTF8Encoding();
+
+        static int currentTrackNumber;
 
         public static List<AudioTrack> _playList = new List<AudioTrack>();
-        static List<AudioTrack> _playList2 = new List<AudioTrack>();
 
         /// <remarks>
         /// AudioPlayer instances can share the same process. 
@@ -46,7 +52,6 @@ namespace MyAudioPlaybackAgent
 
             //_playList.Clear();
             _playList = new List<AudioTrack>();
-            _playList2 = new List<AudioTrack>();
 
             //if (_playList == null) _playList = new List<AudioTrack>();
             /*
@@ -56,17 +61,104 @@ namespace MyAudioPlaybackAgent
             }
              */
 
-            currentTrackNumber = 0;
+            //currentTrackNumber = 0;
 
             return;
         }
+
+        public static void setNowplaying(List<AudioTrack> inTracks)
+        {
+            StorageSave<List<AudioTrack>>("Nowplaying", inTracks);
+
+            return;
+        }
+
+        public static List<AudioTrack> getCurrentList()
+        {
+            var currentplayList = SongsToTracks(decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying")));
+            return currentplayList;
+        }
+
+        private static List<DataItemViewModel> decodeDataItems(List<DataItemViewModel> inItems)
+        {
+            List<DataItemViewModel> outItems = new List<DataItemViewModel>();
+
+            //UTF8Encoding encoder = new UTF8Encoding();
+            DataItemViewModel s;
+
+            foreach (DataItemViewModel t in inItems)
+            {
+                s = new DataItemViewModel();
+
+                s.Type = t.Type;
+                s.ItemKey = t.ItemKey;
+                s.ItemId = t.ItemId;
+
+                s.SongId = t.SongId;
+                s.AlbumId = t.AlbumId;
+                s.ArtistId = t.ArtistId;
+                s.PlaylistId = t.PlaylistId;
+
+                //s.SongName = encoder.GetString(Convert.FromBase64String(t.SongName));
+                //s.AlbumName = encoder.GetString(Convert.FromBase64String(t.AlbumName));
+                //s.ArtistName = encoder.GetString(Convert.FromBase64String(t.ArtistName));
+                //s.PlaylistName = encoder.GetString(Convert.FromBase64String(t.PlaylistName)); 
+                s.SongName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.SongName), 0, Convert.FromBase64String(t.SongName).Length);
+                s.AlbumName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.AlbumName), 0, Convert.FromBase64String(t.AlbumName).Length);
+                s.ArtistName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.ArtistName), 0, Convert.FromBase64String(t.ArtistName).Length);
+                s.PlaylistName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.PlaylistName), 0, Convert.FromBase64String(t.PlaylistName).Length);
+                
+                s.SongTrack = t.SongTrack;
+                s.SongTime = t.SongTime;
+                //s.SongUrl = encoder.GetString(Convert.FromBase64String(t.SongUrl));
+                s.SongUrl = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.SongUrl), 0, Convert.FromBase64String(t.SongUrl).Length);
+                
+                s.AlbumTracks = t.AlbumTracks;
+                s.ArtistAlbums = t.ArtistAlbums;
+                s.ArtistTracks = t.ArtistTracks;
+                s.PlaylistItems = t.PlaylistItems;
+
+                //s.ArtUrl = encoder.GetString(Convert.FromBase64String(t.ArtUrl));
+                s.ArtUrl = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.ArtUrl), 0, Convert.FromBase64String(t.ArtUrl).Length);
+                
+
+
+                outItems.Add(s);
+            }
+
+            return outItems;
+        }
+
+        private static List<AudioTrack> SongsToTracks(List<DataItemViewModel> inSongs)
+        {
+            List<AudioTrack> outTracks = new List<AudioTrack>();
+
+            AudioTrack t = new AudioTrack();
+
+            foreach (DataItemViewModel s in inSongs)
+            {
+                t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
+
+                //t.Album = s.AlbumName;
+                //t.AlbumArt = new Uri(s.ArtUrl);
+                //t.Artist = s.ArtistName;
+                //t.Source = new Uri(s.SongUrl);
+                //t.Tag = s.SongId.ToString();
+                //t.Title = s.SongName;
+
+                outTracks.Add(t);
+            }
+
+
+            return outTracks;
+        }
+
 
         public static void addSongs(List<AudioTrack> inTracks)
         {
             foreach (AudioTrack t in inTracks)
             {
                 _playList.Add(t);
-                _playList2.Add(t);
             }
 
             return;
@@ -80,20 +172,44 @@ namespace MyAudioPlaybackAgent
             }
             else
             {
-                currentTrackNumber = inIndex;
+                _playList = getCurrentList();
 
+                currentTrackNumber = inIndex+0;
+                saveCurrentIndex(inIndex + 0);
+
+                //DataItemViewModel s = new DataItemViewModel();
                 AudioTrack t = new AudioTrack();
                 t = _playList[currentTrackNumber];
 
+                //t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
+
                 BackgroundAudioPlayer.Instance.Track = t;
-                BackgroundAudioPlayer.Instance.Play();
+                //BackgroundAudioPlayer.Instance.Play();
             }
 
-            List<AudioTrack> asdf1 = _playList;
-
-            //AudioTrack adsf = _playList[1000];
+            //saveCurrentIndex();
 
             return;
+        }
+
+        public static void startPlayingTrack(AudioTrack inTrack)
+        {
+            if (inTrack == null)
+            {
+                //
+            }
+            else
+            {
+                BackgroundAudioPlayer.Instance.Track = inTrack;
+                //BackgroundAudioPlayer.Instance.Play();
+            }
+
+            return;
+        }
+
+        public static void stopAll()
+        {
+            //
         }
 
         /// Code to execute on Unhandled Exceptions
@@ -154,6 +270,8 @@ namespace MyAudioPlaybackAgent
                     break;
             }
 
+            saveCurrentIndex();
+
             NotifyComplete();
         }
 
@@ -210,6 +328,8 @@ namespace MyAudioPlaybackAgent
                     break;
             }
 
+            saveCurrentIndex();
+
             NotifyComplete();
         }
 
@@ -231,12 +351,16 @@ namespace MyAudioPlaybackAgent
 
             AudioTrack track = null;
 
+            _playList = getCurrentList();
+
             if (++currentTrackNumber >= _playList.Count)
             {
                 currentTrackNumber = 0;
             }
 
             track = _playList[currentTrackNumber];
+
+            saveCurrentIndex();
 
             return track;
         }
@@ -258,12 +382,16 @@ namespace MyAudioPlaybackAgent
 
             AudioTrack track = null;
 
+            _playList = getCurrentList();
+
             if (--currentTrackNumber < 0)
             {
                 currentTrackNumber = _playList.Count - 1;
             }
             
             track = _playList[currentTrackNumber];
+
+            saveCurrentIndex();
 
             return track;
         }
@@ -307,6 +435,8 @@ namespace MyAudioPlaybackAgent
 
         private void PlayNextTrack(BackgroundAudioPlayer player)
         {
+            _playList = getCurrentList();
+
             if (++currentTrackNumber >= _playList.Count)
             {
                 currentTrackNumber = 0;
@@ -317,6 +447,8 @@ namespace MyAudioPlaybackAgent
 
         private void PlayPreviousTrack(BackgroundAudioPlayer player)
         {
+            _playList = getCurrentList();
+
             if (--currentTrackNumber < 0)
             {
                 currentTrackNumber = _playList.Count - 1;
@@ -327,9 +459,68 @@ namespace MyAudioPlaybackAgent
 
         private void PlayTrack(BackgroundAudioPlayer player)
         {
+            _playList = getCurrentList();
+
             // Sets the track to play. When the TrackReady state is received, 
             // playback begins from the OnPlayStateChanged handler.
             player.Track = _playList[currentTrackNumber];
+        }
+
+
+
+
+        public static T StorageLoad<T>(string name) where T : class, new()
+        {
+            T loadedObject = null;
+            using (IsolatedStorageFile storageFile = IsolatedStorageFile.GetUserStoreForApplication())
+            using (IsolatedStorageFileStream storageFileStream = new IsolatedStorageFileStream(name, System.IO.FileMode.OpenOrCreate, storageFile))
+            {
+                if (storageFileStream.Length > 0)
+                {
+                    DataContractSerializer serializer = new DataContractSerializer(typeof(T));
+                    loadedObject = serializer.ReadObject(storageFileStream) as T;
+                }
+                if (loadedObject == null)
+                {
+                    loadedObject = new T();
+                }
+            }
+
+            return loadedObject;
+        }
+        public static void StorageSave<T>(string name, T objectToSave)
+        {
+            using (IsolatedStorageFile storageFile = IsolatedStorageFile.GetUserStoreForApplication())
+            using (IsolatedStorageFileStream storageFileStream = new IsolatedStorageFileStream(name, System.IO.FileMode.Create, storageFile))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeof(T));
+                serializer.WriteObject(storageFileStream, objectToSave);
+            }
+        }
+        public static void StorageDelete(string name)
+        {
+            using (IsolatedStorageFile storageFile = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                storageFile.Remove();
+            }
+        }
+
+        private static void saveCurrentIndex()
+        {
+            AppSettingsModel AppSettings = new AppSettingsModel();
+            AppSettings.NowplayingIndexSetting = currentTrackNumber;
+
+            return;
+        }
+
+        private static void saveCurrentIndex(int inIndex)
+        {
+            currentTrackNumber = inIndex;
+            
+            AppSettingsModel AppSettings = new AppSettingsModel();
+            AppSettings.NowplayingIndexSetting = currentTrackNumber;
+
+            return;
         }
     }
 }
