@@ -3,7 +3,7 @@ using System.IO.IsolatedStorage;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace AmpM
+namespace MyAudioPlaybackAgent
 {
     public class AppSettingsModel
     {

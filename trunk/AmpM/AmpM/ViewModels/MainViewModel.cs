@@ -18,6 +18,16 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
 using Microsoft.Phone.BackgroundAudio;
+using MyAudioPlaybackAgent;
+/*
+using Wintellect.Sterling;
+using Wintellect.Sterling.Database;
+using Wintellect.Sterling.Events;
+using Wintellect.Sterling.Exceptions;
+using Wintellect.Sterling.Indexes;
+using Wintellect.Sterling.Keys;
+using Wintellect.Sterling.Serialization;
+ **/
 
 
 namespace AmpM
@@ -28,7 +38,8 @@ namespace AmpM
         {
             this.Hosts = new ObservableCollection<HostViewModel>();
 
-            this.Nowplaying = new List<AudioTrack>();
+            //this.Nowplaying = new List<AudioTrack>();
+            this.Nowplaying = new List<DataItemViewModel>();
 
             this.Playlists = new ObservableCollection<DataItemViewModel>();
 
@@ -44,12 +55,10 @@ namespace AmpM
 
         }
 
-        /// <summary>
-        /// A collection of objects.
-        /// </summary>
         public ObservableCollection<HostViewModel> Hosts { get; set; }
 
-        public List<AudioTrack> Nowplaying { get; set; }
+        //public List<AudioTrack> Nowplaying { get; set; }
+        public List<DataItemViewModel> Nowplaying { get; set; }
 
         public ObservableCollection<DataItemViewModel> Playlists { get; set; }
 
@@ -58,6 +67,9 @@ namespace AmpM
         public FunctionsViewModel Functions;
 
         private IsolatedStorageSettings prefs;
+
+        //public SterlingEngine engine;
+        //public ISterlingDatabaseInstance databaseInstance;
 
         public bool Connected;
 
@@ -102,6 +114,12 @@ namespace AmpM
             //load prefs
             //appSettings.Save();
 
+            /*
+            engine = new SterlingEngine();
+            engine.Activate();
+            databaseInstance = engine.SterlingDatabase.RegisterDatabase<NowplayingDatabase>();
+            */
+
             this.IsDataLoaded = true;
         }
 
@@ -118,7 +136,173 @@ namespace AmpM
             StorageSave<List<HostViewModel>>("Hosts", hostsList);
         }
 
+        public void addSongs(List<AudioTrack> inTracks)
+        {
+            foreach (AudioTrack t in inTracks)
+            {
+                //this.Nowplaying.Add(t);
+            }
 
+            return;
+        }
+
+        public void saveNowplaying()
+        {
+            //List<AudioTrack> nowplayingList = encodeTracks(this.Nowplaying);
+            //StorageSave<List<AudioTrack>>("Nowplaying", nowplayingList);
+            List<DataItemViewModel> nowplayingList = encodeDataItems(this.Nowplaying);
+            StorageSave<List<DataItemViewModel>>("Nowplaying", nowplayingList);
+        }
+
+        public List<DataItemViewModel> getNowplaying()
+        {
+
+            //var savedNowplaying = decodeTracks(StorageLoad<List<AudioTrack>>("Nowplaying"));
+            var savedNowplaying = decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying"));
+
+            this.Nowplaying.Clear();
+            this.Nowplaying = savedNowplaying;
+
+            return savedNowplaying;
+        }
+
+        private List<AudioTrack> encodeTracks(List<AudioTrack> inTracks)
+        {
+            List<AudioTrack> outTracks = new List<AudioTrack>();
+
+            UTF8Encoding encoder = new UTF8Encoding();
+            AudioTrack s;
+
+            foreach (AudioTrack t in inTracks)
+            {
+                byte[] src = encoder.GetBytes(t.Source.ToString());
+                byte[] tit = encoder.GetBytes(t.Title);
+                byte[] art = encoder.GetBytes(t.Artist);
+                byte[] alb = encoder.GetBytes(t.Album);
+                byte[] aar = encoder.GetBytes(t.AlbumArt.ToString());
+
+                s = new AudioTrack(new Uri(Convert.ToBase64String(src)), Convert.ToBase64String(tit), Convert.ToBase64String(art), Convert.ToBase64String(alb), new Uri(Convert.ToBase64String(aar)));
+
+                outTracks.Add(s);
+            }
+
+            return outTracks;
+        }
+
+        private List<AudioTrack> decodeTracks(List<AudioTrack> inTracks)
+        {
+            List<AudioTrack> outTracks = new List<AudioTrack>();
+
+            //UTF8Encoding encoder = new UTF8Encoding();
+            AudioTrack s;
+
+            foreach (AudioTrack t in inTracks)
+            {
+                //byte[] src = encoder.GetBytes(t.Source.ToString());
+                //byte[] tit = encoder.GetBytes(t.Title);
+                //byte[] art = encoder.GetBytes(t.Artist);
+                //byte[] alb = encoder.GetBytes(t.Album);
+                //byte[] aar = encoder.GetBytes(t.AlbumArt.ToString());
+
+                s = new AudioTrack(new Uri(Convert.FromBase64String(t.Source.ToString()).ToString()), Convert.FromBase64String(t.Title).ToString(), Convert.FromBase64String(t.Artist).ToString(), Convert.FromBase64String(t.Album).ToString(), new Uri(Convert.FromBase64String(t.AlbumArt.ToString()).ToString()));
+
+                outTracks.Add(s);
+            }
+
+            return outTracks;
+        }
+
+        private List<DataItemViewModel> encodeDataItems(List<DataItemViewModel> inItems)
+        {
+            List<DataItemViewModel> outItems = new List<DataItemViewModel>();
+
+            UTF8Encoding encoder = new UTF8Encoding();
+            DataItemViewModel s;
+
+            foreach (DataItemViewModel t in inItems)
+            {
+                s = new DataItemViewModel();
+
+                s.Type = t.Type;
+                s.ItemKey = t.ItemKey;
+                s.ItemId = t.ItemId;
+
+                s.SongId = t.SongId;
+                s.AlbumId = t.AlbumId;
+                s.ArtistId = t.ArtistId;
+                s.PlaylistId = t.PlaylistId;
+
+                s.SongName = Convert.ToBase64String(encoder.GetBytes(t.SongName));
+                s.AlbumName = Convert.ToBase64String(encoder.GetBytes(t.AlbumName));
+                s.ArtistName = Convert.ToBase64String(encoder.GetBytes(t.ArtistName));
+                s.PlaylistName = Convert.ToBase64String(encoder.GetBytes(t.PlaylistName));
+
+                s.SongTrack = t.SongTrack;
+                s.SongTime = t.SongTime;
+                s.SongUrl = Convert.ToBase64String(encoder.GetBytes(t.SongUrl));
+
+                s.AlbumTracks = t.AlbumTracks;
+                s.ArtistAlbums = t.ArtistAlbums;
+                s.ArtistTracks = t.ArtistTracks;
+                s.PlaylistItems = t.PlaylistItems;
+
+                s.ArtUrl = Convert.ToBase64String(encoder.GetBytes(t.ArtUrl));
+
+
+                outItems.Add(s);
+            }
+
+            return outItems;
+        }
+
+        private List<DataItemViewModel> decodeDataItems(List<DataItemViewModel> inItems)
+        {
+            List<DataItemViewModel> outItems = new List<DataItemViewModel>();
+
+            UTF8Encoding encoder = new UTF8Encoding();
+            DataItemViewModel s;
+
+            foreach (DataItemViewModel t in inItems)
+            {
+                s = new DataItemViewModel();
+
+                s.Type = t.Type;
+                s.ItemKey = t.ItemKey;
+                s.ItemId = t.ItemId;
+
+                s.SongId = t.SongId;
+                s.AlbumId = t.AlbumId;
+                s.ArtistId = t.ArtistId;
+                s.PlaylistId = t.PlaylistId;
+
+                //s.SongName = encoder.GetString(Convert.FromBase64String(t.SongName));
+                //s.AlbumName = encoder.GetString(Convert.FromBase64String(t.AlbumName));
+                //s.ArtistName = encoder.GetString(Convert.FromBase64String(t.ArtistName));
+                //s.PlaylistName = encoder.GetString(Convert.FromBase64String(t.PlaylistName)); 
+                s.SongName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.SongName), 0, Convert.FromBase64String(t.SongName).Length);
+                s.AlbumName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.AlbumName), 0, Convert.FromBase64String(t.AlbumName).Length);
+                s.ArtistName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.ArtistName), 0, Convert.FromBase64String(t.ArtistName).Length);
+                s.PlaylistName = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.PlaylistName), 0, Convert.FromBase64String(t.PlaylistName).Length);
+
+                s.SongTrack = t.SongTrack;
+                s.SongTime = t.SongTime;
+                //s.SongUrl = encoder.GetString(Convert.FromBase64String(t.SongUrl));
+                s.SongUrl = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.SongUrl), 0, Convert.FromBase64String(t.SongUrl).Length);
+
+                s.AlbumTracks = t.AlbumTracks;
+                s.ArtistAlbums = t.ArtistAlbums;
+                s.ArtistTracks = t.ArtistTracks;
+                s.PlaylistItems = t.PlaylistItems;
+
+                //s.ArtUrl = encoder.GetString(Convert.FromBase64String(t.ArtUrl));
+                s.ArtUrl = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.ArtUrl), 0, Convert.FromBase64String(t.ArtUrl).Length);
+                
+
+                outItems.Add(s);
+            }
+
+            return outItems;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

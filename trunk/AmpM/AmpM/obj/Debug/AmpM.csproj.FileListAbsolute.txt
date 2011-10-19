@@ -21,3 +21,5 @@ C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Microsoft.Phone.Controls.xml
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Home.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Playlists.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Songs.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\FlurryWP7SDK.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Nowplaying.g.i.cs

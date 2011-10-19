@@ -22,6 +22,7 @@ using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using Microsoft.Phone.BackgroundAudio;
+using MyAudioPlaybackAgent;
 
 namespace AmpM
 {
@@ -121,6 +122,8 @@ namespace AmpM
 
                     newItem.SongUrl = singleDataElement.Element("url").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
 
+                    newItem.ItemKey = "song" + newItem.SongId;
+                    newItem.ItemId = newItem.SongId;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -164,12 +167,18 @@ namespace AmpM
             if (songList.SelectedItem == null)
                 return;
 
-            List<AudioTrack> newSongs = new List<AudioTrack>();
-            /*
-            AudioTrack t = new AudioTrack();
+            int currentPLayingCount = App.ViewModel.Nowplaying.Count;
+
+            //List<AudioTrack> newSongs = new List<AudioTrack>();
+            
+            //AudioTrack t = new AudioTrack();
+            //DataItemViewModel t = new DataItemViewModel();
+
+            //App.ViewModel.Nowplaying.Clear();
 
             foreach(DataItemViewModel s in _items)
             {
+                /*
                 t = new AudioTrack();
 
                 t.Album = s.AlbumName;
@@ -180,23 +189,38 @@ namespace AmpM
                 t.Title = s.SongName;
 
                 newSongs.Add(t);
+                */
+                App.ViewModel.Nowplaying.Add(s);
+
             }
-             */
-            newSongs = App.ViewModel.Functions.SongsToTracks(this._items);
+             
+            //newSongs = App.ViewModel.Functions.SongsToTracks(this._items);
 
-            App.ViewModel.Nowplaying = newSongs;
+            //App.ViewModel.Nowplaying = newSongs;
 
-            if (newSongs.Count > 0)
+            if (App.ViewModel.Nowplaying.Count > 0)
             {
-                MyAudioPlaybackAgent.AudioPlayer.resetList();
-                MyAudioPlaybackAgent.AudioPlayer.addSongs(newSongs);
-                MyAudioPlaybackAgent.AudioPlayer.startPlaying(songList.SelectedIndex);
+                //App.ViewModel.Nowplaying.Clear();
+                //App.ViewModel.addSongs(newSongs);
+                App.ViewModel.saveNowplaying();
+
+                //var newlist = App.ViewModel.getNowplaying();
+
+                //songList.ItemsSource = newlist;
+
+                //MyAudioPlaybackAgent.AudioPlayer.setNowplaying(newSongs);
+                //MyAudioPlaybackAgent.AudioPlayer.resetList();
+                //MyAudioPlaybackAgent.AudioPlayer.addSongs(newSongs);
                 //MyAudioPlaybackAgent.AudioPlayer.startPlaying(0);
+                App.ViewModel.AppSettings.NowplayingIndexSetting = songList.SelectedIndex + currentPLayingCount;
+                MyAudioPlaybackAgent.AudioPlayer.startPlaying(songList.SelectedIndex + currentPLayingCount);
+                //MyAudioPlaybackAgent.AudioPlayer.startPlayingTrack(newSongs[songList.SelectedIndex]);
             }
 
-            MyAudioPlaybackAgent.AudioPlayer._playList = App.ViewModel.Nowplaying;
+            //MyAudioPlaybackAgent.AudioPlayer._playList = App.ViewModel.Nowplaying;
 
             songList.SelectedItem = null;
+
         }
     }
 }

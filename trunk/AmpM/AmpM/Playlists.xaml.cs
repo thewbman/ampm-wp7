@@ -21,6 +21,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using MyAudioPlaybackAgent;
 
 namespace AmpM
 {
@@ -127,7 +128,10 @@ namespace AmpM
 
                     newItem.PlaylistName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[","").Replace("]]>","").Trim();
                     newItem.PlaylistItems = int.Parse(singleDataElement.Element("items").FirstNode.ToString());
-                    
+
+                    newItem.ItemKey = "playlist" + newItem.PlaylistId;
+                    newItem.ItemId = newItem.PlaylistId;
+
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         _items.Add(newItem);

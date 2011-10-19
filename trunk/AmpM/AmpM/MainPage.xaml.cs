@@ -49,7 +49,7 @@ namespace AmpM
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+            App.ViewModel.getNowplaying();
         }
 
         private void hostsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
