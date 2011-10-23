@@ -48,6 +48,44 @@ namespace MyAudioPlaybackAgent
                 }
             }
         }
+        private string _ItemChar = "~";
+        public string ItemChar
+        {
+            get
+            {
+                string a = "~";
+
+                switch (Type)
+                {
+                    case "song":
+                        a = SongName.Substring(0, 1);
+                        break;
+                    case "album":
+                        a = AlbumName.Substring(0, 1);
+                        break;
+                    case "artist":
+                        a = ArtistName.Substring(0, 1);
+                        break;
+                    case "tag":
+                        //a = Tag.Substring(0, 1);
+                        break;
+                    case "playlist":
+                        a = PlaylistName.Substring(0, 1);
+                        break;
+                }
+
+                return _ItemChar;
+                //return a;
+            }
+            set
+            {
+                if (value != _ItemChar)
+                {
+                    _ItemChar = value;
+                    NotifyPropertyChanged("ItemChar");
+                }
+            }
+        }
 
         private int _ItemId = -1;
         public int ItemId
@@ -196,6 +234,22 @@ namespace MyAudioPlaybackAgent
             }
         }
 
+        private string _Year = "";
+        public string Year
+        {
+            get
+            {
+                return _Year;
+            }
+            set
+            {
+                if (value != _Year)
+                {
+                    _Year = value;
+                    NotifyPropertyChanged("Year");
+                }
+            }
+        }
 
         private int _SongTrack = -1;
         public int SongTrack

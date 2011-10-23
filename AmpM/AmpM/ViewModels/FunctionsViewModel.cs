@@ -21,6 +21,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.BackgroundAudio;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using MyAudioPlaybackAgent;
 
 namespace AmpM
@@ -93,5 +94,24 @@ namespace AmpM
             return outTracks;
         }
 
+        public string FirstChar(string inString)
+        {
+            string a = inString.ToUpper().Substring(0, 1);
+            
+            if (Regex.IsMatch(a, "[0-9]"))
+            {
+                a = "#";
+            }
+            else if (Regex.IsMatch(a, "[A-Z]"))
+            {
+                //
+            }
+            else
+            {
+                a = "~";
+            }
+
+            return a;
+        }
     }
 }

@@ -43,6 +43,8 @@ namespace AmpM
 
         public ObservableCollection<DataItemViewModel> _items;
 
+        private int viewsToRemove = 1;
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -51,12 +53,24 @@ namespace AmpM
             string inValue = "";
             if (NavigationContext.QueryString.TryGetValue("Playlist", out inValue))
             {
+                viewsToRemove = 2;
 
                 performanceProgressBarCustomized.IsIndeterminate = true;
 
                 this._items.Clear();
 
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("playlist_songs", "&filter=" + inValue)));
+                webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
+            }
+            else if (NavigationContext.QueryString.TryGetValue("Album", out inValue))
+            {
+                viewsToRemove = 2;
+
+                performanceProgressBarCustomized.IsIndeterminate = true;
+
+                this._items.Clear();
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("album_songs", "&filter=" + inValue)));
                 webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
             }
         }
@@ -215,6 +229,11 @@ namespace AmpM
                 App.ViewModel.AppSettings.NowplayingIndexSetting = songList.SelectedIndex + currentPLayingCount;
                 MyAudioPlaybackAgent.AudioPlayer.startPlaying(songList.SelectedIndex + currentPLayingCount);
                 //MyAudioPlaybackAgent.AudioPlayer.startPlayingTrack(newSongs[songList.SelectedIndex]);
+
+
+                NavigationService.Navigate(new Uri("/Nowplaying.xaml?Remove="+viewsToRemove, UriKind.Relative));
+                //NavigationService.RemoveBackEntry();
+                //NavigationService.RemoveBackEntry();
             }
 
             //MyAudioPlaybackAgent.AudioPlayer._playList = App.ViewModel.Nowplaying;

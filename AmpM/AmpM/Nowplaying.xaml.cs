@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
 using System.Windows.Threading;
@@ -40,16 +41,40 @@ namespace AmpM
         {
             nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
 
+            string inValue = "";
+            if (NavigationContext.QueryString.TryGetValue("Remove", out inValue))
+            {
+                int toRemove = int.Parse(inValue);
+
+                for (int i = 0; i < toRemove; i++)
+                {
+                    NavigationService.RemoveBackEntry();
+                }
+            }
+
             if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.AppSettings.NowplayingIndexSetting < App.ViewModel.Nowplaying.Count))
             {
+                //DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
+                artUrl.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                artUrl.Visibility = System.Windows.Visibility.Visible;
+                songName.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                artistName.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                albumName.Text = BackgroundAudioPlayer.Instance.Track.Album;
+                //App.ViewModel.AppSettings.NowplayingIndexSetting = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag);
+
                 int newIndex = App.ViewModel.AppSettings.NowplayingIndexSetting + 1;
                 songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
-                DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
+                
+
             }
             else
             {
                 songCount.Text = "";
-                DataContext = null;
+
+                artUrl.Visibility = System.Windows.Visibility.Collapsed;
+                songName.Text = "";
+                artistName.Text = "";
+                albumName.Text = "";
             }
         }
 
@@ -69,14 +94,26 @@ namespace AmpM
 
             if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.AppSettings.NowplayingIndexSetting < App.ViewModel.Nowplaying.Count))
             {
+
+                //DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
+                artUrl.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
+                artUrl.Visibility = System.Windows.Visibility.Visible;
+                songName.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                artistName.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                albumName.Text = BackgroundAudioPlayer.Instance.Track.Album;
+                //App.ViewModel.AppSettings.NowplayingIndexSetting = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag);
+
                 int newIndex = App.ViewModel.AppSettings.NowplayingIndexSetting + 1;
                 songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
-                DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
             }
             else
             {
                 songCount.Text = "";
-                DataContext = null;
+
+                artUrl.Visibility = System.Windows.Visibility.Collapsed;
+                songName.Text = "";
+                artistName.Text = "";
+                albumName.Text = "";
             }
         }
 
@@ -107,6 +144,18 @@ namespace AmpM
             App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
 
             nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
+        }
+
+        private void songSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            try
+            {
+                BackgroundAudioPlayer.Instance.Position = System.TimeSpan.FromSeconds((songSlider.Value / 100) * (BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds));
+            }
+            catch (Exception ex)
+            {
+                //
+            }
         }
     }
 }
