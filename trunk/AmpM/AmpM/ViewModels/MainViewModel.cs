@@ -41,6 +41,8 @@ namespace AmpM
             //this.Nowplaying = new List<AudioTrack>();
             this.Nowplaying = new List<DataItemViewModel>();
 
+            this.Albums = new ObservableCollection<DataItemViewModel>();
+            this.Artists = new ObservableCollection<DataItemViewModel>();
             this.Playlists = new ObservableCollection<DataItemViewModel>();
 
             this.AppSettings = new AppSettingsModel();
@@ -60,6 +62,8 @@ namespace AmpM
         //public List<AudioTrack> Nowplaying { get; set; }
         public List<DataItemViewModel> Nowplaying { get; set; }
 
+        public ObservableCollection<DataItemViewModel> Albums { get; set; }
+        public ObservableCollection<DataItemViewModel> Artists { get; set; }
         public ObservableCollection<DataItemViewModel> Playlists { get; set; }
 
         public AppSettingsModel AppSettings;

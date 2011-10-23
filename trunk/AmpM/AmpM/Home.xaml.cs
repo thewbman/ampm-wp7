@@ -172,7 +172,8 @@ namespace AmpM
                     MessageBox.Show("songs");
                     break;
                 case "albums":
-                    MessageBox.Show("albums");
+                    //MessageBox.Show("albums");
+                    NavigationService.Navigate(new Uri("/Albums.xaml", UriKind.Relative));
                     break;
                 case "artists":
                     MessageBox.Show("artist");

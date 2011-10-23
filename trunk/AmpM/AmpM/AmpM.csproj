@@ -66,6 +66,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Albums.xaml.cs">
+      <DependentUpon>Albums.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -97,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Albums.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,6 +140,10 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\JumpListControl\JumpListControl.csproj">
+      <Project>{23F503DE-7DC6-40C2-8348-A454C4C1AB99}</Project>
+      <Name>JumpListControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyAudioPlaybackAgent\MyAudioPlaybackAgent.csproj">
       <Project>{C23F729D-0249-4B29-B27A-99F423834640}</Project>
       <Name>MyAudioPlaybackAgent</Name>

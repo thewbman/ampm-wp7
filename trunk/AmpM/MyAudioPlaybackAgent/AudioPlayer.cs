@@ -19,7 +19,8 @@ namespace MyAudioPlaybackAgent
 
         private static UTF8Encoding encoder = new UTF8Encoding();
 
-        static int currentTrackNumber;
+        //private static int AppSettings.NowplayingIndexSetting;
+        private static AppSettingsModel AppSettings = new AppSettingsModel();
 
         public static List<AudioTrack> _playList = new List<AudioTrack>();
 
@@ -43,6 +44,7 @@ namespace MyAudioPlaybackAgent
                 });
             }
 
+           
         }
 
         public static void resetList()
@@ -61,7 +63,7 @@ namespace MyAudioPlaybackAgent
             }
              */
 
-            //currentTrackNumber = 0;
+            //AppSettings.NowplayingIndexSetting = 0;
 
             return;
         }
@@ -174,12 +176,12 @@ namespace MyAudioPlaybackAgent
             {
                 _playList = getCurrentList();
 
-                currentTrackNumber = inIndex+0;
+                AppSettings.NowplayingIndexSetting = inIndex+0;
                 saveCurrentIndex(inIndex + 0);
 
                 //DataItemViewModel s = new DataItemViewModel();
                 AudioTrack t = new AudioTrack();
-                t = _playList[currentTrackNumber];
+                t = _playList[AppSettings.NowplayingIndexSetting];
 
                 //t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
 
@@ -353,12 +355,14 @@ namespace MyAudioPlaybackAgent
 
             _playList = getCurrentList();
 
-            if (++currentTrackNumber >= _playList.Count)
+            if (++AppSettings.NowplayingIndexSetting >= _playList.Count)
             {
-                currentTrackNumber = 0;
+                //AppSettings.NowplayingIndexSetting = 0;
             }
-
-            track = _playList[currentTrackNumber];
+            else
+            {
+                track = _playList[AppSettings.NowplayingIndexSetting];
+            }
 
             saveCurrentIndex();
 
@@ -384,12 +388,12 @@ namespace MyAudioPlaybackAgent
 
             _playList = getCurrentList();
 
-            if (--currentTrackNumber < 0)
+            if (--AppSettings.NowplayingIndexSetting < 0)
             {
-                currentTrackNumber = _playList.Count - 1;
+                AppSettings.NowplayingIndexSetting = _playList.Count - 1;
             }
             
-            track = _playList[currentTrackNumber];
+            track = _playList[AppSettings.NowplayingIndexSetting];
 
             saveCurrentIndex();
 
@@ -437,21 +441,23 @@ namespace MyAudioPlaybackAgent
         {
             _playList = getCurrentList();
 
-            if (++currentTrackNumber >= _playList.Count)
+            if (++AppSettings.NowplayingIndexSetting >= _playList.Count)
             {
-                currentTrackNumber = 0;
+                //AppSettings.NowplayingIndexSetting = 0;
             }
-
-            PlayTrack(player);
+            else
+            {
+                PlayTrack(player);
+            }
         }
 
         private void PlayPreviousTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
 
-            if (--currentTrackNumber < 0)
+            if (--AppSettings.NowplayingIndexSetting < 0)
             {
-                currentTrackNumber = _playList.Count - 1;
+                AppSettings.NowplayingIndexSetting = _playList.Count - 1;
             }
 
             PlayTrack(player);
@@ -463,7 +469,7 @@ namespace MyAudioPlaybackAgent
 
             // Sets the track to play. When the TrackReady state is received, 
             // playback begins from the OnPlayStateChanged handler.
-            player.Track = _playList[currentTrackNumber];
+            player.Track = _playList[AppSettings.NowplayingIndexSetting];
         }
 
 
@@ -507,18 +513,18 @@ namespace MyAudioPlaybackAgent
 
         private static void saveCurrentIndex()
         {
-            AppSettingsModel AppSettings = new AppSettingsModel();
-            AppSettings.NowplayingIndexSetting = currentTrackNumber;
+            //AppSettingsModel AppSettings = new AppSettingsModel();
+            //AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting;
 
             return;
         }
 
         private static void saveCurrentIndex(int inIndex)
         {
-            currentTrackNumber = inIndex;
+            //AppSettings.NowplayingIndexSetting = inIndex;
             
-            AppSettingsModel AppSettings = new AppSettingsModel();
-            AppSettings.NowplayingIndexSetting = currentTrackNumber;
+            //AppSettingsModel AppSettings = new AppSettingsModel();
+            //AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting;
 
             return;
         }

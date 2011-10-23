@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpM", "AmpM\AmpM.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAudioPlaybackAgent", "MyAudioPlaybackAgent\MyAudioPlaybackAgent.csproj", "{C23F729D-0249-4B29-B27A-99F423834640}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JumpListControl", "..\..\JumpListControl\JumpListControl.csproj", "{23F503DE-7DC6-40C2-8348-A454C4C1AB99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C23F729D-0249-4B29-B27A-99F423834640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C23F729D-0249-4B29-B27A-99F423834640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C23F729D-0249-4B29-B27A-99F423834640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F503DE-7DC6-40C2-8348-A454C4C1AB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F503DE-7DC6-40C2-8348-A454C4C1AB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F503DE-7DC6-40C2-8348-A454C4C1AB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F503DE-7DC6-40C2-8348-A454C4C1AB99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
