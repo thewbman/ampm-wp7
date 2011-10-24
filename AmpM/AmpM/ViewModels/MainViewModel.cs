@@ -66,6 +66,16 @@ namespace AmpM
         public ObservableCollection<DataItemViewModel> Artists { get; set; }
         public ObservableCollection<DataItemViewModel> Playlists { get; set; }
 
+        public DataItemViewModel SelectedArtist { get; set; }
+
+        public int AllSongs { get; set; }
+        public int AllAlbums { get; set; }
+        public int AllArtists { get; set; }
+        public int AllGenres { get; set; }
+        public int AllPlaylists { get; set; }
+        public int AllVideos { get; set; }
+
+
         public AppSettingsModel AppSettings;
 
         public FunctionsViewModel Functions;
@@ -80,6 +90,10 @@ namespace AmpM
         public string Auth;
 
         public bool IsDataLoaded { get; private set; }
+        public bool IsAlbumsLoaded { get; private set; }
+        public bool IsArtistsLoaded { get; private set; }
+        public bool IsTagsLoaded { get; private set; }
+        public bool IsPlaylistsLoaded { get; private set; }
 
         public string randText()
         {
@@ -109,22 +123,64 @@ namespace AmpM
             else
             {
                 foreach (var e in savedHostsList) this.Hosts.Add(e);
-
             }
 
             //save hosts
-            this.saveHosts();
+            //this.saveHosts();
 
-            //load prefs
-            //appSettings.Save();
-
-            /*
-            engine = new SterlingEngine();
-            engine.Activate();
-            databaseInstance = engine.SterlingDatabase.RegisterDatabase<NowplayingDatabase>();
-            */
 
             this.IsDataLoaded = true;
+        }
+        public void LoadAlbums()
+        {
+
+            var savedAlbums = StorageLoad<List<DataItemViewModel>>("Albums");
+            if (savedAlbums.Count < 1)
+            {
+                //
+            }
+            else
+            {
+                foreach (var e in savedAlbums)
+                {
+                    DataItemViewModel s = new DataItemViewModel();
+
+                    s = e;
+
+                    s.ArtUrl.Replace(s.Auth, this.Auth);
+                    s.Auth = this.Auth;
+                    
+                    this.Albums.Add(s);
+                }
+            }
+            //this.saveAlbums();
+
+            this.IsAlbumsLoaded = true;
+        }
+        public void LoadArtists()
+        {
+            
+            var savedArtists = StorageLoad<List<DataItemViewModel>>("Artists");
+            if (savedArtists.Count < 1)
+            {
+                //
+            }
+            else
+            {
+                foreach (var e in savedArtists)
+                {
+                    DataItemViewModel s = new DataItemViewModel();
+
+                    s = e;
+
+                    s.Auth = this.Auth;
+
+                    this.Albums.Add(s);
+                }
+            }
+            //this.saveArtists();
+
+            this.IsArtistsLoaded = true;
         }
 
 
@@ -138,6 +194,17 @@ namespace AmpM
         {
             List<HostViewModel> hostsList = new List<HostViewModel>(this.Hosts);
             StorageSave<List<HostViewModel>>("Hosts", hostsList);
+        }
+
+        public void saveAlbums()
+        {
+            List<DataItemViewModel> albumsList = new List<DataItemViewModel>(this.Albums);
+            StorageSave<List<DataItemViewModel>>("Albums", albumsList);
+        }
+        public void saveArtists()
+        {
+            List<DataItemViewModel> artistsList = new List<DataItemViewModel>(this.Artists);
+            StorageSave<List<DataItemViewModel>>("Artists", artistsList);
         }
 
         public void addSongs(List<AudioTrack> inTracks)

@@ -26,3 +26,5 @@ C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Nowplaying.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Albums.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\JumpListControl.dll
 C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\JumpListControl.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Artists.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\ArtistDetails.g.i.cs

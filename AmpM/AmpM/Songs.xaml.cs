@@ -138,6 +138,7 @@ namespace AmpM
 
                     newItem.ItemKey = "song" + newItem.SongId;
                     newItem.ItemId = newItem.SongId;
+                    newItem.Auth = App.ViewModel.Auth;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {

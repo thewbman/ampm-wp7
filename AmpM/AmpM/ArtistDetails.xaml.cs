@@ -21,76 +21,50 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using Microsoft.Phone.BackgroundAudio;
 using MyAudioPlaybackAgent;
 
 namespace AmpM
 {
-    public partial class Albums : PhoneApplicationPage
+    public partial class ArtistDetails : PhoneApplicationPage
     {
-        public Albums()
+        public ArtistDetails()
         {
             InitializeComponent();
 
-            _items = new ObservableCollection<DataItemViewModel>();
-            _searchItems = new ObservableCollection<DataItemViewModel>();
+            _albums = new ObservableCollection<DataItemViewModel>();
+            _songs = new ObservableCollection<DataItemViewModel>();
 
+            songList.ItemsSource = _songs;
         }
 
-        public ObservableCollection<DataItemViewModel> _items;
-        public ObservableCollection<DataItemViewModel> _searchItems;
+        public ObservableCollection<DataItemViewModel> _albums;
+        public ObservableCollection<DataItemViewModel> _songs;
+
+        private int viewsToRemove = 2;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            panoramaTitle.Title = App.ViewModel.SelectedArtist.ArtistName;
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            this.Perform(() => LoadAlbums(), 50);
+            this.Perform(() => GetAlbums(), 50);
 
-        }
-        private void LoadAlbums()
-        {
-            
-            if (!App.ViewModel.IsAlbumsLoaded)
-            {
-                App.ViewModel.LoadAlbums();
-            }
-
-            if (App.ViewModel.Albums.Count == 0)
-            {
-                this.GetAlbums();
-            }
-            else
-            {
-
-                _items.Clear();
-
-                foreach (DataItemViewModel s in App.ViewModel.Albums)
-                {
-                    _items.Add(s);
-                }
-
-                performanceProgressBarCustomized.IsIndeterminate = false;
-
-                this.SortAndDisplay();
-            }
         }
 
         private void GetAlbums()
         {
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            App.ViewModel.Albums.Clear();
-            this._items.Clear();
+            this._albums.Clear();
 
-            AlbumsLL.ItemsSource = null;
-            AlbumsArtistLL.ItemsSource = null;
-            AlbumsYearLL.ItemsSource = null;
-            AlbumsSearchLL.ItemsSource = null;
+            albumList.ItemsSource = null;
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("albums", "")));
-            webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artist_albums", "&filter="+App.ViewModel.SelectedArtist.ArtistId)));
+            webRequest.BeginGetResponse(new AsyncCallback(DataAlbumsCallback), webRequest);
         }
-        private void DataCallback(IAsyncResult asynchronousResult)
+        private void DataAlbumsCallback(IAsyncResult asynchronousResult)
         {
 
             string resultString;
@@ -154,19 +128,15 @@ namespace AmpM
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        _items.Add(newItem);
+                        _albums.Add(newItem);
 
-                        //MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
-
-                        //albumsList.ItemsSource = _items;
-                        //albumsJumpList.ItemsSource = _items;
                     });
 
                 }
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    this.SortAndDisplay();
+                    this.GetSongs();
                 });
 
             }
@@ -178,7 +148,19 @@ namespace AmpM
                 });
             }
         }
-        private void DataSearchCallback(IAsyncResult asynchronousResult)
+
+        private void GetSongs()
+        {
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            this._songs.Clear();
+
+            songList.ItemsSource = null;
+
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artist_songs", "&filter=" + App.ViewModel.SelectedArtist.ArtistId)));
+            webRequest.BeginGetResponse(new AsyncCallback(DataSongsCallback), webRequest);
+        }
+        private void DataSongsCallback(IAsyncResult asynchronousResult)
         {
 
             string resultString;
@@ -219,35 +201,34 @@ namespace AmpM
                     //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
                 });
 
-                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("album"))
+                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("song"))
                 {
                     DataItemViewModel newItem = new DataItemViewModel();
 
-                    newItem.Type = "album";
+                    newItem.SongId = int.Parse(singleDataElement.Attribute("id").Value);
 
-                    newItem.AlbumId = int.Parse(singleDataElement.Attribute("id").Value);
+                    newItem.SongName = singleDataElement.Element("title").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
 
-                    newItem.AlbumName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-                    newItem.ArtistName = singleDataElement.Element("artist").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
                     newItem.ArtistId = int.Parse(singleDataElement.Element("artist").Attribute("id").Value);
-                    newItem.AlbumTracks = int.Parse(singleDataElement.Element("tracks").FirstNode.ToString());
-                    newItem.Year = singleDataElement.Element("year").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistName = singleDataElement.Element("artist").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+
+                    newItem.AlbumId = int.Parse(singleDataElement.Element("album").Attribute("id").Value);
+                    newItem.AlbumName = singleDataElement.Element("album").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+
+                    newItem.SongTime = int.Parse(singleDataElement.Element("time").FirstNode.ToString());
+                    newItem.SongTrack = int.Parse(singleDataElement.Element("track").FirstNode.ToString());
 
                     newItem.ArtUrl = singleDataElement.Element("art").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
 
-                    newItem.ItemKey = "album" + newItem.AlbumId;
-                    newItem.ItemId = newItem.AlbumId;
-                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.AlbumName);
+                    newItem.SongUrl = singleDataElement.Element("url").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+
+                    newItem.ItemKey = "song" + newItem.SongId;
+                    newItem.ItemId = newItem.SongId;
                     newItem.Auth = App.ViewModel.Auth;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        _searchItems.Add(newItem);
-
-                        //MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
-
-                        //albumsList.ItemsSource = _items;
-                        //albumsJumpList.ItemsSource = _items;
+                        _songs.Add(newItem);
                     });
 
                 }
@@ -269,64 +250,9 @@ namespace AmpM
 
         private void SortAndDisplay()
         {
-            if (App.ViewModel.Albums.Count == 0)
-            {
-                //better logic here - asdf
+            albumList.ItemsSource = _albums;
+            songList.ItemsSource = _songs;
 
-                App.ViewModel.Albums.Clear();
-
-                foreach (DataItemViewModel s in _items)
-                {
-                    App.ViewModel.Albums.Add(s);
-                }
-
-                App.ViewModel.saveAlbums();
-
-            }
-
-
-            var al = _items.OrderBy(x => x.AlbumName).ToArray();
-            var bl = _items.OrderBy(x => x.ArtistName).ToArray();
-            var cl = _items.OrderBy(x => x.Year).ToArray();
-            var sl = _searchItems.OrderBy(x => x.AlbumName).ToArray();
-
-
-            var albumsByChar = from t in al
-                               group t by t.ItemChar into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-            var albumsByArtist = from t in bl
-                               group t by t.ArtistName into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-            var albumsByYear = from t in cl
-                               group t by t.Year into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-            var albumsBySearch = from t in sl
-                               group t by t.ItemChar into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-
-
-            AlbumsLL.ItemsSource = albumsByChar;
-            AlbumsArtistLL.ItemsSource = albumsByArtist;
-            AlbumsYearLL.ItemsSource = albumsByYear;
-            AlbumsSearchLL.ItemsSource = albumsBySearch;
-
-            albumsPivot.Title = "albums (" + this._items.Count + ")";
-
-            performanceProgressBarCustomized.IsIndeterminate = false;
-
-            this.Perform(() => this.stopProgressBar(), 500);
-
-        }
-        private void stopProgressBar()
-        {
             performanceProgressBarCustomized.IsIndeterminate = false;
         }
 
@@ -391,70 +317,43 @@ namespace AmpM
         }
 
 
-        private void AlbumsLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-            if (AlbumsLL.SelectedItem == null)
+        private void albumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (albumList.SelectedItem == null)
                 return;
 
-            var s = (DataItemViewModel)AlbumsLL.SelectedItem;
+            var s = (DataItemViewModel)albumList.SelectedItem;
 
             NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
 
-            AlbumsLL.SelectedItem = null;
+            albumList.SelectedItem = null;
         }
 
-        private void AlbumsArtistLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void songList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AlbumsArtistLL.SelectedItem == null)
+            if (songList.SelectedItem == null)
                 return;
 
-            var s = (DataItemViewModel)AlbumsArtistLL.SelectedItem;
+            int currentPlayingCount = App.ViewModel.Nowplaying.Count;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            foreach (DataItemViewModel s in _songs)
+            {
+                App.ViewModel.Nowplaying.Add(s);
+            }
 
-            AlbumsArtistLL.SelectedItem = null;
-        }
+            if (App.ViewModel.Nowplaying.Count > 0)
+            {
+                App.ViewModel.saveNowplaying();
 
-        private void AlbumsYearLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+                App.ViewModel.AppSettings.NowplayingIndexSetting = songList.SelectedIndex + currentPlayingCount;
+                MyAudioPlaybackAgent.AudioPlayer.startPlaying(songList.SelectedIndex + currentPlayingCount);
 
-            if (AlbumsYearLL.SelectedItem == null)
-                return;
 
-            var s = (DataItemViewModel)AlbumsYearLL.SelectedItem;
+                NavigationService.Navigate(new Uri("/Nowplaying.xaml?Remove=" + viewsToRemove, UriKind.Relative));
+            }
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
-
-            AlbumsYearLL.SelectedItem = null;
-        }
-
-        private void AlbumsSearchLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            if (AlbumsSearchLL.SelectedItem == null)
-                return;
-
-            var s = (DataItemViewModel)AlbumsSearchLL.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
-
-            AlbumsSearchLL.SelectedItem = null;
-        }
-
-        private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            performanceProgressBarCustomized.IsIndeterminate = true;
-
-            this._searchItems.Clear();
-
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("albums", "&filter="+searchBox.Text)));
-            webRequest.BeginGetResponse(new AsyncCallback(DataSearchCallback), webRequest);
-        }
-
-        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
-        {
-            this.GetAlbums();
+            songList.SelectedItem = null;
         }
 
     }
