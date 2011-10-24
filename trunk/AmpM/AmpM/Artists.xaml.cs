@@ -25,9 +25,9 @@ using MyAudioPlaybackAgent;
 
 namespace AmpM
 {
-    public partial class Albums : PhoneApplicationPage
+    public partial class Artists : PhoneApplicationPage
     {
-        public Albums()
+        public Artists()
         {
             InitializeComponent();
 
@@ -44,27 +44,27 @@ namespace AmpM
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            this.Perform(() => LoadAlbums(), 50);
+            this.Perform(() => LoadArtists(), 50);
 
         }
-        private void LoadAlbums()
+        private void LoadArtists()
         {
-            
-            if (!App.ViewModel.IsAlbumsLoaded)
+
+            if (!App.ViewModel.IsArtistsLoaded)
             {
-                App.ViewModel.LoadAlbums();
+                App.ViewModel.LoadArtists();
             }
 
-            if (App.ViewModel.Albums.Count == 0)
+            if (App.ViewModel.Artists.Count == 0)
             {
-                this.GetAlbums();
+                this.GetArtists();
             }
             else
             {
 
                 _items.Clear();
 
-                foreach (DataItemViewModel s in App.ViewModel.Albums)
+                foreach (DataItemViewModel s in App.ViewModel.Artists)
                 {
                     _items.Add(s);
                 }
@@ -75,19 +75,17 @@ namespace AmpM
             }
         }
 
-        private void GetAlbums()
+        private void GetArtists()
         {
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            App.ViewModel.Albums.Clear();
+            App.ViewModel.Artists.Clear();
             this._items.Clear();
 
-            AlbumsLL.ItemsSource = null;
-            AlbumsArtistLL.ItemsSource = null;
-            AlbumsYearLL.ItemsSource = null;
-            AlbumsSearchLL.ItemsSource = null;
+            ArtistsLL.ItemsSource = null;
+            ArtistsSearchLL.ItemsSource = null;
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("albums", "")));
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artists", "")));
             webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
         }
         private void DataCallback(IAsyncResult asynchronousResult)
@@ -131,35 +129,27 @@ namespace AmpM
                     //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
                 });
 
-                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("album"))
+                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("artist"))
                 {
                     DataItemViewModel newItem = new DataItemViewModel();
 
-                    newItem.Type = "album";
+                    newItem.Type = "artist";
 
-                    newItem.AlbumId = int.Parse(singleDataElement.Attribute("id").Value);
+                    newItem.ArtistId = int.Parse(singleDataElement.Attribute("id").Value);
 
-                    newItem.AlbumName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-                    newItem.ArtistName = singleDataElement.Element("artist").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-                    newItem.ArtistId = int.Parse(singleDataElement.Element("artist").Attribute("id").Value);
-                    newItem.AlbumTracks = int.Parse(singleDataElement.Element("tracks").FirstNode.ToString());
-                    newItem.Year = singleDataElement.Element("year").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistAlbums = int.Parse(singleDataElement.Element("albums").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
+                    newItem.ArtistTracks = int.Parse(singleDataElement.Element("songs").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
 
-                    newItem.ArtUrl = singleDataElement.Element("art").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-
-                    newItem.ItemKey = "album" + newItem.AlbumId;
-                    newItem.ItemId = newItem.AlbumId;
-                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.AlbumName);
+                    newItem.ItemKey = "artist" + newItem.ArtistId;
+                    newItem.ItemId = newItem.ArtistId;
+                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
                     newItem.Auth = App.ViewModel.Auth;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         _items.Add(newItem);
 
-                        //MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
-
-                        //albumsList.ItemsSource = _items;
-                        //albumsJumpList.ItemsSource = _items;
                     });
 
                 }
@@ -219,35 +209,27 @@ namespace AmpM
                     //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
                 });
 
-                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("album"))
+                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("artist"))
                 {
                     DataItemViewModel newItem = new DataItemViewModel();
 
-                    newItem.Type = "album";
+                    newItem.Type = "artist";
 
-                    newItem.AlbumId = int.Parse(singleDataElement.Attribute("id").Value);
+                    newItem.ArtistId = int.Parse(singleDataElement.Attribute("id").Value);
 
-                    newItem.AlbumName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-                    newItem.ArtistName = singleDataElement.Element("artist").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-                    newItem.ArtistId = int.Parse(singleDataElement.Element("artist").Attribute("id").Value);
-                    newItem.AlbumTracks = int.Parse(singleDataElement.Element("tracks").FirstNode.ToString());
-                    newItem.Year = singleDataElement.Element("year").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistAlbums = int.Parse(singleDataElement.Element("albums").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
+                    newItem.ArtistTracks = int.Parse(singleDataElement.Element("songs").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
 
-                    newItem.ArtUrl = singleDataElement.Element("art").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
-
-                    newItem.ItemKey = "album" + newItem.AlbumId;
-                    newItem.ItemId = newItem.AlbumId;
-                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.AlbumName);
+                    newItem.ItemKey = "artist" + newItem.ArtistId;
+                    newItem.ItemId = newItem.ArtistId;
+                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
                     newItem.Auth = App.ViewModel.Auth;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         _searchItems.Add(newItem);
 
-                        //MessageBox.Show("adding newItem to list: "+newItem.PlaylistName+" _ items: "+newItem.PlaylistItems+" _ id: "+newItem.PlaylistId);
-
-                        //albumsList.ItemsSource = _items;
-                        //albumsJumpList.ItemsSource = _items;
                     });
 
                 }
@@ -267,58 +249,46 @@ namespace AmpM
             }
         }
 
+
+
         private void SortAndDisplay()
         {
-            if (App.ViewModel.Albums.Count == 0)
+            if (App.ViewModel.Artists.Count == 0)
             {
                 //better logic here - asdf
 
-                App.ViewModel.Albums.Clear();
+                App.ViewModel.Artists.Clear();
 
                 foreach (DataItemViewModel s in _items)
                 {
-                    App.ViewModel.Albums.Add(s);
+                    App.ViewModel.Artists.Add(s);
                 }
 
-                App.ViewModel.saveAlbums();
+                App.ViewModel.saveArtists();
 
             }
 
 
-            var al = _items.OrderBy(x => x.AlbumName).ToArray();
-            var bl = _items.OrderBy(x => x.ArtistName).ToArray();
-            var cl = _items.OrderBy(x => x.Year).ToArray();
-            var sl = _searchItems.OrderBy(x => x.AlbumName).ToArray();
+            var al = _items.OrderBy(x => x.ArtistName).ToArray();
+            var sl = _searchItems.OrderBy(x => x.ArtistName).ToArray();
 
 
-            var albumsByChar = from t in al
+            var artistsByChar = from t in al
                                group t by t.ItemChar into c
                                //orderby c.Key
                                select new Group<DataItemViewModel>(c.Key, c);
 
-            var albumsByArtist = from t in bl
-                               group t by t.ArtistName into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-            var albumsByYear = from t in cl
-                               group t by t.Year into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
-
-            var albumsBySearch = from t in sl
-                               group t by t.ItemChar into c
-                               //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
+            var artistsBySearch = from t in sl
+                                 group t by t.ItemChar into c
+                                 //orderby c.Key
+                                 select new Group<DataItemViewModel>(c.Key, c);
 
 
 
-            AlbumsLL.ItemsSource = albumsByChar;
-            AlbumsArtistLL.ItemsSource = albumsByArtist;
-            AlbumsYearLL.ItemsSource = albumsByYear;
-            AlbumsSearchLL.ItemsSource = albumsBySearch;
+            ArtistsLL.ItemsSource = artistsByChar;
+            ArtistsSearchLL.ItemsSource = artistsBySearch;
 
-            albumsPivot.Title = "albums (" + this._items.Count + ")";
+            artistsPivot.Title = "artists (" + this._items.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
@@ -329,7 +299,6 @@ namespace AmpM
         {
             performanceProgressBarCustomized.IsIndeterminate = false;
         }
-
 
 
 
@@ -391,71 +360,60 @@ namespace AmpM
         }
 
 
-        private void AlbumsLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+
+
+
+
+
+
+        private void ArtistsLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (AlbumsLL.SelectedItem == null)
+            if (ArtistsLL.SelectedItem == null)
                 return;
 
-            var s = (DataItemViewModel)AlbumsLL.SelectedItem;
+            var s = (DataItemViewModel)ArtistsLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            App.ViewModel.SelectedArtist = s;
 
-            AlbumsLL.SelectedItem = null;
+            NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + s.ArtistId, UriKind.Relative));
+            //MessageBox.Show("Artist details for " + s.ArtistId + " " + s.ArtistName);
+
+            ArtistsLL.SelectedItem = null;
         }
 
-        private void AlbumsArtistLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ArtistsSearchLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AlbumsArtistLL.SelectedItem == null)
+            if (ArtistsSearchLL.SelectedItem == null)
                 return;
 
-            var s = (DataItemViewModel)AlbumsArtistLL.SelectedItem;
+            var s = (DataItemViewModel)ArtistsSearchLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            App.ViewModel.SelectedArtist = s;
 
-            AlbumsArtistLL.SelectedItem = null;
+            NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + s.ArtistId, UriKind.Relative));
+            //MessageBox.Show("Artist details for " + s.ArtistId + " " + s.ArtistName);
+
+            ArtistsSearchLL.SelectedItem = null;
+
         }
 
-        private void AlbumsYearLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            if (AlbumsYearLL.SelectedItem == null)
-                return;
-
-            var s = (DataItemViewModel)AlbumsYearLL.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
-
-            AlbumsYearLL.SelectedItem = null;
-        }
-
-        private void AlbumsSearchLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            if (AlbumsSearchLL.SelectedItem == null)
-                return;
-
-            var s = (DataItemViewModel)AlbumsSearchLL.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
-
-            AlbumsSearchLL.SelectedItem = null;
-        }
 
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+
             performanceProgressBarCustomized.IsIndeterminate = true;
 
             this._searchItems.Clear();
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("albums", "&filter="+searchBox.Text)));
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artists", "&filter=" + searchBox.Text)));
             webRequest.BeginGetResponse(new AsyncCallback(DataSearchCallback), webRequest);
         }
 
         private void ApplicationBarIconButton_Click(object sender, EventArgs e)
         {
-            this.GetAlbums();
+            this.GetArtists();
         }
-
     }
 }

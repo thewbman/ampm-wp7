@@ -138,6 +138,14 @@ namespace AmpM
                         //
                         Items[6].Content = xdoc.Element("root").Element("playlists").Value;
                         Items[7].Content = xdoc.Element("root").Element("videos").Value;
+
+
+                        App.ViewModel.AllSongs = int.Parse(xdoc.Element("root").Element("songs").Value);
+                        App.ViewModel.AllAlbums = int.Parse(xdoc.Element("root").Element("albums").Value);
+                        App.ViewModel.AllArtists = int.Parse(xdoc.Element("root").Element("artists").Value);
+                        App.ViewModel.AllPlaylists = int.Parse(xdoc.Element("root").Element("playlists").Value);
+                        App.ViewModel.AllVideos = int.Parse(xdoc.Element("root").Element("videos").Value);
+
                     });
                 }
 
@@ -176,7 +184,8 @@ namespace AmpM
                     NavigationService.Navigate(new Uri("/Albums.xaml", UriKind.Relative));
                     break;
                 case "artists":
-                    MessageBox.Show("artist");
+                    //MessageBox.Show("artist");
+                    NavigationService.Navigate(new Uri("/Artists.xaml", UriKind.Relative));
                     break;
                 case "genres":
                     MessageBox.Show("genres");

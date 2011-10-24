@@ -382,6 +382,23 @@ namespace MyAudioPlaybackAgent
             }
         }
 
+        private string _Auth = "";
+        public string Auth
+        {
+            get
+            {
+                return _Auth;
+            }
+            set
+            {
+                if (value != _Auth)
+                {
+                    _Auth = value;
+                    NotifyPropertyChanged("Auth");
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

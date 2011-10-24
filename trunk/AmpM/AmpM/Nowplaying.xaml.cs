@@ -150,7 +150,7 @@ namespace AmpM
         {
             try
             {
-                BackgroundAudioPlayer.Instance.Position = System.TimeSpan.FromSeconds((songSlider.Value / 100) * (BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds));
+                //BackgroundAudioPlayer.Instance.Position = System.TimeSpan.FromSeconds((songSlider.Value / 100) * (BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds));
             }
             catch (Exception ex)
             {

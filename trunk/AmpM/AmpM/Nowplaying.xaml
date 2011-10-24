@@ -27,7 +27,9 @@
                 <StackPanel HorizontalAlignment="Left" >
                     <TextBlock x:Name="songCount" />
                     <Image x:Name="artUrl" Source="{Binding ArtUrl}" Height="300" Width="300" HorizontalAlignment="Left" />
+                    <!--
                     <Slider x:Name="songSlider" ValueChanged="songSlider_ValueChanged" Width="420" Minimum="0" Maximum="100" Margin="0,0,0,-20" />
+                    -->
                     <TextBlock x:Name="songName" Text="song" />
                     <TextBlock x:Name="artistName" Text="artist" />
                     <TextBlock x:Name="albumName" Text="album" />
