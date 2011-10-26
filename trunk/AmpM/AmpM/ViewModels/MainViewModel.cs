@@ -143,9 +143,7 @@ namespace AmpM
             {
                 foreach (var e in savedAlbums)
                 {
-                    DataItemViewModel s = new DataItemViewModel();
-
-                    s = e;
+                    DataItemViewModel s = App.ViewModel.Functions.CloneItem(e);
 
                     s.ArtUrl.Replace(s.Auth, this.Auth);
                     s.Auth = this.Auth;
@@ -169,9 +167,7 @@ namespace AmpM
             {
                 foreach (var e in savedArtists)
                 {
-                    DataItemViewModel s = new DataItemViewModel();
-
-                    s = e;
+                    DataItemViewModel s = App.ViewModel.Functions.CloneItem(e);
 
                     s.Auth = this.Auth;
 

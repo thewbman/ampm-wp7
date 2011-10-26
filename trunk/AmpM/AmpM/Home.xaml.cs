@@ -120,6 +120,7 @@ namespace AmpM
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         App.ViewModel.Auth = xdoc.Element("root").Element("auth").Value;
+                        App.ViewModel.AppSettings.AuthSetting = xdoc.Element("root").Element("auth").Value;
                         
                         //now playing
                         //search
@@ -177,7 +178,8 @@ namespace AmpM
                     MessageBox.Show("search");
                     break;
                 case "songs":
-                    MessageBox.Show("songs");
+                    //MessageBox.Show("songs");
+                    NavigationService.Navigate(new Uri("/Songs.xaml", UriKind.Relative));
                     break;
                 case "albums":
                     //MessageBox.Show("albums");

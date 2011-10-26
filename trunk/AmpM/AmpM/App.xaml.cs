@@ -88,6 +88,8 @@ namespace AmpM
         {
             FlurryWP7SDK.Api.SetSecureTransportEnabled();
             FlurryWP7SDK.Api.StartSession(ApiKeyValue);
+
+            //IsolatedStorageExplorer.Explorer.Start("192.168.1.107");
         }
 
         // Code to execute when the application is activated (brought to foreground)

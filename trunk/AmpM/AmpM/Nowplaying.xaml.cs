@@ -52,7 +52,7 @@ namespace AmpM
                 }
             }
 
-            if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.AppSettings.NowplayingIndexSetting < App.ViewModel.Nowplaying.Count))
+            if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.Nowplaying.Count > App.ViewModel.AppSettings.NowplayingIndexSetting))
             {
                 //DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
                 artUrl.Source = new BitmapImage(BackgroundAudioPlayer.Instance.Track.AlbumArt);
@@ -92,7 +92,7 @@ namespace AmpM
                     break;
             }
 
-            if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.AppSettings.NowplayingIndexSetting < App.ViewModel.Nowplaying.Count))
+            if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.Nowplaying.Count > App.ViewModel.AppSettings.NowplayingIndexSetting))
             {
 
                 //DataContext = App.ViewModel.Nowplaying[App.ViewModel.AppSettings.NowplayingIndexSetting];
@@ -125,9 +125,9 @@ namespace AmpM
 
             if (App.ViewModel.Nowplaying.Count > 0)
             {
-                App.ViewModel.AppSettings.NowplayingIndexSetting = nowplayingList.SelectedIndex;
+                App.ViewModel.AppSettings.NowplayingIndexSetting = nowplayingList.SelectedIndex+0;
 
-                MyAudioPlaybackAgent.AudioPlayer.startPlaying(nowplayingList.SelectedIndex);
+                MyAudioPlaybackAgent.AudioPlayer.startPlaying(App.ViewModel.AppSettings.NowplayingIndexSetting);
             }
 
             nowplayingList.SelectedItem = null;

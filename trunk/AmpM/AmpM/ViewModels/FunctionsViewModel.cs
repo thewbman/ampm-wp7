@@ -113,5 +113,35 @@ namespace AmpM
 
             return a;
         }
+
+        public DataItemViewModel CloneItem(DataItemViewModel e)
+        {
+            DataItemViewModel s = new DataItemViewModel();
+
+            s.AlbumId = e.AlbumId;
+            s.AlbumName = e.AlbumName;
+            s.AlbumTracks = e.AlbumTracks;
+            s.ArtistAlbums = e.ArtistAlbums;
+            s.ArtistId = e.ArtistId;
+            s.ArtistName = e.ArtistName;
+            s.ArtistTracks = e.ArtistTracks;
+            s.ArtUrl = e.ArtUrl;
+            s.Auth = e.Auth;
+            s.ItemChar = e.ItemChar;
+            s.ItemId = e.ItemId;
+            s.ItemKey = e.ItemKey;
+            s.PlaylistId = e.PlaylistId;
+            s.PlaylistItems = e.PlaylistItems;
+            s.PlaylistName = e.PlaylistName;
+            s.SongId = e.SongId;
+            s.SongName = e.SongName;
+            s.SongTime = e.SongTime;
+            s.SongTrack = e.SongTrack;
+            s.SongUrl = e.SongUrl;
+            s.Type = e.Type;
+            s.Year = e.Year;
+
+            return s;
+        }
     }
 }

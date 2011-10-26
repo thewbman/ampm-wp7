@@ -63,6 +63,12 @@ namespace AmpM
         }
 
 
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
+        }
+
+
         
     }
 }

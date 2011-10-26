@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -17,47 +18,124 @@
     local:TiltEffect.IsTiltEnabled="True"
     >
 
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="songGroupHeader">
+            <Border Background="#25B8D9" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="songItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu Loaded="ContextMenu_Loaded" Unloaded="ContextMenu_Unloaded">
+                        <toolkit:MenuItem x:Name="playSingleSong" Header="Play single song" Click="playSingleSong_Click" />
+                        <toolkit:MenuItem x:Name="playAllStraight" Header="Play all" Click="playAllStraight_Click" />
+                        <toolkit:MenuItem x:Name="playAllShuffled" Header="Play all, shuffled" Click="playAllShuffled_Click" />
+                        <toolkit:MenuItem x:Name="queueSingleSong" Header="Queue single song" Click="queueSingleSong_Click" />
+                        <toolkit:MenuItem x:Name="queueAllStraight" Header="Queue all" Click="queueAllStraight_Click" />
+                        <toolkit:MenuItem x:Name="queueAllShuffled" Header="Queue all, shuffled" Click="queueAllShuffled_Click" />
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+                <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
+                <StackPanel >
+                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="songSearchItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu Loaded="SearchContextMenu_Loaded" Unloaded="SearchContextMenu_Unloaded">
+                        <toolkit:MenuItem x:Name="playSingleSongSearch" Header="Play single song" Click="playSingleSongSearch_Click" />
+                        <toolkit:MenuItem x:Name="playAllStraightSearch" Header="Play all" Click="playAllStraightSearch_Click" />
+                        <toolkit:MenuItem x:Name="playAllShuffledSearch" Header="Play all, shuffled" Click="playAllShuffledSearch_Click" />
+                        <toolkit:MenuItem x:Name="queueSingleSongSearch" Header="Queue single song" Click="queueSingleSongSearch_Click" />
+                        <toolkit:MenuItem x:Name="queueAllStraightSearch" Header="Queue all" Click="queueAllStraightSearch_Click" />
+                        <toolkit:MenuItem x:Name="queueAllShuffledSearch" Header="Queue all, shuffled" Click="queueAllShuffledSearch_Click" />
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+                <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
+                <StackPanel >
+                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="songItemHeader">
+            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="AmpM" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="songs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <controls:Pivot x:Name="songsPivot" Title="songs" Foreground="White">
 
-            <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="True" VerticalAlignment="Top" Margin="0,400,0,0" />
+            <controls:PivotItem x:Name="songsAlphaPivot" Header="songs" Foreground="White">
 
-            <ListBox x:Name="songList" SelectionChanged="songList_SelectionChanged"  >
+                <toolkit:LongListSelector x:Name="SongsLL"
+                     GroupHeaderTemplate="{StaticResource songGroupHeader}"
+                     ItemTemplate="{StaticResource songItemTemplate}" 
+                     GroupItemTemplate="{StaticResource songItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="SongsLL_SelectionChanged">
+                </toolkit:LongListSelector>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
-                        <StackPanel >
-                            <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                            </StackPanel>
-                        </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+            </controls:PivotItem>
 
-            </ListBox>
-        </Grid>
+
+            <controls:PivotItem x:Name="songsSearchPivot" Header="search" Foreground="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBox x:Name="searchBox" Width="370" />
+                        <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
+                    </StackPanel>
+
+                    <toolkit:LongListSelector x:Name="SongsSearchLL"
+                     GroupHeaderTemplate="{StaticResource songGroupHeader}"
+                     ItemTemplate="{StaticResource songSearchItemTemplate}" 
+                     GroupItemTemplate="{StaticResource songItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="SongsSearchLL_SelectionChanged"
+                     Grid.Row="1"
+                     >
+
+                    </toolkit:LongListSelector>
+
+                </Grid>
+
+            </controls:PivotItem>
+
+        </controls:Pivot>
+
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
