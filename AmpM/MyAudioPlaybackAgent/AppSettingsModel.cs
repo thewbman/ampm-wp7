@@ -16,6 +16,11 @@ namespace MyAudioPlaybackAgent
         const string HostIndexName = "HostIndex";
 
         const string NowplayingIndexName = "NowplayingIndex";
+        const string AuthName = "Auth";
+
+        const string DefaultPlayAllName = "DefaultPlayAll";
+        const string DefaultPlayShuffleName = "DefaultPlayShuffle";
+        const string DefaultPlayAddName = "DefaultPlayAdd";
 
 
 
@@ -27,7 +32,11 @@ namespace MyAudioPlaybackAgent
         const int HostIndexDefault = 0;
 
         const int NowplayingIndexDefault = 0;
+        const string AuthDefault = "asdf";
 
+        const bool DefaultPlayAllDefault = true;
+        const bool DefaultPlayShuffleDefault = false;
+        const bool DefaultPlayAddDefault = true;
 
 
 
@@ -123,6 +132,27 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<int>(NowplayingIndexName, NowplayingIndexDefault); }
             set { if (AddOrUpdateValue(NowplayingIndexName, value)) { Save(); } }
+        }
+        public string AuthSetting
+        {
+            get { return GetValueOrDefault<string>(AuthName, AuthDefault); }
+            set { if (AddOrUpdateValue(AuthName, value)) { Save(); } }
+        }
+
+        public bool DefaultPlayAllSetting
+        {
+            get { return GetValueOrDefault<bool>(DefaultPlayAllName, DefaultPlayAllDefault); }
+            set { if (AddOrUpdateValue(DefaultPlayAllName, value)) { Save(); } }
+        }
+        public bool DefaultPlayShuffleSetting
+        {
+            get { return GetValueOrDefault<bool>(DefaultPlayShuffleName, DefaultPlayShuffleDefault); }
+            set { if (AddOrUpdateValue(DefaultPlayShuffleName, value)) { Save(); } }
+        }
+        public bool DefaultPlayAddSetting
+        {
+            get { return GetValueOrDefault<bool>(DefaultPlayAddName, DefaultPlayAddDefault); }
+            set { if (AddOrUpdateValue(DefaultPlayAddName, value)) { Save(); } }
         }
 
 

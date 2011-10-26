@@ -318,6 +318,89 @@ namespace AmpM
 
 
 
+        private void SelectAction(int inSelected, bool inAll, bool inShuffle, bool inAdd)
+        {
+
+            int currentPlayingCount = App.ViewModel.Nowplaying.Count;
+            int trackIndex = 0;
+
+            List<DataItemViewModel> newSongs = new List<DataItemViewModel>();
+
+            if (!inAll)
+            {
+                newSongs.Add(this._songs[inSelected]);
+            }
+            else if (!inShuffle)
+            {
+                foreach (DataItemViewModel s in _songs)
+                {
+                    newSongs.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+
+                trackIndex = inSelected;
+            }
+            else
+            {
+                Random r = new Random();
+                List<DataItemViewModel> newSongs2 = new List<DataItemViewModel>();
+                int i = 0;
+
+                foreach (DataItemViewModel s in _songs)
+                {
+                    newSongs2.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+
+                newSongs.Add(newSongs2[inSelected]);
+                newSongs2.RemoveAt(inSelected);
+
+                while (newSongs2.Count > 0)
+                {
+                    i = r.Next(0, (newSongs2.Count - 1));
+
+                    newSongs.Add(newSongs2[i]);
+                    newSongs2.RemoveAt(i);
+
+                }
+
+                trackIndex = 0;
+
+            }
+
+            if (!inAdd)
+            {
+                MyAudioPlaybackAgent.AudioPlayer.resetList();
+                App.ViewModel.Nowplaying.Clear();
+
+                foreach (DataItemViewModel s in newSongs)
+                {
+                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+
+                App.ViewModel.saveNowplaying();
+
+                //MyAudioPlaybackAgent.AudioPlayer.startPlaying(0);
+                MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex);
+            }
+            else
+            {
+                foreach (DataItemViewModel s in newSongs)
+                {
+                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+
+                App.ViewModel.saveNowplaying();
+
+                if (BackgroundAudioPlayer.Instance.PlayerState != PlayState.Playing)
+                {
+                    MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex + currentPlayingCount);
+                }
+            }
+
+            NavigationService.Navigate(new Uri("/Nowplaying.xaml?Remove=" + viewsToRemove, UriKind.Relative));
+
+        }
+
+
         private void albumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (albumList.SelectedItem == null)
@@ -335,26 +418,134 @@ namespace AmpM
             if (songList.SelectedItem == null)
                 return;
 
-            int currentPlayingCount = App.ViewModel.Nowplaying.Count;
-
-            foreach (DataItemViewModel s in _songs)
-            {
-                App.ViewModel.Nowplaying.Add(s);
-            }
-
-            if (App.ViewModel.Nowplaying.Count > 0)
-            {
-                App.ViewModel.saveNowplaying();
-
-                App.ViewModel.AppSettings.NowplayingIndexSetting = songList.SelectedIndex + currentPlayingCount;
-                MyAudioPlaybackAgent.AudioPlayer.startPlaying(songList.SelectedIndex + currentPlayingCount);
-
-
-                NavigationService.Navigate(new Uri("/Nowplaying.xaml?Remove=" + viewsToRemove, UriKind.Relative));
-            }
+            SelectAction(songList.SelectedIndex, App.ViewModel.AppSettings.DefaultPlayAllSetting, App.ViewModel.AppSettings.DefaultPlayShuffleSetting, App.ViewModel.AppSettings.DefaultPlayAddSetting);
 
             songList.SelectedItem = null;
         }
+
+
+        private void playSingleSong_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, false, false, false);
+
+        }
+        private void playAllStraight_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, true, false, false);
+
+        }
+        private void playAllShuffled_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, true, true, false);
+        }
+        private void queueSingleSong_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, false, false, true);
+
+        }
+        private void queueAllStraight_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, true, false, true);
+        }
+        private void queueAllShuffled_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int t = 0;
+
+            for (int i = 0; i < _songs.Count; i++)
+            {
+                if (_songs[i].SongUrl == selectedItem.SongUrl)
+                    t = i;
+            }
+
+            SelectAction(t, true, true, true);
+        }
+
+
+        private void ContextMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            songList.IsEnabled = false;
+        }
+        private void ContextMenu_Unloaded(object sender, RoutedEventArgs e)
+        {
+            songList.IsEnabled = true;
+        }
+
 
     }
 }

@@ -12,8 +12,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False"
     xmlns:local="clr-namespace:AmpM"
     local:TiltEffect.IsTiltEnabled="True"
     >
@@ -99,6 +99,18 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu Loaded="ContextMenu_Loaded" Unloaded="ContextMenu_Unloaded">
+                                            <toolkit:MenuItem x:Name="playSingleSong" Header="Play single song" Click="playSingleSong_Click" />
+                                            <toolkit:MenuItem x:Name="playAllStraight" Header="Play all" Click="playAllStraight_Click" />
+                                            <toolkit:MenuItem x:Name="playAllShuffled" Header="Play all, shuffled" Click="playAllShuffled_Click" />
+                                            <toolkit:MenuItem x:Name="queueSingleSong" Header="Queue single song" Click="queueSingleSong_Click" />
+                                            <toolkit:MenuItem x:Name="queueAllStraight" Header="Queue all" Click="queueAllStraight_Click" />
+                                            <toolkit:MenuItem x:Name="queueAllShuffled" Header="Queue all, shuffled" Click="queueAllShuffled_Click" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                    
                                     <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                                     <StackPanel >
                                         <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />

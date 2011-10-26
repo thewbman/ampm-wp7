@@ -355,7 +355,9 @@ namespace MyAudioPlaybackAgent
 
             _playList = getCurrentList();
 
-            if (++AppSettings.NowplayingIndexSetting >= _playList.Count)
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+
+            if (_playList.Count <= AppSettings.NowplayingIndexSetting)
             {
                 //AppSettings.NowplayingIndexSetting = 0;
             }
@@ -388,7 +390,9 @@ namespace MyAudioPlaybackAgent
 
             _playList = getCurrentList();
 
-            if (--AppSettings.NowplayingIndexSetting < 0)
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+
+            if (0 > AppSettings.NowplayingIndexSetting)
             {
                 AppSettings.NowplayingIndexSetting = _playList.Count - 1;
             }
@@ -441,7 +445,9 @@ namespace MyAudioPlaybackAgent
         {
             _playList = getCurrentList();
 
-            if (++AppSettings.NowplayingIndexSetting >= _playList.Count)
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+
+            if (_playList.Count <= AppSettings.NowplayingIndexSetting)
             {
                 //AppSettings.NowplayingIndexSetting = 0;
             }
@@ -455,7 +461,9 @@ namespace MyAudioPlaybackAgent
         {
             _playList = getCurrentList();
 
-            if (--AppSettings.NowplayingIndexSetting < 0)
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+
+            if (0 > AppSettings.NowplayingIndexSetting)
             {
                 AppSettings.NowplayingIndexSetting = _playList.Count - 1;
             }
