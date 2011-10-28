@@ -98,6 +98,12 @@
     <Compile Include="Songs.xaml.cs">
       <DependentUpon>Songs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TagDetails.xaml.cs">
+      <DependentUpon>TagDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tags.xaml.cs">
+      <DependentUpon>Tags.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\FunctionsViewModel.cs" />
     <Compile Include="ViewModels\HostViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -142,6 +148,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Songs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TagDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tags.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

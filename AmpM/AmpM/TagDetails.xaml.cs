@@ -26,26 +26,28 @@ using MyAudioPlaybackAgent;
 
 namespace AmpM
 {
-    public partial class ArtistDetails : PhoneApplicationPage
+    public partial class TagDetails : PhoneApplicationPage
     {
-        public ArtistDetails()
+        public TagDetails()
         {
             InitializeComponent();
 
             _albums = new ObservableCollection<DataItemViewModel>();
+            _artists = new ObservableCollection<DataItemViewModel>();
             _songs = new ObservableCollection<DataItemViewModel>();
 
             //songList.ItemsSource = _songs;
         }
 
         public ObservableCollection<DataItemViewModel> _albums;
+        public ObservableCollection<DataItemViewModel> _artists;
         public ObservableCollection<DataItemViewModel> _songs;
 
         private int viewsToRemove = 2;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            panoramaTitle.Title = App.ViewModel.SelectedArtist.ArtistName;
+            panoramaTitle.Title = App.ViewModel.SelectedTag.TagName;
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
@@ -61,7 +63,7 @@ namespace AmpM
 
             albumList.ItemsSource = null;
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artist_albums", "&filter="+App.ViewModel.SelectedArtist.ArtistId)));
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("tag_albums", "&filter=" + App.ViewModel.SelectedTag.TagId)));
             webRequest.BeginGetResponse(new AsyncCallback(DataAlbumsCallback), webRequest);
         }
         private void DataAlbumsCallback(IAsyncResult asynchronousResult)
@@ -136,7 +138,101 @@ namespace AmpM
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
+                    //this.GetSongs();
+                    this.GetArtists();
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error parsing data: " + ex.ToString());
+                });
+            }
+        }
+
+        private void GetArtists()
+        {
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            this._artists.Clear();
+
+            artistList.ItemsSource = null;
+
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("tag_artists", "&filter=" + App.ViewModel.SelectedTag.TagId)));
+            webRequest.BeginGetResponse(new AsyncCallback(DataArtistsCallback), webRequest);
+        }
+        private void DataArtistsCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get data response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
+                });
+
+                foreach (XElement singleDataElement in xdoc.Element("root").Descendants("artist"))
+                {
+                    DataItemViewModel newItem = new DataItemViewModel();
+
+                    newItem.Type = "artist";
+
+                    newItem.ArtistId = int.Parse(singleDataElement.Attribute("id").Value);
+
+                    newItem.ArtistName = singleDataElement.Element("name").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+                    newItem.ArtistAlbums = int.Parse(singleDataElement.Element("albums").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
+                    newItem.ArtistTracks = int.Parse(singleDataElement.Element("songs").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim());
+
+                    newItem.ItemKey = "artist" + newItem.ArtistId;
+                    newItem.ItemId = newItem.ArtistId;
+                    newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
+                    newItem.Auth = App.ViewModel.Auth;
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        _artists.Add(newItem);
+
+                    });
+
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
                     this.GetSongs();
+                    //this.GetArtists();
                 });
 
             }
@@ -157,7 +253,7 @@ namespace AmpM
 
             songList.ItemsSource = null;
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artist_songs", "&filter=" + App.ViewModel.SelectedArtist.ArtistId)));
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("tag_songs", "&filter=" + App.ViewModel.SelectedTag.TagId)));
             webRequest.BeginGetResponse(new AsyncCallback(DataSongsCallback), webRequest);
         }
         private void DataSongsCallback(IAsyncResult asynchronousResult)
@@ -251,6 +347,7 @@ namespace AmpM
         private void SortAndDisplay()
         {
             albumList.ItemsSource = _albums;
+            artistList.ItemsSource = _artists;
             songList.ItemsSource = _songs;
 
             performanceProgressBarCustomized.IsIndeterminate = false;
@@ -262,8 +359,6 @@ namespace AmpM
         {
             performanceProgressBarCustomized.IsIndeterminate = false;
         }
-
-
 
 
         public class Group<T> : IEnumerable<T>
@@ -322,6 +417,7 @@ namespace AmpM
 
             worker.RunWorkerAsync();
         }
+
 
 
 
@@ -418,10 +514,27 @@ namespace AmpM
             NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
 
             albumList.SelectedItem = null;
+
+        }
+
+        private void artistList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (artistList.SelectedItem == null)
+                return;
+
+            var s = (DataItemViewModel)artistList.SelectedItem;
+
+            App.ViewModel.SelectedArtist = s;
+
+            NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + s.ArtistId, UriKind.Relative));
+
+            artistList.SelectedItem = null;
+
         }
 
         private void songList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             if (songList.SelectedItem == null)
                 return;
 
@@ -429,7 +542,6 @@ namespace AmpM
 
             songList.SelectedItem = null;
         }
-
 
         private void playSingleSong_Click(object sender, RoutedEventArgs e)
         {
@@ -448,8 +560,8 @@ namespace AmpM
             }
 
             SelectAction(t, false, false, false);
-
         }
+
         private void playAllStraight_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
@@ -467,8 +579,8 @@ namespace AmpM
             }
 
             SelectAction(t, true, false, false);
-
         }
+
         private void playAllShuffled_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
@@ -487,6 +599,7 @@ namespace AmpM
 
             SelectAction(t, true, true, false);
         }
+
         private void queueSingleSong_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
@@ -504,8 +617,8 @@ namespace AmpM
             }
 
             SelectAction(t, false, false, true);
-
         }
+
         private void queueAllStraight_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
@@ -524,6 +637,7 @@ namespace AmpM
 
             SelectAction(t, true, false, true);
         }
+
         private void queueAllShuffled_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
@@ -552,7 +666,5 @@ namespace AmpM
         {
             songList.IsEnabled = true;
         }
-
-
     }
 }
