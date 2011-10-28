@@ -30,22 +30,22 @@ namespace AmpM
         {
             InitializeComponent();
 
-            this.Items = new ObservableCollection<NameContentViewModel>();
+            this._items = new ObservableCollection<NameContentViewModel>();
 
-            Items.Add(new NameContentViewModel() { Name = "now playing" });
-            Items.Add(new NameContentViewModel() { Name = "search" });
-            Items.Add(new NameContentViewModel() { Name = "songs" });
-            Items.Add(new NameContentViewModel() { Name = "albums" });
-            Items.Add(new NameContentViewModel() { Name = "artists" });
-            Items.Add(new NameContentViewModel() { Name = "genres" });
-            Items.Add(new NameContentViewModel() { Name = "playlists" });
-            Items.Add(new NameContentViewModel() { Name = "videos" });
+            _items.Add(new NameContentViewModel() { Name = "now playing" });
+            _items.Add(new NameContentViewModel() { Name = "search" });
+            _items.Add(new NameContentViewModel() { Name = "songs" });
+            _items.Add(new NameContentViewModel() { Name = "albums" });
+            _items.Add(new NameContentViewModel() { Name = "artists" });
+            _items.Add(new NameContentViewModel() { Name = "genres" });
+            _items.Add(new NameContentViewModel() { Name = "playlists" });
+            //_items.Add(new NameContentViewModel() { Name = "videos" });
 
-            itemsList.ItemsSource = Items;
+            itemsList.ItemsSource = _items;
 
         }
 
-        private ObservableCollection<NameContentViewModel> Items;
+        private ObservableCollection<NameContentViewModel> _items;
         private HostViewModel SelectedHost;
 
 
@@ -56,7 +56,7 @@ namespace AmpM
             PageTitle.Text = SelectedHost.Name;
             PageSubtitle.Text = SelectedHost.Address;
 
-            Items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
+            _items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
 
             if (App.ViewModel.Connected == false)
             {
@@ -106,6 +106,7 @@ namespace AmpM
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     //MessageBox.Show("Got handshake response: " + resultString, "Error", MessageBoxButton.OK);
+                    App.ViewModel.Connected = true;
                 });
 
                 if (xdoc.Element("root").Element("auth") == null)
@@ -133,12 +134,12 @@ namespace AmpM
 
                         //
                         //
-                        Items[2].Content = xdoc.Element("root").Element("songs").Value;
-                        Items[3].Content = xdoc.Element("root").Element("albums").Value;
-                        Items[4].Content = xdoc.Element("root").Element("artists").Value;
+                        _items[2].Content = xdoc.Element("root").Element("songs").Value;
+                        _items[3].Content = xdoc.Element("root").Element("albums").Value;
+                        _items[4].Content = xdoc.Element("root").Element("artists").Value;
                         //
-                        Items[6].Content = xdoc.Element("root").Element("playlists").Value;
-                        Items[7].Content = xdoc.Element("root").Element("videos").Value;
+                        _items[6].Content = xdoc.Element("root").Element("playlists").Value;
+                        //_items[7].Content = xdoc.Element("root").Element("videos").Value;
 
 
                         App.ViewModel.AllSongs = int.Parse(xdoc.Element("root").Element("songs").Value);
@@ -190,7 +191,8 @@ namespace AmpM
                     NavigationService.Navigate(new Uri("/Artists.xaml", UriKind.Relative));
                     break;
                 case "genres":
-                    MessageBox.Show("genres");
+                    //MessageBox.Show("genres");
+                    NavigationService.Navigate(new Uri("/Tags.xaml", UriKind.Relative));
                     break;
                 case "playlists":
                     //MessageBox.Show("playlists");

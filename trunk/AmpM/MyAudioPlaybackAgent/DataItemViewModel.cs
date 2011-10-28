@@ -168,6 +168,22 @@ namespace MyAudioPlaybackAgent
                 }
             }
         }
+        private int _TagId = -1;
+        public int TagId
+        {
+            get
+            {
+                return _TagId;
+            }
+            set
+            {
+                if (value != _TagId)
+                {
+                    _TagId = value;
+                    NotifyPropertyChanged("TagId");
+                }
+            }
+        }
 
         private string _SongName = "";
         public string SongName
@@ -230,6 +246,22 @@ namespace MyAudioPlaybackAgent
                 {
                     _PlaylistName = value;
                     NotifyPropertyChanged("PlaylistName");
+                }
+            }
+        }
+        private string _TagName = "";
+        public string TagName
+        {
+            get
+            {
+                return _TagName;
+            }
+            set
+            {
+                if (value != _TagName)
+                {
+                    _TagName = value;
+                    NotifyPropertyChanged("TagName");
                 }
             }
         }
@@ -362,6 +394,95 @@ namespace MyAudioPlaybackAgent
                     _PlaylistItems = value;
                     NotifyPropertyChanged("PlaylistItems");
                 }
+            }
+        }
+        
+        private int _TagAlbums = -1;
+        public int TagAlbums
+        {
+            get
+            {
+                return _TagAlbums;
+            }
+            set
+            {
+                if (value != _TagAlbums)
+                {
+                    _TagAlbums = value;
+                    NotifyPropertyChanged("TagAlbums");
+                }
+            }
+        }
+        private int _TagArtists = -1;
+        public int TagArtists
+        {
+            get
+            {
+                return _TagArtists;
+            }
+            set
+            {
+                if (value != _TagArtists)
+                {
+                    _TagArtists = value;
+                    NotifyPropertyChanged("TagArtists");
+                }
+            }
+        }
+        private int _TagSongs = -1;
+        public int TagSongs
+        {
+            get
+            {
+                return _TagSongs;
+            }
+            set
+            {
+                if (value != _TagSongs)
+                {
+                    _TagSongs = value;
+                    NotifyPropertyChanged("TagSongs");
+                }
+            }
+        }
+        public string TagDetails
+        {
+            get
+            {
+                string s = "";
+
+                if (_TagAlbums == 1)
+                {
+                    s += "1 album, ";
+                }
+                else
+                {
+                    s += _TagAlbums + " albums, ";
+                }
+
+                if (_TagArtists == 1)
+                {
+                    s += "1 artist, ";
+                }
+                else
+                {
+                    s += _TagArtists + " artists, ";
+                }
+
+                if (_TagSongs == 1)
+                {
+                    s += "1 song";
+                }
+                else
+                {
+                    s += _TagSongs + " songs";
+                }
+
+                return s;
+            }
+            set
+            {
+                //
             }
         }
 

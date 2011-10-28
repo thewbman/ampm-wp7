@@ -43,6 +43,7 @@ namespace AmpM
 
             this.Albums = new ObservableCollection<DataItemViewModel>();
             this.Artists = new ObservableCollection<DataItemViewModel>();
+            this.Tags = new ObservableCollection<DataItemViewModel>();
             this.Playlists = new ObservableCollection<DataItemViewModel>();
 
             this.AppSettings = new AppSettingsModel();
@@ -64,9 +65,11 @@ namespace AmpM
 
         public ObservableCollection<DataItemViewModel> Albums { get; set; }
         public ObservableCollection<DataItemViewModel> Artists { get; set; }
+        public ObservableCollection<DataItemViewModel> Tags { get; set; }
         public ObservableCollection<DataItemViewModel> Playlists { get; set; }
 
         public DataItemViewModel SelectedArtist { get; set; }
+        public DataItemViewModel SelectedTag { get; set; }
 
         public int AllSongs { get; set; }
         public int AllAlbums { get; set; }
@@ -145,7 +148,7 @@ namespace AmpM
                 {
                     DataItemViewModel s = App.ViewModel.Functions.CloneItem(e);
 
-                    s.ArtUrl.Replace(s.Auth, this.Auth);
+                    s.ArtUrl = s.ArtUrl.Replace(s.Auth, this.Auth);
                     s.Auth = this.Auth;
                     
                     this.Albums.Add(s);
@@ -171,7 +174,7 @@ namespace AmpM
 
                     s.Auth = this.Auth;
 
-                    this.Albums.Add(s);
+                    this.Artists.Add(s);
                 }
             }
             //this.saveArtists();
