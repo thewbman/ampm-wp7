@@ -56,6 +56,8 @@ namespace AmpM
             PageTitle.Text = SelectedHost.Name;
             PageSubtitle.Text = SelectedHost.Address;
 
+            App.ViewModel.AppSettings.HostAddressSetting = SelectedHost.Address;
+
             _items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
 
             if (App.ViewModel.Connected == false)
@@ -122,6 +124,7 @@ namespace AmpM
                     {
                         App.ViewModel.Auth = xdoc.Element("root").Element("auth").Value;
                         App.ViewModel.AppSettings.AuthSetting = xdoc.Element("root").Element("auth").Value;
+                        App.ViewModel.AppSettings.SessionExpireSetting = DateTime.Now.ToString("s");
                         
                         //now playing
                         //search
@@ -176,7 +179,8 @@ namespace AmpM
                     NavigationService.Navigate(new Uri("/Nowplaying.xaml", UriKind.Relative));
                     break;
                 case "search":
-                    MessageBox.Show("search");
+                    //MessageBox.Show("search");
+                    NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
                     break;
                 case "songs":
                     //MessageBox.Show("songs");

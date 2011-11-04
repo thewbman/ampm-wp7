@@ -129,7 +129,7 @@ namespace AmpM
             }
 
             //save hosts
-            //this.saveHosts();
+            this.saveHosts();
 
 
             this.IsDataLoaded = true;
@@ -220,7 +220,8 @@ namespace AmpM
         {
             //List<AudioTrack> nowplayingList = encodeTracks(this.Nowplaying);
             //StorageSave<List<AudioTrack>>("Nowplaying", nowplayingList);
-            List<DataItemViewModel> nowplayingList = encodeDataItems(this.Nowplaying);
+            //List<DataItemViewModel> nowplayingList = encodeDataItems(this.Nowplaying);
+            List<DataItemViewModel> nowplayingList = (this.Nowplaying);
             StorageSave<List<DataItemViewModel>>("Nowplaying", nowplayingList);
         }
 
@@ -228,7 +229,8 @@ namespace AmpM
         {
 
             //var savedNowplaying = decodeTracks(StorageLoad<List<AudioTrack>>("Nowplaying"));
-            var savedNowplaying = decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying"));
+            //var savedNowplaying = decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying"));
+            var savedNowplaying = (StorageLoad<List<DataItemViewModel>>("Nowplaying"));
 
             this.Nowplaying.Clear();
             this.Nowplaying = savedNowplaying;

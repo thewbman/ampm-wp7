@@ -30,3 +30,5 @@ C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\IsolatedStorageExplorer.dll
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Preferences.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Tags.g.i.cs
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\TagDetails.g.i.cs
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Coding4Fun.Phone.Controls.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\Search.g.i.cs
