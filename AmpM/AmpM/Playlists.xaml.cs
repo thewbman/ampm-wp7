@@ -224,6 +224,8 @@ namespace AmpM
             var s = (DataItemViewModel)playlistList.SelectedItem;
 
             NavigationService.Navigate(new Uri("/Songs.xaml?Playlist="+s.PlaylistId, UriKind.Relative));
+
+            playlistList.SelectedItem = null;
              
         }
 

@@ -14,9 +14,11 @@ namespace MyAudioPlaybackAgent
         const string FirstRunName = "FirstRun";
 
         const string HostIndexName = "HostIndex";
+        const string HostAddressName = "HostAddress";
 
         const string NowplayingIndexName = "NowplayingIndex";
         const string AuthName = "Auth";
+        const string SessionExpireName = "SessionExpire";
 
         const string DefaultPlayAllName = "DefaultPlayAll";
         const string DefaultPlayShuffleName = "DefaultPlayShuffle";
@@ -30,9 +32,11 @@ namespace MyAudioPlaybackAgent
         const bool FirstRunDefault = true;
 
         const int HostIndexDefault = 0;
+        const string HostAddressDefault = "http://google.com";
 
         const int NowplayingIndexDefault = 0;
         const string AuthDefault = "asdf";
+        const string SessionExpireDefault = "1900-01-01T00:00:00";
 
         const bool DefaultPlayAllDefault = true;
         const bool DefaultPlayShuffleDefault = false;
@@ -127,6 +131,11 @@ namespace MyAudioPlaybackAgent
             get { return GetValueOrDefault<int>(HostIndexName, HostIndexDefault); }
             set { if (AddOrUpdateValue(HostIndexName, value)) { Save(); } }
         }
+        public string HostAddressSetting
+        {
+            get { return GetValueOrDefault<string>(HostAddressName, HostAddressDefault); }
+            set { if (AddOrUpdateValue(HostAddressName, value)) { Save(); } }
+        }
 
         public int NowplayingIndexSetting
         {
@@ -137,6 +146,11 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<string>(AuthName, AuthDefault); }
             set { if (AddOrUpdateValue(AuthName, value)) { Save(); } }
+        }
+        public string SessionExpireSetting
+        {
+            get { return GetValueOrDefault<string>(SessionExpireName, SessionExpireDefault); }
+            set { if (AddOrUpdateValue(SessionExpireName, value)) { Save(); } }
         }
 
         public bool DefaultPlayAllSetting

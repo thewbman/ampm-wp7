@@ -8,8 +8,11 @@ using System.ComponentModel;
 using Microsoft.Phone.BackgroundAudio;
 using System.Xml.Serialization;
 using System.IO;
+using System.Net;
+using System.Xml.Linq;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
+using Coding4Fun.Phone.Controls;
 
 namespace MyAudioPlaybackAgent
 {
@@ -77,7 +80,8 @@ namespace MyAudioPlaybackAgent
 
         public static List<AudioTrack> getCurrentList()
         {
-            var currentplayList = SongsToTracks(decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying")));
+            //var currentplayList = SongsToTracks(decodeDataItems(StorageLoad<List<DataItemViewModel>>("Nowplaying")));
+            var currentplayList = SongsToTracks((StorageLoad<List<DataItemViewModel>>("Nowplaying")));
             return currentplayList;
         }
 
@@ -250,6 +254,7 @@ namespace MyAudioPlaybackAgent
                     break;
                 case PlayState.TrackReady:
                     player.Play();
+                    CheckPingAmpache();
                     break;
                 case PlayState.Shutdown:
                     // TODO: Handle the shutdown state here (e.g. save state)
@@ -347,7 +352,7 @@ namespace MyAudioPlaybackAgent
         /// (c) MediaStreamSource (null)
         /// </remarks>
         /// <returns>an instance of AudioTrack, or null if the playback is completed</returns>
-        private AudioTrack GetNextTrack()
+        private static AudioTrack GetNextTrack()
         {
             // TODO: add logic to get the next audio track
 
@@ -371,7 +376,6 @@ namespace MyAudioPlaybackAgent
             return track;
         }
 
-
         /// <summary>
         /// Implements the logic to get the previous AudioTrack instance.
         /// </summary>
@@ -382,7 +386,7 @@ namespace MyAudioPlaybackAgent
         /// (c) MediaStreamSource (null)
         /// </remarks>
         /// <returns>an instance of AudioTrack, or null if previous track is not allowed</returns>
-        private AudioTrack GetPreviousTrack()
+        private static AudioTrack GetPreviousTrack()
         {
             // TODO: add logic to get the previous audio track
 
@@ -441,7 +445,7 @@ namespace MyAudioPlaybackAgent
         }
 
 
-        private void PlayNextTrack(BackgroundAudioPlayer player)
+        private static void PlayNextTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
 
@@ -457,7 +461,7 @@ namespace MyAudioPlaybackAgent
             }
         }
 
-        private void PlayPreviousTrack(BackgroundAudioPlayer player)
+        private static void PlayPreviousTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
 
@@ -471,7 +475,7 @@ namespace MyAudioPlaybackAgent
             PlayTrack(player);
         }
 
-        private void PlayTrack(BackgroundAudioPlayer player)
+        private static void PlayTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
 
@@ -481,6 +485,92 @@ namespace MyAudioPlaybackAgent
         }
 
 
+        private void CheckPingAmpache()
+        {
+            if(AppSettings.SessionExpireSetting == DateTime.Parse("1900-01-01").ToString("s"))
+            {
+                PingAmpache(getRandom());
+            }
+            else 
+            {
+                TimeSpan t = new TimeSpan();
+
+                t = (DateTime.Parse(AppSettings.SessionExpireSetting) - DateTime.Now);
+
+                //15 minutes
+                if (t.TotalSeconds < (15 * 60))
+                {
+                    PingAmpache(getRandom());
+                }
+            }
+        }
+
+        private static void PingAmpache(string inRandom)
+        {
+            //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(AppSettings.HostAddressSetting + "/server/xml.server.php?action=ping&auth="+AppSettings.AuthSetting+"&SessionExpireSetting="+AppSettings.SessionExpireSetting+"&random="+inRandom, UriKind.Absolute));
+            //webRequest.BeginGetResponse(new AsyncCallback(PingCallback), webRequest);
+        }
+        private static void PingCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            //try
+            //{
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            /*
+                //}
+            //catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Failed to get ping response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    BannerMessage("Failed to get ping response: " + ex.ToString());
+                });
+
+                return;
+            }
+             */
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                string s = xdoc.Element("root").Element("session_expire").FirstNode.ToString().Replace("<![CDATA[", "").Replace("]]>", "").Trim();
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    AppSettings.SessionExpireSetting = DateTime.Parse(s).ToString("s");
+                });
+
+            }
+            catch (Exception ex)
+            {
+                
+                //Deployment.Current.Dispatcher.BeginInvoke(() =>
+                //{
+                    AppSettings.SessionExpireSetting = DateTime.Parse("1900-01-01").ToString("s");
+
+                    //MessageBox.Show("Failed to parse ping response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    BannerMessage("Failed to parse ping response: " + ex.ToString());
+                //});
+
+            }
+
+        }
 
 
         public static T StorageLoad<T>(string name) where T : class, new()
@@ -535,6 +625,27 @@ namespace MyAudioPlaybackAgent
             //AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting;
 
             return;
+        }
+
+        private static string myRandom()
+        {
+            Random random = new Random();
+
+            return random.Next().ToString();
+        }
+        private string getRandom()
+        {
+            return myRandom();
+        }
+
+        private static void BannerMessage(string inMessage)
+        {
+            ToastPrompt toast = new ToastPrompt();
+
+            toast.Title = inMessage;
+            toast.TextOrientation = System.Windows.Controls.Orientation.Horizontal;
+
+            toast.Show();
         }
     }
 }

@@ -287,6 +287,8 @@ namespace AmpM
             App.ViewModel.SelectedTag = s;
 
             NavigationService.Navigate(new Uri("/TagDetails.xaml?Tag=" + s.TagId, UriKind.Relative));
+
+            TagsLL.SelectedItem = null;
         }
 
         private void ApplicationBarIconButton_Click(object sender, EventArgs e)
