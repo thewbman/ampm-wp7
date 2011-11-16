@@ -10,57 +10,12 @@ namespace MyAudioPlaybackAgent
         // Our isolated storage settings
         IsolatedStorageSettings settings;
 
-        // The isolated storage key names of our settings
-        const string FirstRunName = "FirstRun";
 
-        const string HostIndexName = "HostIndex";
-        const string HostAddressName = "HostAddress";
-
-        const string NowplayingIndexName = "NowplayingIndex";
-        const string AuthName = "Auth";
-        const string SessionExpireName = "SessionExpire";
-
-        const string DefaultPlayAllName = "DefaultPlayAll";
-        const string DefaultPlayShuffleName = "DefaultPlayShuffle";
-        const string DefaultPlayAddName = "DefaultPlayAdd";
-
-
-
-
-
-        // The default value of our settings
-        const bool FirstRunDefault = true;
-
-        const int HostIndexDefault = 0;
-        const string HostAddressDefault = "http://google.com";
-
-        const int NowplayingIndexDefault = 0;
-        const string AuthDefault = "asdf";
-        const string SessionExpireDefault = "1900-01-01T00:00:00";
-
-        const bool DefaultPlayAllDefault = true;
-        const bool DefaultPlayShuffleDefault = false;
-        const bool DefaultPlayAddDefault = true;
-
-
-
-
-        /// <summary>
-        /// Constructor that gets the application settings.
-        /// </summary>
         public AppSettingsModel()
         {
-            // Get the settings for this application.
             settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
-        /// <summary>
-        /// Update a setting value for our application. If the setting does not
-        /// exist, then add the setting.
-        /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public bool AddOrUpdateValue(string Key, Object value)
         {
             bool valueChanged = false;
@@ -85,14 +40,6 @@ namespace MyAudioPlaybackAgent
             return valueChanged;
         }
 
-        /// <summary>
-        /// Get the current value of the setting, or if it is not found, set the 
-        /// setting to the default setting.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
         public T GetValueOrDefault<T>(string Key, T defaultValue)
         {
             T value;
@@ -110,13 +57,61 @@ namespace MyAudioPlaybackAgent
             return value;
         }
 
-        /// <summary>
-        /// Save the settings.
-        /// </summary>
         public void Save()
         {
             settings.Save();
         }
+
+
+
+
+        // The isolated storage key names of our settings
+        const string FirstRunName = "FirstRun";
+
+        const string HostIndexName = "HostIndex";
+        const string HostAddressName = "HostAddress";
+
+        const string NowplayingIndexName = "NowplayingIndex";
+        const string AuthName = "Auth";
+        const string SessionExpireName = "SessionExpire";
+
+        const string DefaultPlayAllName = "DefaultPlayAll";
+        const string DefaultPlayShuffleName = "DefaultPlayShuffle";
+        const string DefaultPlayAddName = "DefaultPlayAdd";
+
+        const string KeepAliveName = "KeepAlive";
+
+        const string AlbumsCountName = "AlbumsCount";
+        const string ArtistsCountName = "ArtistsCount";
+        const string PlaylistsCountName = "PlaylistsCount";
+        const string SongsCountName = "SongsCount";
+        const string VideosCountName = "VideosCount";
+
+
+
+
+        // The default value of our settings
+        const bool FirstRunDefault = true;
+
+        const int HostIndexDefault = 0;
+        const string HostAddressDefault = "http://google.com";
+
+        const int NowplayingIndexDefault = 0;
+        const string AuthDefault = "asdf";
+        const string SessionExpireDefault = "1900-01-01T00:00:00";
+
+        const bool DefaultPlayAllDefault = true;
+        const bool DefaultPlayShuffleDefault = false;
+        const bool DefaultPlayAddDefault = true;
+
+        const bool KeepAliveDefault = true;
+
+        const int AlbumsCountDefault = 0;
+        const int ArtistsCountDefault = 0;
+        const int PlaylistsCountDefault = 0;
+        const int SongsCountDefault = 0;
+        const int VideosCountDefault = 0;
+
 
 
 
@@ -167,6 +162,38 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<bool>(DefaultPlayAddName, DefaultPlayAddDefault); }
             set { if (AddOrUpdateValue(DefaultPlayAddName, value)) { Save(); } }
+        }
+
+        public bool KeepAliveSetting
+        {
+            get { return GetValueOrDefault<bool>(KeepAliveName, KeepAliveDefault); }
+            set { if (AddOrUpdateValue(KeepAliveName, value)) { Save(); } }
+        }
+
+        public int AlbumsCountSetting
+        {
+            get { return GetValueOrDefault<int>(AlbumsCountName, AlbumsCountDefault); }
+            set { if (AddOrUpdateValue(AlbumsCountName, value)) { Save(); } }
+        }
+        public int ArtistsCountSetting
+        {
+            get { return GetValueOrDefault<int>(ArtistsCountName, ArtistsCountDefault); }
+            set { if (AddOrUpdateValue(ArtistsCountName, value)) { Save(); } }
+        }
+        public int PlaylistsCountSetting
+        {
+            get { return GetValueOrDefault<int>(PlaylistsCountName, PlaylistsCountDefault); }
+            set { if (AddOrUpdateValue(PlaylistsCountName, value)) { Save(); } }
+        }
+        public int SongsCountSetting
+        {
+            get { return GetValueOrDefault<int>(SongsCountName, SongsCountDefault); }
+            set { if (AddOrUpdateValue(SongsCountName, value)) { Save(); } }
+        }
+        public int VideosCountSetting
+        {
+            get { return GetValueOrDefault<int>(VideosCountName, VideosCountDefault); }
+            set { if (AddOrUpdateValue(VideosCountName, value)) { Save(); } }
         }
 
 

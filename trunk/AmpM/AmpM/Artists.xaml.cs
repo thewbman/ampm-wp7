@@ -144,7 +144,7 @@ namespace AmpM
                     newItem.ItemKey = "artist" + newItem.ArtistId;
                     newItem.ItemId = newItem.ArtistId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -224,7 +224,7 @@ namespace AmpM
                     newItem.ItemKey = "artist" + newItem.ArtistId;
                     newItem.ItemId = newItem.ArtistId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {

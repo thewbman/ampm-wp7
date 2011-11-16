@@ -15,6 +15,7 @@
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
       <ExtendedTask Name="BackgroundTask">
         <BackgroundServiceAgent Specifier="AudioPlayerAgent" Name="MyAudioPlaybackAgent" Source="MyAudioPlaybackAgent" Type="MyAudioPlaybackAgent.AudioPlayer" />
+        <BackgroundServiceAgent Specifier="ScheduledTaskAgent" Name="AmpmScheduledTaskAgent" Source="AmpmScheduledTaskAgent" Type="AmpmScheduledTaskAgent.ScheduledAgent" />
       </ExtendedTask>
     </Tasks>
     <Tokens>
