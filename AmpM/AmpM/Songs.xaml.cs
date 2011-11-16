@@ -148,7 +148,7 @@ namespace AmpM
                     newItem.ItemKey = "song" + newItem.SongId;
                     newItem.ItemId = newItem.SongId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.SongName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -240,7 +240,7 @@ namespace AmpM
                     newItem.ItemKey = "song" + newItem.SongId;
                     newItem.ItemId = newItem.SongId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.SongName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {

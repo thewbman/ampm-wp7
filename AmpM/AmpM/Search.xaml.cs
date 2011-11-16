@@ -201,7 +201,7 @@ namespace AmpM
                     newItem.ItemKey = "song" + newItem.SongId;
                     newItem.ItemId = newItem.SongId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.SongName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -285,7 +285,7 @@ namespace AmpM
                     newItem.ItemKey = "album" + newItem.AlbumId;
                     newItem.ItemId = newItem.AlbumId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.AlbumName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -365,7 +365,7 @@ namespace AmpM
                     newItem.ItemKey = "artist" + newItem.ArtistId;
                     newItem.ItemId = newItem.ArtistId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.ArtistName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -445,7 +445,7 @@ namespace AmpM
                     newItem.ItemKey = "tag" + newItem.PlaylistId;
                     newItem.ItemId = newItem.TagId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.TagName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -523,7 +523,7 @@ namespace AmpM
                     newItem.ItemKey = "playlist" + newItem.PlaylistId;
                     newItem.ItemId = newItem.PlaylistId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.PlaylistName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -611,7 +611,7 @@ namespace AmpM
                     newItem.ItemKey = "song" + newItem.SongId;
                     newItem.ItemId = newItem.SongId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.SongName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {

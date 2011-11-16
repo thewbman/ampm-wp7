@@ -54,7 +54,7 @@ namespace AmpM
 
             this.Connected = false;
 
-            this.Auth = "";
+            //this.AppSettings.AuthSetting = "";
 
         }
 
@@ -90,7 +90,7 @@ namespace AmpM
 
         public bool Connected;
 
-        public string Auth;
+        //public string Auth;
 
         public bool IsDataLoaded { get; private set; }
         public bool IsAlbumsLoaded { get; private set; }
@@ -148,8 +148,8 @@ namespace AmpM
                 {
                     DataItemViewModel s = App.ViewModel.Functions.CloneItem(e);
 
-                    s.ArtUrl = s.ArtUrl.Replace(s.Auth, this.Auth);
-                    s.Auth = this.Auth;
+                    s.ArtUrl = s.ArtUrl.Replace(s.Auth, this.AppSettings.AuthSetting);
+                    s.Auth = this.AppSettings.AuthSetting;
                     
                     this.Albums.Add(s);
                 }
@@ -172,7 +172,7 @@ namespace AmpM
                 {
                     DataItemViewModel s = App.ViewModel.Functions.CloneItem(e);
 
-                    s.Auth = this.Auth;
+                    s.Auth = this.AppSettings.AuthSetting;
 
                     this.Artists.Add(s);
                 }

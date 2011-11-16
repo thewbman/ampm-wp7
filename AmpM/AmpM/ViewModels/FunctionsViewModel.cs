@@ -62,7 +62,7 @@ namespace AmpM
 
             url += App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting].Address;
             url += "/server/xml.server.php?";
-            url += "auth=" + App.ViewModel.Auth;
+            url += "auth=" + App.ViewModel.AppSettings.AuthSetting;
             url += "&action="+inAction;
             url += inParams;
             url += "&rand=" + App.ViewModel.randText();

@@ -149,7 +149,7 @@ namespace AmpM
                     newItem.ItemKey = "tag" + newItem.PlaylistId;
                     newItem.ItemId = newItem.TagId;
                     newItem.ItemChar = App.ViewModel.Functions.FirstChar(newItem.TagName);
-                    newItem.Auth = App.ViewModel.Auth;
+                    newItem.Auth = App.ViewModel.AppSettings.AuthSetting;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
