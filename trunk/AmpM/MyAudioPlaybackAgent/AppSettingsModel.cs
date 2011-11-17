@@ -74,6 +74,7 @@ namespace MyAudioPlaybackAgent
         const string NowplayingIndexName = "NowplayingIndex";
         const string AuthName = "Auth";
         const string SessionExpireName = "SessionExpire";
+        const string StreamSessionExpireName = "StreamSessionExpire";
 
         const string DefaultPlayAllName = "DefaultPlayAll";
         const string DefaultPlayShuffleName = "DefaultPlayShuffle";
@@ -99,6 +100,7 @@ namespace MyAudioPlaybackAgent
         const int NowplayingIndexDefault = 0;
         const string AuthDefault = "asdf";
         const string SessionExpireDefault = "1900-01-01T00:00:00";
+        const string StreamSessionExpireDefault = "1900-01-01T00:00:00";
 
         const bool DefaultPlayAllDefault = true;
         const bool DefaultPlayShuffleDefault = false;
@@ -146,6 +148,11 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<string>(SessionExpireName, SessionExpireDefault); }
             set { if (AddOrUpdateValue(SessionExpireName, value)) { Save(); } }
+        }
+        public string StreamSessionExpireSetting
+        {
+            get { return GetValueOrDefault<string>(StreamSessionExpireName, StreamSessionExpireDefault); }
+            set { if (AddOrUpdateValue(StreamSessionExpireName, value)) { Save(); } }
         }
 
         public bool DefaultPlayAllSetting

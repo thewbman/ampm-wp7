@@ -68,6 +68,7 @@ namespace AmpmScheduledTaskAgent
 
 
 
+
         // The isolated storage key names of our settings
         const string FirstRunName = "FirstRun";
 
@@ -77,6 +78,7 @@ namespace AmpmScheduledTaskAgent
         const string NowplayingIndexName = "NowplayingIndex";
         const string AuthName = "Auth";
         const string SessionExpireName = "SessionExpire";
+        const string StreamSessionExpireName = "StreamSessionExpire";
 
         const string DefaultPlayAllName = "DefaultPlayAll";
         const string DefaultPlayShuffleName = "DefaultPlayShuffle";
@@ -84,6 +86,11 @@ namespace AmpmScheduledTaskAgent
 
         const string KeepAliveName = "KeepAlive";
 
+        const string AlbumsCountName = "AlbumsCount";
+        const string ArtistsCountName = "ArtistsCount";
+        const string PlaylistsCountName = "PlaylistsCount";
+        const string SongsCountName = "SongsCount";
+        const string VideosCountName = "VideosCount";
 
 
 
@@ -97,6 +104,7 @@ namespace AmpmScheduledTaskAgent
         const int NowplayingIndexDefault = 0;
         const string AuthDefault = "asdf";
         const string SessionExpireDefault = "1900-01-01T00:00:00";
+        const string StreamSessionExpireDefault = "1900-01-01T00:00:00";
 
         const bool DefaultPlayAllDefault = true;
         const bool DefaultPlayShuffleDefault = false;
@@ -104,6 +112,11 @@ namespace AmpmScheduledTaskAgent
 
         const bool KeepAliveDefault = true;
 
+        const int AlbumsCountDefault = 0;
+        const int ArtistsCountDefault = 0;
+        const int PlaylistsCountDefault = 0;
+        const int SongsCountDefault = 0;
+        const int VideosCountDefault = 0;
 
 
 
@@ -140,6 +153,11 @@ namespace AmpmScheduledTaskAgent
             get { return GetValueOrDefault<string>(SessionExpireName, SessionExpireDefault); }
             set { if (AddOrUpdateValue(SessionExpireName, value)) { Save(); } }
         }
+        public string StreamSessionExpireSetting
+        {
+            get { return GetValueOrDefault<string>(StreamSessionExpireName, StreamSessionExpireDefault); }
+            set { if (AddOrUpdateValue(StreamSessionExpireName, value)) { Save(); } }
+        }
 
         public bool DefaultPlayAllSetting
         {
@@ -161,6 +179,32 @@ namespace AmpmScheduledTaskAgent
         {
             get { return GetValueOrDefault<bool>(KeepAliveName, KeepAliveDefault); }
             set { if (AddOrUpdateValue(KeepAliveName, value)) { Save(); } }
+        }
+
+        public int AlbumsCountSetting
+        {
+            get { return GetValueOrDefault<int>(AlbumsCountName, AlbumsCountDefault); }
+            set { if (AddOrUpdateValue(AlbumsCountName, value)) { Save(); } }
+        }
+        public int ArtistsCountSetting
+        {
+            get { return GetValueOrDefault<int>(ArtistsCountName, ArtistsCountDefault); }
+            set { if (AddOrUpdateValue(ArtistsCountName, value)) { Save(); } }
+        }
+        public int PlaylistsCountSetting
+        {
+            get { return GetValueOrDefault<int>(PlaylistsCountName, PlaylistsCountDefault); }
+            set { if (AddOrUpdateValue(PlaylistsCountName, value)) { Save(); } }
+        }
+        public int SongsCountSetting
+        {
+            get { return GetValueOrDefault<int>(SongsCountName, SongsCountDefault); }
+            set { if (AddOrUpdateValue(SongsCountName, value)) { Save(); } }
+        }
+        public int VideosCountSetting
+        {
+            get { return GetValueOrDefault<int>(VideosCountName, VideosCountDefault); }
+            set { if (AddOrUpdateValue(VideosCountName, value)) { Save(); } }
         }
 
 

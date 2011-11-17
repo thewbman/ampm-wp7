@@ -44,7 +44,7 @@ namespace AmpM
         {
             try
             {
-                ApplicationTitle.Text = "AmpM - " + App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting].Name;
+                //ApplicationTitle.Text = "AmpM - " + App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting].Name;
 
                 if (App.ViewModel.Tags.Count == 0)
                 {

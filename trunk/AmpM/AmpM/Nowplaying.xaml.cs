@@ -133,7 +133,7 @@ namespace AmpM
             nowplayingList.SelectedItem = null;
         }
 
-        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
+        private void emptyButton_Click(object sender, EventArgs e)
         {
             MyAudioPlaybackAgent.AudioPlayer.stopAll();
             MyAudioPlaybackAgent.AudioPlayer.resetList();
@@ -152,10 +152,33 @@ namespace AmpM
             {
                 //BackgroundAudioPlayer.Instance.Position = System.TimeSpan.FromSeconds((songSlider.Value / 100) * (BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds));
             }
-            catch (Exception ex)
+            catch
             {
                 //
             }
         }
+
+        private void prevButton_Click(object sender, EventArgs e)
+        {
+            BackgroundAudioPlayer.Instance.SkipPrevious();
+        }
+
+        private void pauseButton_Click(object sender, EventArgs e)
+        {
+            if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+            {
+                BackgroundAudioPlayer.Instance.Pause();
+            }
+            else
+            {
+                BackgroundAudioPlayer.Instance.Play();
+            }
+        }
+
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            BackgroundAudioPlayer.Instance.SkipNext();
+        }
+
     }
 }

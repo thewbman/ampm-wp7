@@ -141,7 +141,7 @@
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Grid.Row="1" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
-        <controls:Pivot x:Name="searchPivot" Title="search" Grid.Row="1">
+        <controls:Pivot x:Name="searchPivot" Title="SEARCH" Grid.Row="1">
             
             
             <controls:PivotItem x:Name="allPivot" Header="everything">

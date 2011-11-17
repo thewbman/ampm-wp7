@@ -35,6 +35,16 @@ namespace AmpM
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            string inValue = "";
+            if (NavigationContext.QueryString.TryGetValue("Remove", out inValue))
+            {
+                int toRemove = int.Parse(inValue);
+
+                for (int i = 0; i < toRemove; i++)
+                {
+                    NavigationService.RemoveBackEntry();
+                }
+            }
 
             if (!App.ViewModel.IsDataLoaded)
             {
@@ -140,6 +150,11 @@ namespace AmpM
         {
             NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
 
+        }
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
 
 

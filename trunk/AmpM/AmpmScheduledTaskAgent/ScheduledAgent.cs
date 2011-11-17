@@ -109,14 +109,22 @@ namespace AmpmScheduledTaskAgent
 
                 NotifyComplete();
             }
+            else if (AppSettings.StreamSessionExpireSetting == "1900-01-01T00:00:00")
+            {
+                //stream has timed out
+
+                NotifyComplete();
+            }
             else
             {
-                DateTime d = DateTime.Parse(AppSettings.SessionExpireSetting);
+                DateTime s1 = DateTime.Parse(AppSettings.SessionExpireSetting);
+                DateTime s2 = DateTime.Parse(AppSettings.StreamSessionExpireSetting);
                 DateTime n = DateTime.Now;
 
-                TimeSpan t = d - n;
+                TimeSpan t1 = s1 - n;
+                TimeSpan t2 = s2 - n;
 
-                if (t.TotalSeconds < (45 * 60))
+                if ((t1.TotalSeconds < (30 * 60))||(t2.TotalSeconds < (60*60)))
                 {
 
                     string url = "";
@@ -124,7 +132,7 @@ namespace AmpmScheduledTaskAgent
                     url += AppSettings.HostAddressSetting;
                     url += "/server/xml.server.php?";
                     url += "auth=" + AppSettings.AuthSetting ;
-                    url += "&action=" + "ping";
+                    url += "&action=ping";
                     url += "&rand=" + randText();
 
 

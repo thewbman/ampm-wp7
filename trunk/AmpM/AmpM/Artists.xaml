@@ -55,7 +55,7 @@
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
-        <controls:Pivot x:Name="artistsPivot" Title="artists" Foreground="White">
+        <controls:Pivot x:Name="artistsPivot" Title="ARTISTS" Foreground="White">
 
             <controls:PivotItem x:Name="artsitsAlphaPivot" Header="name" Foreground="White">
 

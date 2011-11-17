@@ -254,7 +254,8 @@ namespace MyAudioPlaybackAgent
                     break;
                 case PlayState.TrackReady:
                     player.Play();
-                    CheckPingAmpache();
+                    //CheckPingAmpache();
+                    AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(30).ToString("s");
                     break;
                 case PlayState.Shutdown:
                     // TODO: Handle the shutdown state here (e.g. save state)
