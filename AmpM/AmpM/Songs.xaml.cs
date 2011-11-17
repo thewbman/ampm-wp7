@@ -294,7 +294,7 @@ namespace AmpM
             SongsLL.ItemsSource = songsByAlbum;
             SongsSearchLL.ItemsSource = songsBySearch;
 
-            songsPivot.Title = "songs (" + this._items.Count + ")";
+            songsPivot.Title = "SONGS (" + this._items.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 

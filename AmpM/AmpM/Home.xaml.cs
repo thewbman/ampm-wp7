@@ -301,5 +301,23 @@ namespace AmpM
 
             itemsList.SelectedItem = null;
         }
+
+        private void logoffButton_Click(object sender, EventArgs e)
+        {
+            App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+            App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+
+            NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
+        }
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
+        }
     }
 }

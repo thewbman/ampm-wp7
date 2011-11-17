@@ -288,7 +288,7 @@ namespace AmpM
             ArtistsLL.ItemsSource = artistsByChar;
             ArtistsSearchLL.ItemsSource = artistsBySearch;
 
-            artistsPivot.Title = "artists (" + this._items.Count + ")";
+            artistsPivot.Title = "ARTISTS (" + this._items.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 

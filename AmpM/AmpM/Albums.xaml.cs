@@ -318,7 +318,7 @@ namespace AmpM
             AlbumsYearLL.ItemsSource = albumsByYear;
             AlbumsSearchLL.ItemsSource = albumsBySearch;
 
-            albumsPivot.Title = "albums (" + this._items.Count + ")";
+            albumsPivot.Title = "ALBUMS (" + this._items.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
