@@ -255,7 +255,7 @@ namespace MyAudioPlaybackAgent
                 case PlayState.TrackReady:
                     player.Play();
                     //CheckPingAmpache();
-                    AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(30).ToString("s");
+                    AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(90).ToString("s");
                     break;
                 case PlayState.Shutdown:
                     // TODO: Handle the shutdown state here (e.g. save state)
@@ -566,7 +566,7 @@ namespace MyAudioPlaybackAgent
                     AppSettings.SessionExpireSetting = DateTime.Parse("1900-01-01").ToString("s");
 
                     //MessageBox.Show("Failed to parse ping response: " + ex.ToString(), "Error", MessageBoxButton.OK);
-                    BannerMessage("Failed to parse ping response: " + ex.ToString());
+                    //BannerMessage("Failed to parse ping response: " + ex.ToString());
                 //});
 
             }

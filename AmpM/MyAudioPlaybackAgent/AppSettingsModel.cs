@@ -59,7 +59,12 @@ namespace MyAudioPlaybackAgent
 
         public void Save()
         {
-            settings.Save();
+            try
+            {
+                settings.Save();
+            }
+            catch
+            { }
         }
 
 
