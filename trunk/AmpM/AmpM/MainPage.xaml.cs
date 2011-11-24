@@ -157,6 +157,31 @@ namespace AmpM
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
 
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/AddServer.xaml", UriKind.Relative));
+        }
+
+        private void deleteHost_Click(object sender, RoutedEventArgs e)
+        {
+
+            MenuItem menu = sender as MenuItem;
+            HostViewModel selectedItem = menu.DataContext as HostViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            
+            for (int i = 0; i < App.ViewModel.Hosts.Count; i++)
+            {
+                if ((App.ViewModel.Hosts[i].Address == selectedItem.Address) && (App.ViewModel.Hosts[i].Username == selectedItem.Username) && (App.ViewModel.Hosts[i].Password == selectedItem.Password))
+                    App.ViewModel.Hosts.RemoveAt(i);
+            }
+
+
+            App.ViewModel.saveHosts();
+        }
+
 
         
     }

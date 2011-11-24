@@ -78,8 +78,20 @@ namespace AmpM
             {
                 //MessageBox.Show("AmpacheConnectUrl: " + App.ViewModel.Functions.GetAmpacheConnectUrl());
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheConnectUrl()));
-                webRequest.BeginGetResponse(new AsyncCallback(ConnectCallback), webRequest);
+                try
+                {
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheConnectUrl()));
+                    webRequest.BeginGetResponse(new AsyncCallback(ConnectCallback), webRequest);
+                }
+                catch 
+                {
+                    MessageBox.Show("Invalid server URL.  Make sure it starts with 'http://' and is a valid address or hostname.");
+
+                    App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+                    App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+
+                    NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
+                }
             }
             else
             {
@@ -110,6 +122,11 @@ namespace AmpM
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     MessageBox.Show("Failed to get handshake response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+
+                    App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+                    App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+
+                    NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
                 });
 
                 return;
@@ -139,6 +156,11 @@ namespace AmpM
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         MessageBox.Show("Did not get successfull response: " + resultString, "Error", MessageBoxButton.OK);
+
+                        App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+                        App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+
+                        NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
                     });
                 }
                 else
@@ -192,6 +214,11 @@ namespace AmpM
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     MessageBox.Show("Error parsing handshake request: " + ex.ToString());
+
+                    App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+                    App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+
+                    NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
                 });
             }
 
@@ -246,7 +273,7 @@ namespace AmpM
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ping xml error: " + ex.ToString());
+                //MessageBox.Show("ping xml error: " + ex.ToString());
 
                 App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
             }

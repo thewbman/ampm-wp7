@@ -69,6 +69,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddServer.xaml.cs">
+      <DependentUpon>AddServer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Albums.xaml.cs">
       <DependentUpon>Albums.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AddServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Albums.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -192,6 +199,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.back.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />
