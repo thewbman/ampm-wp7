@@ -1,0 +1,10 @@
+﻿Todo:
+
+ - icons/theme
+ - manipulate nowplaying list
+ - help
+ - zune integration
+ - last.fm
+ - local playlists
+ - seperate album/playlist details
+ - all songs

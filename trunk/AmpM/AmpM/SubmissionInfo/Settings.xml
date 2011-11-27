@@ -1,9 +1,6 @@
 <MarketplaceDetails>
-  <SmallAppTile>
-  </SmallAppTile>
-  <LargeAppTile>
-  </LargeAppTile>
-  <PCAppTile>
-  </PCAppTile>
+  <SmallAppTile>AmpM_99a.png</SmallAppTile>
+  <LargeAppTile>AmpM_173a.png</LargeAppTile>
+  <PCAppTile>AmpM_200a.png</PCAppTile>
   <ScreenShots>;;;;;;;;</ScreenShots>
 </MarketplaceDetails>

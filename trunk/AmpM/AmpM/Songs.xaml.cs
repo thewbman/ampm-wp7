@@ -429,6 +429,8 @@ namespace AmpM
 
                 App.ViewModel.saveNowplaying();
 
+                App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
+
                 //MyAudioPlaybackAgent.AudioPlayer.startPlaying(0);
                 MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex);
             }

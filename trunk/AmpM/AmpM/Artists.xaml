@@ -55,7 +55,7 @@
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
-        <controls:Pivot x:Name="artistsPivot" Title="ARTISTS" Foreground="White">
+        <controls:Pivot x:Name="artistsPivot" Title="ARTISTS" Foreground="White" SelectionChanged="artistsPivot_SelectionChanged">
 
             <controls:PivotItem x:Name="artsitsAlphaPivot" Header="name" Foreground="White">
 
@@ -68,6 +68,17 @@
 
             </controls:PivotItem>
 
+            <controls:PivotItem x:Name="artistsRandomPivot" Header="random" Foreground="White">
+
+                <StackPanel HorizontalAlignment="Left" >
+                    <TextBlock x:Name="artistName" Text="artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomArtist_Tap" />
+                    <TextBlock x:Name="artistAlbums" Text="0 albums" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Tap="randomArtist_Tap" />
+                    <TextBlock x:Name="artistTracks" Text="0 tracks" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomArtist_Tap" />
+                    <Button x:Name="nextRandomButton" Content="next random" Click="nextRandomButton_Click" Width="460" HorizontalAlignment="Center" local:TiltEffect.IsTiltEnabled="False" />
+                </StackPanel>
+
+            </controls:PivotItem>
+            
             <controls:PivotItem x:Name="artistsSearchPivot" Header="search" Foreground="White">
                 <Grid>
                     <Grid.RowDefinitions>

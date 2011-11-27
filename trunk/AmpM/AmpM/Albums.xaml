@@ -54,7 +54,7 @@
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
-        <controls:Pivot x:Name="albumsPivot" Title="ALBUMS" Foreground="White">
+        <controls:Pivot x:Name="albumsPivot" Title="ALBUMS" Foreground="White" SelectionChanged="albumsPivot_SelectionChanged">
 
             <controls:PivotItem x:Name="albumsAlphaPivot" Header="name" Foreground="White">
 
@@ -91,6 +91,19 @@
                 
             </controls:PivotItem>
 
+            <controls:PivotItem x:Name="albumsRandomPivot" Header="random" Foreground="White" local:TiltEffect.IsTiltEnabled="False">
+
+                <StackPanel HorizontalAlignment="Left"  local:TiltEffect.IsTiltEnabled="False" >
+                    <Image x:Name="artUrl" Source="{Binding ArtUrl}" Height="320" Width="320" HorizontalAlignment="Left" Tap="randomAlbum_Tap" />
+                    <TextBlock x:Name="artistName" Text="artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomAlbum_Tap" />
+                    <TextBlock x:Name="albumName" Text="album name" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Tap="randomAlbum_Tap" />
+                    <TextBlock x:Name="albumTracks" Text="0 tracks" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomAlbum_Tap" />
+                    <TextBlock x:Name="albumYear" Text="year" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomAlbum_Tap" />
+                    <Button x:Name="nextRandomButton" Content="next random" Click="nextRandomButton_Click" Width="460" HorizontalAlignment="Center" local:TiltEffect.IsTiltEnabled="False" />
+                </StackPanel>
+
+            </controls:PivotItem>
+            
             <controls:PivotItem x:Name="albumsSearchPivot" Header="search" Foreground="White">
                 <Grid>
                     <Grid.RowDefinitions>
