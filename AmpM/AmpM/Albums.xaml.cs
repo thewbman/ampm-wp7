@@ -22,6 +22,7 @@ using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using MyAudioPlaybackAgent;
+using System.Windows.Media.Imaging;
 
 namespace AmpM
 {
@@ -34,10 +35,14 @@ namespace AmpM
             _items = new ObservableCollection<DataItemViewModel>();
             _searchItems = new ObservableCollection<DataItemViewModel>();
 
+            _randomAlbum = new DataItemViewModel();
+
         }
 
         public ObservableCollection<DataItemViewModel> _items;
         public ObservableCollection<DataItemViewModel> _searchItems;
+
+        private DataItemViewModel _randomAlbum;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -291,13 +296,25 @@ namespace AmpM
             var sl = _searchItems.OrderBy(x => x.AlbumName).ToArray();
 
 
+            List<DataItemViewModel> b2 = new List<DataItemViewModel>();
+
+            foreach (DataItemViewModel a in bl)
+            {
+                var a2 = App.ViewModel.Functions.CloneItem(a);
+                
+                a2.ItemChar = App.ViewModel.Functions.FirstChar(a2.ArtistName);
+
+                b2.Add(a2);
+            }
+
+
             var albumsByChar = from t in al
                                group t by t.ItemChar into c
                                //orderby c.Key
                                select new Group<DataItemViewModel>(c.Key, c);
 
-            var albumsByArtist = from t in bl
-                               group t by t.ArtistName into c
+            var albumsByArtist = from t in b2
+                                 group t by t.ItemChar into c
                                //orderby c.Key
                                select new Group<DataItemViewModel>(c.Key, c);
 
@@ -455,6 +472,39 @@ namespace AmpM
         private void ApplicationBarIconButton_Click(object sender, EventArgs e)
         {
             this.GetAlbums();
+        }
+
+        private void nextRandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            updateRandom();
+        }
+
+        private void albumsPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateRandom();
+        }
+
+        private void updateRandom()
+        {
+            if (_items.Count > 1)
+            {
+                Random r = new Random();
+
+                _randomAlbum = _items[r.Next(0, _items.Count - 1)];
+
+                artistName.Text = _randomAlbum.ArtistName;
+                albumName.Text = _randomAlbum.AlbumName;
+                albumTracks.Text = _randomAlbum.AlbumTracks + " tracks";
+                albumYear.Text = _randomAlbum.Year;
+                artUrl.Source = new BitmapImage(new Uri(_randomAlbum.ArtUrl));
+            }
+        }
+
+        private void randomAlbum_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + _randomAlbum.AlbumId, UriKind.Relative));
+
         }
 
     }

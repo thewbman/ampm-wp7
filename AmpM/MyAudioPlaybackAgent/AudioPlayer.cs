@@ -22,8 +22,8 @@ namespace MyAudioPlaybackAgent
 
         private static UTF8Encoding encoder = new UTF8Encoding();
 
-        //private static int AppSettings.NowplayingIndexSetting;
-        private static AppSettingsModel AppSettings = new AppSettingsModel();
+        //public static int AppSettings.NowplayingIndexSetting;
+        static AppSettingsModel AppSettings = new AppSettingsModel();
 
         public static List<AudioTrack> _playList = new List<AudioTrack>();
 
@@ -66,7 +66,10 @@ namespace MyAudioPlaybackAgent
             }
              */
 
-            //AppSettings.NowplayingIndexSetting = 0;
+            AppSettings.NowplayingIndexSetting = 0;
+
+
+            saveCurrentIndex();
 
             return;
         }
@@ -126,8 +129,8 @@ namespace MyAudioPlaybackAgent
 
                 //s.ArtUrl = encoder.GetString(Convert.FromBase64String(t.ArtUrl));
                 s.ArtUrl = UTF8Encoding.UTF8.GetString(Convert.FromBase64String(t.ArtUrl), 0, Convert.FromBase64String(t.ArtUrl).Length);
-                
 
+                s.NowplayingIndex = t.NowplayingIndex;
 
                 outItems.Add(s);
             }
@@ -141,18 +144,15 @@ namespace MyAudioPlaybackAgent
 
             AudioTrack t = new AudioTrack();
 
+            int i = 1;
+
             foreach (DataItemViewModel s in inSongs)
             {
-                t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
-
-                //t.Album = s.AlbumName;
-                //t.AlbumArt = new Uri(s.ArtUrl);
-                //t.Artist = s.ArtistName;
-                //t.Source = new Uri(s.SongUrl);
-                //t.Tag = s.SongId.ToString();
-                //t.Title = s.SongName;
+                t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute), i.ToString(), EnabledPlayerControls.All);
 
                 outTracks.Add(t);
+
+                i++;
             }
 
 
@@ -187,13 +187,17 @@ namespace MyAudioPlaybackAgent
                 AudioTrack t = new AudioTrack();
                 t = _playList[AppSettings.NowplayingIndexSetting];
 
+                int i = AppSettings.NowplayingIndexSetting;
+
+                //t.Tag = i.ToString();
+
                 //t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
 
                 BackgroundAudioPlayer.Instance.Track = t;
                 //BackgroundAudioPlayer.Instance.Play();
             }
 
-            //saveCurrentIndex();
+            saveCurrentIndex();
 
             return;
         }
@@ -206,9 +210,14 @@ namespace MyAudioPlaybackAgent
             }
             else
             {
+
+                inTrack.Tag = ((float)AppSettings.NowplayingIndexSetting).ToString();
+
                 BackgroundAudioPlayer.Instance.Track = inTrack;
                 //BackgroundAudioPlayer.Instance.Play();
             }
+
+            saveCurrentIndex();
 
             return;
         }
@@ -360,8 +369,17 @@ namespace MyAudioPlaybackAgent
             AudioTrack track = null;
 
             _playList = getCurrentList();
+            int i;
 
-            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            {
+                AppSettings.NowplayingIndexSetting = i;
+            }
+            else
+            {
+                AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+            }
+
 
             if (_playList.Count <= AppSettings.NowplayingIndexSetting)
             {
@@ -370,6 +388,7 @@ namespace MyAudioPlaybackAgent
             else
             {
                 track = _playList[AppSettings.NowplayingIndexSetting];
+                //track.Tag = ((float)AppSettings.NowplayingIndexSetting).ToString();
             }
 
             saveCurrentIndex();
@@ -394,15 +413,25 @@ namespace MyAudioPlaybackAgent
             AudioTrack track = null;
 
             _playList = getCurrentList();
+            int i;
 
-            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            {
+                AppSettings.NowplayingIndexSetting = i - 2;
+            }
+            else
+            {
+                AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+            }
+
 
             if (0 > AppSettings.NowplayingIndexSetting)
             {
                 AppSettings.NowplayingIndexSetting = _playList.Count - 1;
             }
-            
+
             track = _playList[AppSettings.NowplayingIndexSetting];
+            //track.Tag = ((float)AppSettings.NowplayingIndexSetting).ToString();
 
             saveCurrentIndex();
 
@@ -449,8 +478,16 @@ namespace MyAudioPlaybackAgent
         private static void PlayNextTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
+            int i;
 
-            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            {
+                AppSettings.NowplayingIndexSetting = i;
+            }
+            else
+            {
+                AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+            }
 
             if (_playList.Count <= AppSettings.NowplayingIndexSetting)
             {
@@ -465,8 +502,17 @@ namespace MyAudioPlaybackAgent
         private static void PlayPreviousTrack(BackgroundAudioPlayer player)
         {
             _playList = getCurrentList();
+            int i;
 
-            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            {
+                AppSettings.NowplayingIndexSetting = i-2;
+            }
+            else
+            {
+                AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+            }
+
 
             if (0 > AppSettings.NowplayingIndexSetting)
             {
@@ -483,6 +529,8 @@ namespace MyAudioPlaybackAgent
             // Sets the track to play. When the TrackReady state is received, 
             // playback begins from the OnPlayStateChanged handler.
             player.Track = _playList[AppSettings.NowplayingIndexSetting];
+
+            saveCurrentIndex();
         }
 
 
@@ -613,7 +661,7 @@ namespace MyAudioPlaybackAgent
         private static void saveCurrentIndex()
         {
             //AppSettingsModel AppSettings = new AppSettingsModel();
-            //AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting;
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 0;
 
             return;
         }
@@ -623,7 +671,7 @@ namespace MyAudioPlaybackAgent
             //AppSettings.NowplayingIndexSetting = inIndex;
             
             //AppSettingsModel AppSettings = new AppSettingsModel();
-            //AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting;
+            AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting+0;
 
             return;
         }

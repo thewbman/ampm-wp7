@@ -34,6 +34,7 @@
                     <TextBlock x:Name="songName" Text="song name" FontSize="{StaticResource PhoneFontSizeExtraLarge}" />
                     <TextBlock x:Name="albumName" Text="album name" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
                 </StackPanel>
+                
             </controls:PivotItem>
 
 

@@ -63,8 +63,19 @@ namespace AmpM
                 //App.ViewModel.AppSettings.NowplayingIndexSetting = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag);
 
                 int newIndex = App.ViewModel.AppSettings.NowplayingIndexSetting + 1;
-                songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
+                /*
+                //int newIndex = MyAudioPlaybackAgent.AudioPlayer.AppSettings.NowplayingIndexSetting + 1;
+                int SongIndex;
+                int newIndex;
+
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out SongIndex))
+                    newIndex = SongIndex + 1;
+                else
+                    newIndex = 1;
+                */
                 
+                //songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
+                songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
 
             }
             else
@@ -92,6 +103,8 @@ namespace AmpM
                     break;
             }
 
+            //MyAudioPlaybackAgent.AudioPlayer.AppSettings.NowplayingIndexSetting = MyAudioPlaybackAgent.AudioPlayer.AppSettings.NowplayingIndexSetting + 0;
+
             if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.Nowplaying.Count > App.ViewModel.AppSettings.NowplayingIndexSetting))
             {
 
@@ -104,7 +117,19 @@ namespace AmpM
                 //App.ViewModel.AppSettings.NowplayingIndexSetting = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag);
 
                 int newIndex = App.ViewModel.AppSettings.NowplayingIndexSetting + 1;
-                songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
+                /*
+                //int newIndex = MyAudioPlaybackAgent.AudioPlayer.AppSettings.NowplayingIndexSetting + 1;
+                int SongIndex;
+                int newIndex;
+
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out SongIndex))
+                    newIndex = SongIndex + 1;
+                else
+                    newIndex = 1;
+                */
+
+                //songCount.Text = newIndex + "/" + App.ViewModel.Nowplaying.Count;
+                songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
             }
             else
             {
@@ -143,7 +168,7 @@ namespace AmpM
             App.ViewModel.saveNowplaying();
             App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
 
-            nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
+            nowplayingList.ItemsSource = null;
         }
 
         private void songSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

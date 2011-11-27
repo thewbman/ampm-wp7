@@ -520,6 +520,22 @@ namespace MyAudioPlaybackAgent
             }
         }
 
+        private int _NowplayingIndex = 0;
+        public int NowplayingIndex
+        {
+            get
+            {
+                return _NowplayingIndex;
+            }
+            set
+            {
+                if (value != _NowplayingIndex)
+                {
+                    _NowplayingIndex = value;
+                    NotifyPropertyChanged("NowplayingIndex");
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

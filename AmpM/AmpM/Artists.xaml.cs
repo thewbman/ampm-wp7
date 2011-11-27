@@ -39,6 +39,8 @@ namespace AmpM
         public ObservableCollection<DataItemViewModel> _items;
         public ObservableCollection<DataItemViewModel> _searchItems;
 
+        private DataItemViewModel _randomArtist;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
@@ -415,5 +417,42 @@ namespace AmpM
         {
             this.GetArtists();
         }
+
+        private void artistsPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateRandom();
+
+        }
+
+        private void nextRandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            updateRandom();
+
+        }
+
+
+
+        private void updateRandom()
+        {
+            if (_items.Count > 1)
+            {
+                Random r = new Random();
+
+                _randomArtist = _items[r.Next(0, _items.Count - 1)];
+
+                artistName.Text = _randomArtist.ArtistName;
+                artistAlbums .Text = _randomArtist.ArtistAlbums + " albums";
+                artistTracks.Text = _randomArtist.ArtistTracks + " tracks";
+            }
+        }
+
+        private void randomArtist_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedArtist = _randomArtist;
+
+            NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + _randomArtist.ArtistId, UriKind.Relative));
+
+        }
+
     }
 }
