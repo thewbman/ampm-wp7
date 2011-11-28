@@ -46,6 +46,7 @@
                             <TextBlock Text="{Binding Name}" Grid.Column="0" TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
                             <TextBlock Text="{Binding Content}" Grid.Column="1" TextWrapping="NoWrap" Margin="0,20,0,0" Style="{StaticResource PhoneTextSubtleStyle}" TextAlignment="Right" HorizontalAlignment="Right" />
                         </Grid>
+                        
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 

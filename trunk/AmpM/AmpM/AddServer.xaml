@@ -32,17 +32,18 @@
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer Grid.Row="1">
-        <StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
-            <TextBlock Text="name" FontSize="{StaticResource PhoneFontSizeLarge}" />
-            <TextBox x:Name="namebox" />
-            <TextBlock Text="server" FontSize="{StaticResource PhoneFontSizeLarge}" />
-            <TextBlock Text="must include 'http://' and the 'ampache' directory" />
-            <TextBox x:Name="serverbox" InputScope="Url" />
-            <TextBlock Text="username" FontSize="{StaticResource PhoneFontSizeLarge}" />
-            <TextBox x:Name="usernamebox" />
-            <TextBlock Text="password" FontSize="{StaticResource PhoneFontSizeLarge}" />
-            <TextBox x:Name="passwordbox" />
-        </StackPanel>
+            <StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
+                <TextBlock Text="name" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                <TextBox x:Name="namebox" />
+                <TextBlock Text="server" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                <TextBlock Text="must include 'http://' and the 'ampache' directory" />
+                <TextBox x:Name="serverbox" InputScope="Url" />
+                <TextBlock Text="username" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                <TextBox x:Name="usernamebox" />
+                <TextBlock Text="password" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                <TextBox x:Name="passwordbox" />
+                <TextBlock Height="350" />
+            </StackPanel>
         </ScrollViewer>
     </Grid>
  

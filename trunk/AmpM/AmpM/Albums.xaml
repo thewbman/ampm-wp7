@@ -15,7 +15,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     xmlns:local="clr-namespace:AmpM"
-    local:TiltEffect.IsTiltEnabled="True"
+    
     >
 
 
@@ -27,7 +27,7 @@
             </Border>
         </DataTemplate>
 
-        <DataTemplate x:Key="albumItemTemplate">
+        <DataTemplate x:Key="albumItemTemplate" local:TiltEffect.IsTiltEnabled="True">
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                 <StackPanel >
@@ -56,19 +56,20 @@
 
         <controls:Pivot x:Name="albumsPivot" Title="ALBUMS" Foreground="White" SelectionChanged="albumsPivot_SelectionChanged">
 
-            <controls:PivotItem x:Name="albumsAlphaPivot" Header="name" Foreground="White">
+            <controls:PivotItem x:Name="albumsAlphaPivot" Header="name" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
                 <toolkit:LongListSelector x:Name="AlbumsLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
                      GroupItemTemplate="{StaticResource albumItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="AlbumsLL_SelectionChanged">
+                    
                 </toolkit:LongListSelector>
 
             </controls:PivotItem>
 
 
-            <controls:PivotItem x:Name="albumsArtistPivot" Header="artist" Foreground="White">
+            <controls:PivotItem x:Name="albumsArtistPivot" Header="artist" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
                 <toolkit:LongListSelector x:Name="AlbumsArtistLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
@@ -80,7 +81,7 @@
             </controls:PivotItem>
 
 
-            <controls:PivotItem x:Name="albumsYearPivot" Header="year" Foreground="White">
+            <controls:PivotItem x:Name="albumsYearPivot" Header="year" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
                 <toolkit:LongListSelector x:Name="AlbumsYearLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
@@ -103,8 +104,8 @@
                 </StackPanel>
 
             </controls:PivotItem>
-            
-            <controls:PivotItem x:Name="albumsSearchPivot" Header="search" Foreground="White">
+
+            <controls:PivotItem x:Name="albumsSearchPivot" Header="search" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

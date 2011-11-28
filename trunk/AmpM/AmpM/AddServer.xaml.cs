@@ -57,6 +57,8 @@ namespace AmpM
         private void cancelButton_Click(object sender, EventArgs e)
         {
             AllowSave = false;
+
+            NavigationService.GoBack();
         }
     }
 }
