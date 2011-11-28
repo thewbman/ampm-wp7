@@ -48,7 +48,8 @@ namespace AmpM
 
                 for (int i = 0; i < toRemove; i++)
                 {
-                    NavigationService.RemoveBackEntry();
+                    //dont get rid of Home
+                    if (NavigationService.BackStack.Count() > 1) NavigationService.RemoveBackEntry();
                 }
             }
 
@@ -203,6 +204,169 @@ namespace AmpM
         private void nextButton_Click(object sender, EventArgs e)
         {
             BackgroundAudioPlayer.Instance.SkipNext();
+        }
+
+        private void ContextMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            nowplayingList.IsEnabled = false;
+        }
+
+        private void ContextMenu_Unloaded(object sender, RoutedEventArgs e)
+        {
+            nowplayingList.IsEnabled = true;
+        }
+
+        private void removeSingleSong_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            //string s = Uri.EscapeUriString(BackgroundAudioPlayer.Instance.Track.Source.ToString());
+            
+            int CurrentSongIndex = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag) - 1;
+            int SelectedIndex = -1;
+            int i = 0;
+
+            foreach (DataItemViewModel d in App.ViewModel.Nowplaying)
+            {
+                if (selectedItem == d)
+                    SelectedIndex = i;
+
+                i++;
+            }
+
+            if (CurrentSongIndex == SelectedIndex)
+            {
+                MessageBox.Show("You cannot remove the current song");
+            }
+            else if(CurrentSongIndex < SelectedIndex)
+            {
+                //MessageBox.Show("selectedItem.SongUrl: " + selectedItem.SongUrl);
+                //MessageBox.Show("BackgroundAudioPlayer.Instance.Track.Source.ToString(): " + s);
+                
+                App.ViewModel.Nowplaying.Remove(selectedItem);
+
+                updateNowplaying(CurrentSongIndex);
+            }
+            else if (CurrentSongIndex > SelectedIndex)
+            {
+                //MessageBox.Show("selectedItem.SongUrl: " + selectedItem.SongUrl);
+                //MessageBox.Show("BackgroundAudioPlayer.Instance.Track.Source.ToString(): " + s);
+
+                App.ViewModel.Nowplaying.Remove(selectedItem);
+
+                updateNowplaying(CurrentSongIndex-1);
+            }
+
+        }
+
+        private void removeAbove_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+
+            int CurrentSongIndex = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag) - 1;
+            int SelectedIndex = -1;
+            int i = 0;
+
+            foreach (DataItemViewModel d in App.ViewModel.Nowplaying)
+            {
+                if (selectedItem == d)
+                    SelectedIndex = i;
+
+                i++;
+            }
+
+            if (CurrentSongIndex >= SelectedIndex)
+            {
+                List<DataItemViewModel> newSongs = new List<DataItemViewModel>();
+
+                for (int n = SelectedIndex; n < App.ViewModel.Nowplaying.Count; n++)
+                {
+                    newSongs.Add(App.ViewModel.Functions.CloneItem(App.ViewModel.Nowplaying[n]));
+                }
+
+                App.ViewModel.Nowplaying.Clear();
+
+                foreach(DataItemViewModel s in newSongs)
+                {
+                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+            }
+            else
+            {
+                MessageBox.Show("You cannot remove the current song");
+            }
+
+            updateNowplaying(CurrentSongIndex-SelectedIndex);
+        }
+
+        private void removeBelow_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            DataItemViewModel selectedItem = menu.DataContext as DataItemViewModel;
+
+            if (selectedItem == null)
+                return;
+            
+            int CurrentSongIndex = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag) - 1;
+            int SelectedIndex = -1;
+            int i = 0;
+
+            foreach (DataItemViewModel d in App.ViewModel.Nowplaying)
+            {
+                if (selectedItem == d)
+                    SelectedIndex = i;
+
+                i++;
+            }
+
+            if (CurrentSongIndex <= SelectedIndex)
+            {
+                List<DataItemViewModel> newSongs = new List<DataItemViewModel>();
+
+                for (int n = 0; n <= SelectedIndex; n++)
+                {
+                    newSongs.Add(App.ViewModel.Functions.CloneItem(App.ViewModel.Nowplaying[n]));
+                }
+
+                App.ViewModel.Nowplaying.Clear();
+
+                foreach (DataItemViewModel s in newSongs)
+                {
+                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                }
+            }
+            else
+            {
+                MessageBox.Show("You cannot remove the current song");
+            }
+
+            updateNowplaying(CurrentSongIndex);
+        }
+
+        private void updateNowplaying(int inNewIndex)
+        {
+            nowplayingList.ItemsSource = null;
+
+            int i = inNewIndex + 1;
+
+            AudioTrack track = BackgroundAudioPlayer.Instance.Track;
+            track.BeginEdit();
+            track.Tag = i.ToString();
+            track.EndEdit();
+
+            App.ViewModel.AppSettings.NowplayingIndexSetting = inNewIndex;
+            App.ViewModel.saveNowplaying();
+
+            songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
+            nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
         }
 
     }

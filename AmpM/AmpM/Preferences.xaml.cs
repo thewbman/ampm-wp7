@@ -31,18 +31,26 @@ namespace AmpM
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            PlayAdd.IsChecked = App.ViewModel.AppSettings.DefaultPlayAddSetting;
-            PlayShuffle.IsChecked = App.ViewModel.AppSettings.DefaultPlayShuffleSetting;
-            PlayAll.IsChecked = App.ViewModel.AppSettings.DefaultPlayAllSetting;
+            //PlayAdd.IsChecked = App.ViewModel.AppSettings.DefaultPlayAddSetting;
+            //PlayShuffle.IsChecked = App.ViewModel.AppSettings.DefaultPlayShuffleSetting;
+            //PlayAll.IsChecked = App.ViewModel.AppSettings.DefaultPlayAllSetting;
+
+            TogglePlayAdd.IsChecked = App.ViewModel.AppSettings.DefaultPlayAddSetting;
+            TogglePlayShuffle.IsChecked = App.ViewModel.AppSettings.DefaultPlayShuffleSetting;
+            TogglePlayAll.IsChecked = App.ViewModel.AppSettings.DefaultPlayAllSetting;
 
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
 
-            App.ViewModel.AppSettings.DefaultPlayAddSetting = (bool)PlayAdd.IsChecked;
-            App.ViewModel.AppSettings.DefaultPlayShuffleSetting = (bool)PlayShuffle.IsChecked;
-            App.ViewModel.AppSettings.DefaultPlayAllSetting = (bool)PlayAll.IsChecked;
+            //App.ViewModel.AppSettings.DefaultPlayAddSetting = (bool)PlayAdd.IsChecked;
+            //App.ViewModel.AppSettings.DefaultPlayShuffleSetting = (bool)PlayShuffle.IsChecked;
+            //App.ViewModel.AppSettings.DefaultPlayAllSetting = (bool)PlayAll.IsChecked;
+
+            App.ViewModel.AppSettings.DefaultPlayAddSetting = (bool)TogglePlayAdd.IsChecked;
+            App.ViewModel.AppSettings.DefaultPlayShuffleSetting = (bool)TogglePlayShuffle.IsChecked;
+            App.ViewModel.AppSettings.DefaultPlayAllSetting = (bool)TogglePlayAll.IsChecked;
 
             base.OnNavigatedFrom(e);
         }

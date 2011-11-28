@@ -15,7 +15,6 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     xmlns:local="clr-namespace:AmpM"
-    local:TiltEffect.IsTiltEnabled="True"
     >
 
 
@@ -57,7 +56,7 @@
 
         <controls:Pivot x:Name="artistsPivot" Title="ARTISTS" Foreground="White" SelectionChanged="artistsPivot_SelectionChanged">
 
-            <controls:PivotItem x:Name="artsitsAlphaPivot" Header="name" Foreground="White">
+            <controls:PivotItem x:Name="artsitsAlphaPivot" Header="name" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
                 <toolkit:LongListSelector x:Name="ArtistsLL"
                      GroupHeaderTemplate="{StaticResource artistGroupHeader}"
@@ -78,8 +77,8 @@
                 </StackPanel>
 
             </controls:PivotItem>
-            
-            <controls:PivotItem x:Name="artistsSearchPivot" Header="search" Foreground="White">
+
+            <controls:PivotItem x:Name="artistsSearchPivot" Header="search" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

@@ -42,14 +42,18 @@ namespace AmpM
         {
             this.Questions.Clear();
 
-
+            this.Questions.Add(new NameContentViewModel() { Name = "What is Ampache?", Content = "Ampache is a web based audio/video streaming application and file manager allowing you to access your music & videos from anywhere, using almost any internet enabled device." });
+            this.Questions.Add(new NameContentViewModel() { Name = "How is Ampache different than the 'cloud' music players from Google, Amazon and others?", Content = "With Ampache all of your music is streamed directly from your server to your device.  The music is not copied to any other server in the cloud.  There are no restrictions on the number or length of songs you can have and there is never any cost for the service itself.  And it is really easy to share your music collection with others." });
+            this.Questions.Add(new NameContentViewModel() { Name = "What does this app do?", Content = "AmpM is a WP7 app that allows you to play back music from a Ampache server." });
+            this.Questions.Add(new NameContentViewModel() { Name = "How do I get started?", Content = "You need to have Ampache up and running on your computer for this app to work.  Once you have Ampache setup you will need to setup the ACL to allow the app access to your library.  Setting up an Ampache system is not hard process, but it is not a trivial task either.  You should make sure everything is working fine on your computer before trying to use this app." });
+            this.Questions.Add(new NameContentViewModel() { Name = "Do I have to keep the app open to play music?", Content = "No.  You should be able to close the app fully and have your music continue to play through the full 'now playing' list." });
             this.Questions.Add(new NameContentViewModel() { Name = "What I have trouble getting this app to work?", Content = "Try emailing the developer.  The contact information is available to right." });
 
             QuestionListBox.ItemsSource = this.Questions;
 
             this.Support.Clear();
 
-            this.Support.Add(new NameContentViewModel() { Name = "email", Content = "ampachexl.help@gmail.com" });
+            this.Support.Add(new NameContentViewModel() { Name = "email", Content = "ampm.wp7@gmail.com" });
             this.Support.Add(new NameContentViewModel() { Name = "twitter", Content = "@webmyth_dev" });
             this.Support.Add(new NameContentViewModel() { Name = "app homepage", Content = "http://code.google.com/p/ampm-wp7" });
             this.Support.Add(new NameContentViewModel() { Name = "leave review", Content = "" });
@@ -61,7 +65,7 @@ namespace AmpM
         private void email_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             EmailComposeTask emailcomposer = new EmailComposeTask();
-            emailcomposer.To = "ampachexl.help@gmail.com";
+            emailcomposer.To = "ampm.wp7@gmail.com";
             emailcomposer.Subject = "AmpM Help";
             emailcomposer.Show();
 

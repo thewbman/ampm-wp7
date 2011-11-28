@@ -45,6 +45,13 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu Loaded="ContextMenu_Loaded" Unloaded="ContextMenu_Unloaded">
+                                        <toolkit:MenuItem x:Name="removeSingleSong" Header="remove this song" Click="removeSingleSong_Click" />
+                                        <toolkit:MenuItem x:Name="removeAbove" Header="remove all above this" Click="removeAbove_Click" />
+                                        <toolkit:MenuItem x:Name="removeBelow" Header="remove all below this" Click="removeBelow_Click" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                                 <StackPanel >
                                     <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
