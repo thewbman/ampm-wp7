@@ -51,7 +51,7 @@ namespace AmpM
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string inValue = "";
+            string inValue = "", inValue2 = "";
             if (NavigationContext.QueryString.TryGetValue("Remove", out inValue))
             {
                 int toRemove = int.Parse(inValue);
@@ -60,7 +60,9 @@ namespace AmpM
                 {
                     NavigationService.RemoveBackEntry();
                 }
-            }
+
+                
+            } 
             
             SelectedHost = App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting];
 
@@ -71,7 +73,7 @@ namespace AmpM
 
             _items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
 
-
+            
 
             //if ((App.ViewModel.AppSettings.SessionExpireSetting == "1900-01-01T00:00:00") || (App.ViewModel.Connected == false))
             if ((App.ViewModel.AppSettings.SessionExpireSetting == "1900-01-01T00:00:00"))
@@ -80,6 +82,23 @@ namespace AmpM
 
                 try
                 {
+
+                    performanceProgressBarCustomized.IsIndeterminate = true;
+
+                    _items[1].Name = "";
+                    _items[2].Name = "";
+                    _items[3].Name = "";
+                    _items[4].Name = "";
+                    _items[5].Name = "";
+                    _items[6].Name = "";
+
+                    _items[1].Content = "";
+                    _items[2].Content = "";
+                    _items[3].Content = "";
+                    _items[4].Content = "";
+                    _items[5].Content = "";
+                    _items[6].Content = "";
+
                     HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheConnectUrl()));
                     webRequest.BeginGetResponse(new AsyncCallback(ConnectCallback), webRequest);
                 }
@@ -95,12 +114,26 @@ namespace AmpM
             }
             else
             {
+                performanceProgressBarCustomized.IsIndeterminate = false;
+
                 _items[2].Content = App.ViewModel.AppSettings.SongsCountSetting.ToString();
                 _items[3].Content = App.ViewModel.AppSettings.AlbumsCountSetting.ToString();
                 _items[4].Content = App.ViewModel.AppSettings.ArtistsCountSetting.ToString();
                 //
                 _items[6].Content = App.ViewModel.AppSettings.PlaylistsCountSetting.ToString();
                 //_items[7].Content = App.ViewModel.AppSettings.VideosCountSetting.ToString();
+
+                _items[1].Name = "search";
+                _items[2].Name = "songs";
+                _items[3].Name = "albums";
+                _items[4].Name = "artists";
+                _items[5].Name = "genres";
+                _items[6].Name = "playlists";
+            }
+
+            if (NavigationContext.QueryString.TryGetValue("Ping", out inValue2))
+            {
+                if (inValue2 == "true") this.Ping();
             }
         }
 
@@ -124,7 +157,7 @@ namespace AmpM
                     MessageBox.Show("Failed to get handshake response: " + ex.ToString(), "Error", MessageBoxButton.OK);
 
                     App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
-                    App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+                    //App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
 
                     NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
                 });
@@ -158,7 +191,7 @@ namespace AmpM
                         MessageBox.Show("Did not get successfull response: " + resultString, "Error", MessageBoxButton.OK);
 
                         App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
-                        App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
+                        //App.ViewModel.AppSettings.StreamSessionExpireSetting = "1900-01-01T00:00:00";
 
                         NavigationService.Navigate(new Uri("/MainPage.xaml?Remove=1", UriKind.Relative));
                     });
@@ -179,6 +212,13 @@ namespace AmpM
                         //genres
                         //playlists
                         //videos
+
+                        _items[1].Name = "search";
+                        _items[2].Name = "songs";
+                        _items[3].Name = "albums";
+                        _items[4].Name = "artists";
+                        _items[5].Name = "genres";
+                        _items[6].Name = "playlists";
 
                         //
                         //
@@ -203,9 +243,11 @@ namespace AmpM
                         App.ViewModel.AppSettings.PlaylistsCountSetting = int.Parse(xdoc.Element("root").Element("playlists").Value);
                         App.ViewModel.AppSettings.VideosCountSetting = int.Parse(xdoc.Element("root").Element("videos").Value);
 
+                        performanceProgressBarCustomized.IsIndeterminate = false;
+
+                        this.Ping();
                     });
 
-                    this.Ping();
                 }
 
             }
@@ -273,7 +315,7 @@ namespace AmpM
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("ping xml error: " + ex.ToString());
+                MessageBox.Show("ping xml error: " + ex.ToString());
 
                 App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
             }

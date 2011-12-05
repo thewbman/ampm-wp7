@@ -36,66 +36,19 @@
                 </toolkit:ContextMenuService.ContextMenu>
                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                 <StackPanel >
-                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="albumItemTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
-                <StackPanel >
-                    <TextBlock Text="{Binding AlbumName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextLargeStyle}" HorizontalAlignment="Left" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding AlbumTracks}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="artistItemTemplate">
-            <StackPanel>
-                <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ArtistAlbums}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text=" albums" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ArtistTracks}"  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                </StackPanel>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="tagItemTemplate">
-            <StackPanel >
-                <TextBlock Text="{Binding TagName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding TagDetails}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                </StackPanel>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="playlistItemTemplate">
-            <StackPanel >
-                <TextBlock Text="{Binding PlaylistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding PlaylistItems}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text=" items" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                </StackPanel>
-            </StackPanel>
-        </DataTemplate>
-        
         <DataTemplate x:Key="songItemTemplate">
             <StackPanel Orientation="Horizontal">
                 <toolkit:ContextMenuService.ContextMenu>
@@ -110,23 +63,71 @@
                 </toolkit:ContextMenuService.ContextMenu>
                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                 <StackPanel >
-                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="albumItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
+                <StackPanel >
+                    <TextBlock Text="{Binding AlbumName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding AlbumTracks}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                        <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate x:Key="artistItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0"  Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ArtistAlbums}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" albums" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ArtistTracks}"  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="tagItemTemplate">
+            <StackPanel >
+                <TextBlock Text="{Binding TagName}"  TextWrapping="NoWrap" Margin="20,0,0,0"  Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding TagDetails}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="playlistItemTemplate">
+            <StackPanel >
+                <TextBlock Text="{Binding PlaylistName}"  TextWrapping="NoWrap" Margin="20,0,0,0"  Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding PlaylistItems}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" items" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
+
     </phone:PhoneApplicationPage.Resources>
 
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="73"/>
@@ -135,26 +136,35 @@
 
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="0">
-            <TextBox x:Name="searchBox" Width="390" />
+            <TextBox x:Name="searchBox" Width="390"  BorderBrush="White"  Foreground="#262e98" Background="Silver" />
             <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
         </StackPanel>
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Grid.Row="1" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
-        <controls:Pivot x:Name="searchPivot" Title="SEARCH" Grid.Row="1">
-            
-            
-            <controls:PivotItem x:Name="allPivot" Header="everything">
+        <controls:Pivot x:Name="searchPivot" Title="SEARCH" Grid.Row="1" Foreground="White">
+
+            <controls:PivotItem x:Name="allPivot" Header="everything" Foreground="White" >
 
                 <toolkit:LongListSelector x:Name="AllLL"
                      ItemTemplate="{StaticResource allItemTemplate}" 
                      ShowListFooter="False" ShowListHeader="False" 
                      SelectionChanged="AllLL_SelectionChanged">
                 </toolkit:LongListSelector>
-                
+
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="albumsPivot" Header="albums">
+            <controls:PivotItem x:Name="songsPivot" Header="songs" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="SongsLL"
+                     ItemTemplate="{StaticResource songItemTemplate}" 
+                     ShowListFooter="False" ShowListHeader="False" 
+                     SelectionChanged="SongsLL_SelectionChanged">
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="albumsPivot" Header="albums" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="AlbumsLL"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
@@ -164,7 +174,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="artistsPivot" Header="artists">
+            <controls:PivotItem x:Name="artistsPivot" Header="artists" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="ArtistsLL"
                      ItemTemplate="{StaticResource artistItemTemplate}" 
@@ -174,7 +184,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="tagsPivot" Header="genres">
+            <controls:PivotItem x:Name="tagsPivot" Header="genres" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="TagsLL"
                      ItemTemplate="{StaticResource tagItemTemplate}" 
@@ -184,22 +194,12 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="playlistsPivot" Header="playlists">
+            <controls:PivotItem x:Name="playlistsPivot" Header="playlists" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="PlaylistsLL"
                      ItemTemplate="{StaticResource playlistItemTemplate}" 
                      ShowListFooter="False" ShowListHeader="False" 
                      SelectionChanged="PlaylistsLL_SelectionChanged">
-                </toolkit:LongListSelector>
-                
-            </controls:PivotItem>
-
-            <controls:PivotItem x:Name="songsPivot" Header="songs">
-
-                <toolkit:LongListSelector x:Name="SongsLL"
-                     ItemTemplate="{StaticResource songItemTemplate}" 
-                     ShowListFooter="False" ShowListHeader="False" 
-                     SelectionChanged="SongsLL_SelectionChanged">
                 </toolkit:LongListSelector>
                 
             </controls:PivotItem>

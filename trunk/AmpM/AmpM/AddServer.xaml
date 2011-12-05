@@ -18,7 +18,7 @@
     >
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -26,29 +26,29 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="AmpM" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="add server" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="AmpM" Style="{StaticResource PhoneTextNormalStyle}" Foreground="White"/>
+            <TextBlock x:Name="PageTitle" Text="add server" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Foreground="White"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ContentPanel" Margin="12,0,12,0">
-                <TextBlock Text="name" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                <TextBox x:Name="namebox" />
-                <TextBlock Text="server" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                <TextBlock Text="must include 'http://' and the 'ampache' directory" />
-                <TextBox x:Name="serverbox" InputScope="Url" />
-                <TextBlock Text="username" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                <TextBox x:Name="usernamebox" />
-                <TextBlock Text="password" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                <TextBox x:Name="passwordbox" />
+                <TextBlock Text="name" FontSize="{StaticResource PhoneFontSizeLarge}" Foreground="White" />
+                <TextBox x:Name="namebox" BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+                <TextBlock Text="server" FontSize="{StaticResource PhoneFontSizeLarge}" Foreground="White" />
+                <TextBlock Text="must include 'http://' and the 'ampache' directory" Foreground="Silver" />
+                <TextBox x:Name="serverbox" InputScope="Url" BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+                <TextBlock Text="username" FontSize="{StaticResource PhoneFontSizeLarge}" Foreground="White" />
+                <TextBox x:Name="usernamebox" BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+                <TextBlock Text="password" FontSize="{StaticResource PhoneFontSizeLarge}" Foreground="White" />
+                <PasswordBox x:Name="passwordbox" BorderBrush="White"  Foreground="#262e98" Background="Silver" />
                 <TextBlock Height="350" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" ForegroundColor="White" BackgroundColor="Black">
             <shell:ApplicationBarIconButton x:Name="saveButton" IconUri="/Images/appbar.save.rest.png" Text="save" Click="saveButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="cancelButton" IconUri="/Images/appbar.delete.rest.png" Text="cancel" Click="cancelButton_Click"/>
         </shell:ApplicationBar>

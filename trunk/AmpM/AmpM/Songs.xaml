@@ -68,21 +68,21 @@
                 </toolkit:ContextMenuService.ContextMenu>
                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                 <StackPanel >
-                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding SongName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Artist: "  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding ArtistName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="Album: "  TextWrapping="NoWrap" Margin="60,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
+                        <TextBlock Text="{Binding AlbumName}" TextWrapping="NoWrap" Margin="0,0,0,0"  Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}"  />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="songItemHeader">
-            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+            <Border Background="#25B8D9" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
                 <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
             </Border>
         </DataTemplate>
@@ -90,20 +90,22 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
         <controls:Pivot x:Name="songsPivot" Title="SONGS" Foreground="White">
 
             <controls:PivotItem x:Name="songsAlphaPivot" Header="songs" Foreground="White">
-
-                <toolkit:LongListSelector x:Name="SongsLL"
+                <StackPanel>
+                    <TextBlock Text="loading all songs is not currently supported" />
+                    <toolkit:LongListSelector x:Name="SongsLL"
                      GroupHeaderTemplate="{StaticResource songGroupHeader}"
                      ItemTemplate="{StaticResource songItemTemplate}" 
                      GroupItemTemplate="{StaticResource songItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="SongsLL_SelectionChanged">
-                </toolkit:LongListSelector>
+                    </toolkit:LongListSelector>
+                </StackPanel>
 
             </controls:PivotItem>
 
@@ -116,7 +118,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBox x:Name="searchBox" Width="370" />
+                        <TextBox x:Name="searchBox" Width="370"  BorderBrush="White"  Foreground="#262e98" Background="Silver" />
                         <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
                     </StackPanel>
 
