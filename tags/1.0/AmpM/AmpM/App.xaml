@@ -1,0 +1,28 @@
+﻿<Application 
+    x:Class="AmpM.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
+
+    <!--Application Resources-->
+    <Application.Resources>
+        <ImageBrush x:Name="BackgroundImageBrush" ImageSource="Images/130031.png" />
+        <SolidColorBrush x:Name="MenuImageBrush" Color="#231041" />
+        <Style x:Name="MainText" TargetType="TextBlock" >
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <SolidColorBrush Color="White" x:Key="MainColorBrush" />
+        <Style x:Name="SecondaryText" TargetType="TextBlock" >
+            <Setter Property="Foreground" Value="Silver" />
+        </Style>
+    </Application.Resources>
+
+    <Application.ApplicationLifetimeObjects>
+        <!--Required object that handles lifetime events for the application-->
+        <shell:PhoneApplicationService 
+            Launching="Application_Launching" Closing="Application_Closing" 
+            Activated="Application_Activated" Deactivated="Application_Deactivated"/>
+    </Application.ApplicationLifetimeObjects>
+
+</Application>

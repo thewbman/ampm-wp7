@@ -1,0 +1,6 @@
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.pdb
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Debug\MyAudioPlaybackAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Debug\MyAudioPlaybackAgent.pdb
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\Coding4Fun.Phone.Controls.dll
