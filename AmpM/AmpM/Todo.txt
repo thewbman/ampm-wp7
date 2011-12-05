@@ -5,6 +5,6 @@
  - zune integration
  - last.fm
  - local playlists
- - seperate album/playlist details
  - all songs
  - ads
+ - album random select album or artist

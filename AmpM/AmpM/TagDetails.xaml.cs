@@ -511,7 +511,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)albumList.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             albumList.SelectedItem = null;
 

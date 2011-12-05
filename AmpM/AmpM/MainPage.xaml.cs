@@ -81,29 +81,32 @@ namespace AmpM
             // the schedule
             if (periodicTask != null)
             {
-                ScheduledActionService.Remove(periodicTaskName);
+                //ScheduledActionService.Remove(periodicTaskName);
             }
-
-            periodicTask = new PeriodicTask(periodicTaskName);
-
-            periodicTask.Description = "Pings the Ampache server to keep you connected.";
-
-            try
+            else
             {
-                ScheduledActionService.Add(periodicTask);
 
-                //ScheduledActionService.LaunchForTest(periodicTaskName, TimeSpan.FromSeconds(5));
+                periodicTask = new PeriodicTask(periodicTaskName);
 
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message.Contains("BNS Error: The action is disabled"))
+                periodicTask.Description = "Pings the Ampache server to keep you connected.";
+
+                try
                 {
-                    MessageBox.Show("Background agents for this application have been disabled by the user.");
+                    ScheduledActionService.Add(periodicTask);
+
+                    //ScheduledActionService.LaunchForTest(periodicTaskName, TimeSpan.FromSeconds(5));
+
                 }
-                else
+                catch (InvalidOperationException exception)
                 {
-                    MessageBox.Show("background agent error: "+exception.ToString());
+                    if (exception.Message.Contains("BNS Error: The action is disabled"))
+                    {
+                        MessageBox.Show("Background agents for this application have been disabled by the user.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("background agent error: " + exception.ToString());
+                    }
                 }
             }
 
@@ -122,7 +125,7 @@ namespace AmpM
                 if (t.TotalSeconds > 0)
                 {
 
-                    NavigationService.Navigate(new Uri("/Home.xaml?Remove=1", UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Home.xaml?Remove=1&Ping=true", UriKind.Relative));
 
                     //App.ViewModel.AppSettings.AuthSetting = App.ViewModel.AppSettings.AuthSetting;
                 }

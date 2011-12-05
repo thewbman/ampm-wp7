@@ -12,7 +12,7 @@ using System.Net;
 using System.Xml.Linq;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
-using Coding4Fun.Phone.Controls;
+//using Coding4Fun.Phone.Controls;
 
 namespace MyAudioPlaybackAgent
 {
@@ -689,12 +689,14 @@ namespace MyAudioPlaybackAgent
 
         private static void BannerMessage(string inMessage)
         {
-            ToastPrompt toast = new ToastPrompt();
+            /*
+             * ToastPrompt toast = new ToastPrompt();
 
             toast.Title = inMessage;
             toast.TextOrientation = System.Windows.Controls.Orientation.Horizontal;
 
             toast.Show();
+             * */
         }
     }
 }

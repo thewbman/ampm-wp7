@@ -96,39 +96,39 @@ namespace AmpM
                     webRequest0.BeginGetResponse(new AsyncCallback(AllCallback), webRequest0);
                     break;
                 case 1:
+                    //songs
+                    SongsLL.ItemsSource = null;
+                    _songItems = new ObservableCollection<DataItemViewModel>();
+                    HttpWebRequest webRequest5 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("songs", "&filter=" + searchBox.Text)));
+                    webRequest5.BeginGetResponse(new AsyncCallback(SongsCallback), webRequest5);
+                    break;
+                case 2:
                     //albums
                     AlbumsLL.ItemsSource = null;
                     _albumItems = new ObservableCollection<DataItemViewModel>();
                     HttpWebRequest webRequest1 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("albums", "&filter=" + searchBox.Text)));
                     webRequest1.BeginGetResponse(new AsyncCallback(AlbumsCallback), webRequest1);
                     break;
-                case 2:
+                case 3:
                     //artists
                     ArtistsLL.ItemsSource = null;
                     _artistItems = new ObservableCollection<DataItemViewModel>();
                     HttpWebRequest webRequest2 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("artists", "&filter=" + searchBox.Text)));
                     webRequest2.BeginGetResponse(new AsyncCallback(ArtistsCallback), webRequest2);
                     break;
-                case 3:
+                case 4:
                     //tags
                     TagsLL.ItemsSource = null;
                     _tagItems = new ObservableCollection<DataItemViewModel>();
                     HttpWebRequest webRequest3 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("tags", "&filter=" + searchBox.Text)));
                     webRequest3.BeginGetResponse(new AsyncCallback(TagsCallback), webRequest3);
                     break;
-                case 4:
+                case 5:
                     //playlists
                     PlaylistsLL.ItemsSource = null;
                     _playlistItems = new ObservableCollection<DataItemViewModel>();
                     HttpWebRequest webRequest4 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("playlists", "&filter=" + searchBox.Text)));
                     webRequest4.BeginGetResponse(new AsyncCallback(PlaylistsCallback), webRequest4);
-                    break;
-                case 5:
-                    //songs
-                    SongsLL.ItemsSource = null;
-                    _songItems = new ObservableCollection<DataItemViewModel>();
-                    HttpWebRequest webRequest5 = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("songs", "&filter=" + searchBox.Text)));
-                    webRequest5.BeginGetResponse(new AsyncCallback(SongsCallback), webRequest5);
                     break;
             }
 
@@ -1161,7 +1161,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)AlbumsLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             AlbumsLL.SelectedItem = null;
         }

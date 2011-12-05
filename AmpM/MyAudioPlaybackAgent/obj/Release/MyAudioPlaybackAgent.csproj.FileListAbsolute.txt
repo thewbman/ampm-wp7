@@ -1,0 +1,5 @@
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Release\MyAudioPlaybackAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Release\MyAudioPlaybackAgent.pdb
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Release\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Release\MyAudioPlaybackAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\obj\Release\MyAudioPlaybackAgent.pdb

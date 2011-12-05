@@ -112,20 +112,20 @@ namespace AmpmScheduledTaskAgent
             else if (AppSettings.StreamSessionExpireSetting == "1900-01-01T00:00:00")
             {
                 //stream has timed out
-                AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
+                //AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
 
                 NotifyComplete();
             }
             else
             {
-                DateTime s1 = DateTime.Parse(AppSettings.SessionExpireSetting);
+                //DateTime s1 = DateTime.Parse(AppSettings.SessionExpireSetting);
                 DateTime s2 = DateTime.Parse(AppSettings.StreamSessionExpireSetting);
                 DateTime n = DateTime.Now;
 
-                TimeSpan t1 = s1 - n;
-                TimeSpan t2 = s2 - n;
+                //TimeSpan t1 = s1 - n;   //session expire time from ping
+                TimeSpan t2 = s2 - n;   //stream session expire time estimated from playback
 
-                if ((t1.TotalSeconds < (30 * 60)) || (t2.TotalSeconds < (0)))
+                if (t2.TotalSeconds < (0))
                 {
 
                     string url = "";
@@ -165,7 +165,7 @@ namespace AmpmScheduledTaskAgent
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MessageBox.Show("Failed to get data response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    //MessageBox.Show("Failed to get data response: " + ex.ToString(), "Error", MessageBoxButton.OK);
                 });
 
                 return;
@@ -196,7 +196,6 @@ namespace AmpmScheduledTaskAgent
                 AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
             }
              
-
 
             NotifyComplete();
         }

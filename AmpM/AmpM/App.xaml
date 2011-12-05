@@ -7,6 +7,15 @@
 
     <!--Application Resources-->
     <Application.Resources>
+        <ImageBrush x:Name="BackgroundImageBrush" ImageSource="Images/130031.png" />
+        <SolidColorBrush x:Name="MenuImageBrush" Color="#231041" />
+        <Style x:Name="MainText" TargetType="TextBlock" >
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <SolidColorBrush Color="White" x:Key="MainColorBrush" />
+        <Style x:Name="SecondaryText" TargetType="TextBlock" >
+            <Setter Property="Foreground" Value="Silver" />
+        </Style>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

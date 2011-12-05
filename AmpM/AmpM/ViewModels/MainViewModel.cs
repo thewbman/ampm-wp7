@@ -121,7 +121,7 @@ namespace AmpM
 
             if (savedHostsList.Count < 1)
             {
-                this.Hosts.Add(new HostViewModel() { Name = "local", Address = "http://192.168.1.105/ampache/", Username = "ampm", Password = "ampm" });
+                //this.Hosts.Add(new HostViewModel() { Name = "local", Address = "http://192.168.1.105/ampache/", Username = "ampm", Password = "ampm" });
             }
             else
             {

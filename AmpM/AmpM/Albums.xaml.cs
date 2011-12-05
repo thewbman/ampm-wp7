@@ -416,7 +416,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)AlbumsLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             AlbumsLL.SelectedItem = null;
         }
@@ -428,7 +429,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)AlbumsArtistLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             AlbumsArtistLL.SelectedItem = null;
         }
@@ -441,7 +443,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)AlbumsYearLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             AlbumsYearLL.SelectedItem = null;
         }
@@ -454,7 +457,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)AlbumsSearchLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + s.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + s.AlbumId + "&AlbumName=" + s.AlbumName, UriKind.Relative));
 
             AlbumsSearchLL.SelectedItem = null;
         }
@@ -492,8 +496,8 @@ namespace AmpM
 
                 _randomAlbum = _items[r.Next(0, _items.Count - 1)];
 
-                artistName.Text = _randomAlbum.ArtistName;
-                albumName.Text = _randomAlbum.AlbumName;
+                artistName.Text = "artist: "+_randomAlbum.ArtistName;
+                albumName.Text = "album: "+_randomAlbum.AlbumName;
                 albumTracks.Text = _randomAlbum.AlbumTracks + " tracks";
                 albumYear.Text = _randomAlbum.Year;
                 artUrl.Source = new BitmapImage(new Uri(_randomAlbum.ArtUrl));
@@ -503,9 +507,27 @@ namespace AmpM
         private void randomAlbum_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + _randomAlbum.AlbumId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Album=" + _randomAlbum.AlbumId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Album=" + _randomAlbum.AlbumId + "&AlbumName=" + _randomAlbum.AlbumName, UriKind.Relative));
 
         }
+
+        private void randomAartistName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedArtist = _randomAlbum;
+            NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + _randomAlbum.ArtistId, UriKind.Relative));
+        }
+
+        private void randomArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void randomAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
     }
 }

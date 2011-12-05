@@ -109,6 +109,9 @@
     <Compile Include="Songs.xaml.cs">
       <DependentUpon>Songs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SongsList.xaml.cs">
+      <DependentUpon>SongsList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagDetails.xaml.cs">
       <DependentUpon>TagDetails.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SongsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TagDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -201,8 +208,13 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\130031.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Images\AmpM_173a.png" />
+    <Content Include="Images\AmpM_173b.png" />
     <Content Include="Images\AmpM_62.png" />
+    <Content Include="Images\AmpM_62b.png" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.back.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />

@@ -40,7 +40,7 @@ namespace AmpM
                     Name = namebox.Text,
                     Address = serverbox.Text,
                     Username = usernamebox.Text,
-                    Password = passwordbox.Text
+                    Password = passwordbox.Password
                 });
             }
 

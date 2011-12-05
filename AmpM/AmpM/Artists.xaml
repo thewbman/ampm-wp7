@@ -28,20 +28,20 @@
 
         <DataTemplate x:Key="artistItemTemplate">
             <StackPanel>
-                <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0"  Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ArtistAlbums}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text=" albums" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBlock Text="{Binding ArtistAlbums}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" albums" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ArtistTracks}"  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBlock Text="{Binding ArtistTracks}"  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="artistItemHeader">
-            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+            <Border Background="#25B8D9" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
                 <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
             </Border>
         </DataTemplate>
@@ -50,7 +50,7 @@
 
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
 
@@ -73,7 +73,7 @@
                     <TextBlock x:Name="artistName" Text="artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomArtist_Tap" />
                     <TextBlock x:Name="artistAlbums" Text="0 albums" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Tap="randomArtist_Tap" />
                     <TextBlock x:Name="artistTracks" Text="0 tracks" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomArtist_Tap" />
-                    <Button x:Name="nextRandomButton" Content="next random" Click="nextRandomButton_Click" Width="460" HorizontalAlignment="Center" local:TiltEffect.IsTiltEnabled="False" />
+                    <Button x:Name="nextRandomButton" Content="next random" Click="nextRandomButton_Click" Width="460" HorizontalAlignment="Center" local:TiltEffect.IsTiltEnabled="False" Foreground="White" BorderBrush="White" />
                 </StackPanel>
 
             </controls:PivotItem>
@@ -86,7 +86,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBox x:Name="searchBox" Width="370" />
+                        <TextBox x:Name="searchBox" Width="370"   BorderBrush="White"  Foreground="#262e98" Background="Silver" />
                         <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
                     </StackPanel>
 
@@ -109,7 +109,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" ForegroundColor="White">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True"  ForegroundColor="White" BackgroundColor="Black">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="ApplicationBarIconButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
