@@ -1,17 +1,17 @@
-﻿<xapCache source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="12/4/2011 7:27:23 PM">
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="12/4/2011 6:00:58 PM" />
+﻿<xapCache source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AmpM.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="12/9/2011 10:48:25 PM">
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="12/8/2011 11:33:10 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\AmpM_173b.png" archivePath="Images\AmpM_173b.png" lastWriteTime="12/4/2011 5:42:05 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\AmpM_62b.png" archivePath="Images\AmpM_62b.png" lastWriteTime="12/4/2011 5:46:34 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll" archivePath="AmpM.dll" lastWriteTime="12/4/2011 7:27:22 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\Bin\Debug\AmpmScheduledTaskAgent.dll" archivePath="AmpmScheduledTaskAgent.dll" lastWriteTime="11/28/2011 11:34:37 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Debug\AmpM.dll" archivePath="AmpM.dll" lastWriteTime="12/9/2011 10:48:24 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\Bin\Debug\AmpmScheduledTaskAgent.dll" archivePath="AmpmScheduledTaskAgent.dll" lastWriteTime="12/8/2011 11:33:07 PM" />
   <file source="C:\Users\wes\Dropbox\development\Flurry WindowsPhone SDK v2.0\FlurryWP7SDK.dll" archivePath="FlurryWP7SDK.dll" lastWriteTime="9/30/2011 3:06:15 PM" />
   <file source="C:\Program Files\WP7 Isolated Storage Explorer\Library\IsolatedStorageExplorer.dll" archivePath="IsolatedStorageExplorer.dll" lastWriteTime="2/24/2011 12:27:36 AM" />
   <file source="C:\Program Files\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="7/28/2011 8:20:42 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\packages\SilverlightToolkitWP.4.2011.8.17\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="11/5/2011 10:02:12 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll" archivePath="MyAudioPlaybackAgent.dll" lastWriteTime="11/26/2011 11:01:53 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\Coding4Fun.Phone.Controls.dll" archivePath="Coding4Fun.Phone.Controls.dll" lastWriteTime="9/27/2011 7:57:04 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\MyAudioPlaybackAgent\Bin\Debug\MyAudioPlaybackAgent.dll" archivePath="MyAudioPlaybackAgent.dll" lastWriteTime="12/9/2011 10:41:42 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="10/13/2011 7:02:09 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Background.png" archivePath="Background.png" lastWriteTime="10/13/2011 7:02:09 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Media\empty.mp3" archivePath="Media\empty.mp3" lastWriteTime="12/8/2011 11:09:39 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\AmpM_173a.png" archivePath="Images\AmpM_173a.png" lastWriteTime="11/26/2011 10:37:21 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\AmpM_62.png" archivePath="Images\AmpM_62.png" lastWriteTime="11/26/2011 10:31:10 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\appbar.add.rest.png" archivePath="Images\appbar.add.rest.png" lastWriteTime="11/23/2011 6:14:36 PM" />
@@ -25,9 +25,10 @@
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\appbar.transport.pause.rest.png" archivePath="Images\appbar.transport.pause.rest.png" lastWriteTime="11/17/2011 12:47:20 AM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Images\appbar.transport.rew.rest.png" archivePath="Images\appbar.transport.rew.rest.png" lastWriteTime="11/17/2011 12:47:28 AM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\README_FIRST.txt" archivePath="README_FIRST.txt" lastWriteTime="11/5/2011 10:02:13 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="10/13/2011 7:02:09 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="12/4/2011 8:03:13 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Todo.txt" archivePath="Todo.txt" lastWriteTime="11/28/2011 11:57:15 PM" />
-  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="11/15/2011 10:55:03 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="12/8/2011 11:33:10 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="10/13/2011 7:02:09 PM" />
   <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Background.png" archivePath="Background.png" lastWriteTime="10/13/2011 7:02:09 PM" />
+  <file source="C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Debug\Media\empty.mp3" archivePath="Media\empty.mp3" lastWriteTime="12/8/2011 11:09:39 PM" />
 </xapCache>

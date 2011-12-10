@@ -340,36 +340,43 @@ namespace AmpM
 
             }
 
-            if (!inAdd)
+            try
             {
-                MyAudioPlaybackAgent.AudioPlayer.resetList();
-                App.ViewModel.Nowplaying.Clear();
-
-                foreach (DataItemViewModel s in newSongs)
+                if (!inAdd)
                 {
-                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                    MyAudioPlaybackAgent.AudioPlayer.resetList();
+                    App.ViewModel.Nowplaying.Clear();
+
+                    foreach (DataItemViewModel s in newSongs)
+                    {
+                        App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                    }
+
+                    App.ViewModel.saveNowplaying();
+
+                    App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
+
+                    //MyAudioPlaybackAgent.AudioPlayer.startPlaying(0);
+                    MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex);
                 }
+                else
+                {
+                    foreach (DataItemViewModel s in newSongs)
+                    {
+                        App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
+                    }
 
-                App.ViewModel.saveNowplaying();
+                    App.ViewModel.saveNowplaying();
 
-                App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
-
-                //MyAudioPlaybackAgent.AudioPlayer.startPlaying(0);
-                MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex);
+                    if (BackgroundAudioPlayer.Instance.PlayerState != PlayState.Playing)
+                    {
+                        MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex + currentPlayingCount);
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                foreach (DataItemViewModel s in newSongs)
-                {
-                    App.ViewModel.Nowplaying.Add(App.ViewModel.Functions.CloneItem(s));
-                }
-
-                App.ViewModel.saveNowplaying();
-
-                if (BackgroundAudioPlayer.Instance.PlayerState != PlayState.Playing)
-                {
-                    MyAudioPlaybackAgent.AudioPlayer.startPlaying(trackIndex + currentPlayingCount);
-                }
+                MessageBox.Show("error starting playback: " + ex.ToString());
             }
 
             NavigationService.Navigate(new Uri("/Nowplaying.xaml?Remove=" + viewsToRemove, UriKind.Relative));

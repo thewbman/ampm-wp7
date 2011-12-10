@@ -34,3 +34,4 @@ C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Release\AmpM.g.resources
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Release\AmpM.dll
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Release\AmpM.pdb
 C:\Users\wes\SVN\ampm\AmpM\AmpM\obj\Release\XapCacheFile.xml
+C:\Users\wes\SVN\ampm\AmpM\AmpM\Bin\Release\Media\empty.mp3

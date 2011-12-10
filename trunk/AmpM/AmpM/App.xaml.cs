@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 using System.Windows.Resources;
 
 namespace AmpM
@@ -78,7 +79,8 @@ namespace AmpM
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-
+            // Copy media to isolated storage.
+            CopyToIsolatedStorage();
 
         }
 
@@ -137,6 +139,35 @@ namespace AmpM
             {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
+            }
+        }
+
+        private void CopyToIsolatedStorage()
+        {
+            using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                string[] files = new string[] { "empty.mp3" };
+
+                foreach (var _fileName in files)
+                {
+                    if (!storage.FileExists(_fileName))
+                    {
+                        string _filePath = "Media/" + _fileName;
+                        StreamResourceInfo resource = Application.GetResourceStream(new Uri(_filePath, UriKind.Relative));
+
+                        using (IsolatedStorageFileStream file = storage.CreateFile(_fileName))
+                        {
+                            int chunkSize = 4096;
+                            byte[] bytes = new byte[chunkSize];
+                            int byteCount;
+
+                            while ((byteCount = resource.Stream.Read(bytes, 0, chunkSize)) > 0)
+                            {
+                                file.Write(bytes, 0, byteCount);
+                            }
+                        }
+                    }
+                }
             }
         }
 
