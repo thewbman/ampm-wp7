@@ -172,32 +172,40 @@ namespace MyAudioPlaybackAgent
 
         public static void startPlaying(int inIndex)
         {
-            if (inIndex == -1)
+            try
             {
-                BackgroundAudioPlayer.Instance.Play();
+                if (inIndex == -1)
+                {
+                    BackgroundAudioPlayer.Instance.Play();
+                }
+                else
+                {
+                    _playList = getCurrentList();
+
+                    AppSettings.NowplayingIndexSetting = inIndex + 0;
+                    saveCurrentIndex(inIndex + 0);
+
+                    //DataItemViewModel s = new DataItemViewModel();
+                    AudioTrack t = new AudioTrack();
+                    t = _playList[AppSettings.NowplayingIndexSetting];
+
+                    int i = AppSettings.NowplayingIndexSetting;
+
+                    //t.Tag = i.ToString();
+
+                    //t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
+
+                    //BackgroundAudioPlayer.Instance.Close();
+                    //BackgroundAudioPlayer.Instance.Track = null;
+
+                    BackgroundAudioPlayer.Instance.Track = t;
+                    //BackgroundAudioPlayer.Instance.Play();
+                }
+
+                saveCurrentIndex();
             }
-            else
-            {
-                _playList = getCurrentList();
-
-                AppSettings.NowplayingIndexSetting = inIndex+0;
-                saveCurrentIndex(inIndex + 0);
-
-                //DataItemViewModel s = new DataItemViewModel();
-                AudioTrack t = new AudioTrack();
-                t = _playList[AppSettings.NowplayingIndexSetting];
-
-                int i = AppSettings.NowplayingIndexSetting;
-
-                //t.Tag = i.ToString();
-
-                //t = new AudioTrack(new Uri(s.SongUrl, UriKind.Absolute), s.SongName, s.ArtistName, s.AlbumName, new Uri(s.ArtUrl, UriKind.Absolute));
-
-                BackgroundAudioPlayer.Instance.Track = t;
-                //BackgroundAudioPlayer.Instance.Play();
-            }
-
-            saveCurrentIndex();
+            catch
+            { }
 
             return;
         }
@@ -255,39 +263,44 @@ namespace MyAudioPlaybackAgent
         /// </remarks>
         protected override void OnPlayStateChanged(BackgroundAudioPlayer player, AudioTrack track, PlayState playState)
         {
-            switch (playState)
+            try
             {
-                case PlayState.TrackEnded:
-                    //player.Track = GetPreviousTrack();
-                    PlayNextTrack(player);
-                    break;
-                case PlayState.TrackReady:
-                    player.Play();
-                    //CheckPingAmpache();
-                    AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(90).ToString("s");
-                    break;
-                case PlayState.Shutdown:
-                    // TODO: Handle the shutdown state here (e.g. save state)
-                    break;
-                case PlayState.Unknown:
-                    break;
-                case PlayState.Stopped:
-                    break;
-                case PlayState.Paused:
-                    break;
-                case PlayState.Playing:
-                    break;
-                case PlayState.BufferingStarted:
-                    break;
-                case PlayState.BufferingStopped:
-                    break;
-                case PlayState.Rewinding:
-                    break;
-                case PlayState.FastForwarding:
-                    break;
-            }
+                switch (playState)
+                {
+                    case PlayState.TrackEnded:
+                        //player.Track = GetPreviousTrack();
+                        PlayNextTrack(player);
+                        break;
+                    case PlayState.TrackReady:
+                        player.Play();
+                        //CheckPingAmpache();
+                        AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(90).ToString("s");
+                        break;
+                    case PlayState.Shutdown:
+                        // TODO: Handle the shutdown state here (e.g. save state)
+                        break;
+                    case PlayState.Unknown:
+                        break;
+                    case PlayState.Stopped:
+                        break;
+                    case PlayState.Paused:
+                        break;
+                    case PlayState.Playing:
+                        break;
+                    case PlayState.BufferingStarted:
+                        break;
+                    case PlayState.BufferingStopped:
+                        break;
+                    case PlayState.Rewinding:
+                        break;
+                    case PlayState.FastForwarding:
+                        break;
+                }
 
-            saveCurrentIndex();
+                saveCurrentIndex();
+            }
+            catch
+            { }
 
             NotifyComplete();
         }
@@ -310,42 +323,48 @@ namespace MyAudioPlaybackAgent
         /// </remarks>
         protected override void OnUserAction(BackgroundAudioPlayer player, AudioTrack track, UserAction action, object param)
         {
-            switch (action)
+            try
             {
-                case UserAction.Play:
-                    if (player.PlayerState != PlayState.Playing)
-                    {
-                        player.Play();
-                    }
-                    break;
-                case UserAction.Stop:
-                    player.Stop();
-                    break;
-                case UserAction.Pause:
-                    player.Pause();
-                    break;
-                case UserAction.FastForward:
-                    player.FastForward();
-                    break;
-                case UserAction.Rewind:
-                    player.Rewind();
-                    break;
-                case UserAction.Seek:
-                    player.Position = (TimeSpan)param;
-                    break;
-                case UserAction.SkipNext:
-                    player.Track = GetNextTrack();
-                    break;
-                case UserAction.SkipPrevious:
-                    AudioTrack previousTrack = GetPreviousTrack();
-                    if (previousTrack != null)
-                    {
-                        player.Track = previousTrack;
-                    }
-                    break;
-            }
+                switch (action)
+                {
+                    case UserAction.Play:
+                        if (player.PlayerState != PlayState.Playing)
+                        {
+                            player.Play();
+                        }
+                        break;
+                    case UserAction.Stop:
+                        player.Stop();
+                        break;
+                    case UserAction.Pause:
+                        player.Pause();
+                        break;
+                    case UserAction.FastForward:
+                        player.FastForward();
+                        break;
+                    case UserAction.Rewind:
+                        player.Rewind();
+                        break;
+                    case UserAction.Seek:
+                        player.Position = (TimeSpan)param;
+                        break;
+                    case UserAction.SkipNext:
+                        player.Track = GetNextTrack();
+                        break;
+                    case UserAction.SkipPrevious:
+                        AudioTrack previousTrack = GetPreviousTrack();
+                        if (previousTrack != null)
+                        {
+                            player.Track = previousTrack;
+                        }
+                        break;
+                }
 
-            saveCurrentIndex();
+                saveCurrentIndex();
+
+            }
+            catch
+            { }
 
             NotifyComplete();
         }
@@ -371,9 +390,16 @@ namespace MyAudioPlaybackAgent
             _playList = getCurrentList();
             int i;
 
-            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                AppSettings.NowplayingIndexSetting = i;
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+                {
+                    AppSettings.NowplayingIndexSetting = i;
+                }
+                else
+                {
+                    AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+                }
             }
             else
             {
@@ -415,9 +441,16 @@ namespace MyAudioPlaybackAgent
             _playList = getCurrentList();
             int i;
 
-            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                AppSettings.NowplayingIndexSetting = i - 2;
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+                {
+                    AppSettings.NowplayingIndexSetting = i-2;
+                }
+                else
+                {
+                    AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+                }
             }
             else
             {
@@ -480,9 +513,16 @@ namespace MyAudioPlaybackAgent
             _playList = getCurrentList();
             int i;
 
-            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                AppSettings.NowplayingIndexSetting = i;
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+                {
+                    AppSettings.NowplayingIndexSetting = i;
+                }
+                else
+                {
+                    AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting + 1;
+                }
             }
             else
             {
@@ -504,9 +544,17 @@ namespace MyAudioPlaybackAgent
             _playList = getCurrentList();
             int i;
 
-            if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                AppSettings.NowplayingIndexSetting = i-2;
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out i))
+                {
+                    AppSettings.NowplayingIndexSetting = i-2;
+                }
+                else
+                {
+                    AppSettings.NowplayingIndexSetting = AppSettings.NowplayingIndexSetting - 1;
+                }
             }
             else
             {

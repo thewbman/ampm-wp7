@@ -82,8 +82,9 @@
             <shell:ApplicationBarIconButton x:Name="pauseButton" IconUri="/Images/appbar.transport.pause.rest.png" Text="pause" Click="pauseButton_Click" />
             <shell:ApplicationBarIconButton x:Name="nextButton" IconUri="/Images/appbar.transport.ff.rest.png" Text="next" Click="nextButton_Click" />
             <shell:ApplicationBar.MenuItems>
-                
+
                 <shell:ApplicationBarMenuItem Text="stop playback and reset playlist" Click="emptyButton_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="takeAudioControl" Text="reset system audio control" Click="takeAudioControl_Click"/>
                 
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>

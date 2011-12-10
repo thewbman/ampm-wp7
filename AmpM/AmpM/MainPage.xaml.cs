@@ -27,6 +27,9 @@ namespace AmpM
             hostsList.ItemsSource = App.ViewModel.Hosts;
 
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
+
+            Microsoft.Xna.Framework.Media.MediaLibrary library = new Microsoft.Xna.Framework.Media.MediaLibrary();
+            
         }
 
         private PeriodicTask periodicTask;

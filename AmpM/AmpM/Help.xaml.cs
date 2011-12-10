@@ -47,6 +47,7 @@ namespace AmpM
             this.Questions.Add(new NameContentViewModel() { Name = "What does this app do?", Content = "AmpM is a WP7 app that allows you to play back music from a Ampache server." });
             this.Questions.Add(new NameContentViewModel() { Name = "How do I get started?", Content = "You need to have Ampache up and running on your computer for this app to work.  Once you have Ampache setup you will need to setup the ACL to allow the app access to your library.  Setting up an Ampache system is not hard process, but it is not a trivial task either.  You should make sure everything is working fine on your computer before trying to use this app." });
             this.Questions.Add(new NameContentViewModel() { Name = "Do I have to keep the app open to play music?", Content = "No.  You should be able to close the app fully and have your music continue to play through the full 'now playing' list." });
+            this.Questions.Add(new NameContentViewModel() { Name = "What if my music doesn't start playing, but everything looks like it is working?", Content = "If you use other apps that use background audio the phone may not allow AmpM to play.  You can fix this by selecting the 'reset system audio control' option under the menu on the now playing view." });
             this.Questions.Add(new NameContentViewModel() { Name = "What I have trouble getting this app to work?", Content = "Try emailing the developer.  The contact information is available to right." });
 
             QuestionListBox.ItemsSource = this.Questions;

@@ -172,6 +172,16 @@ namespace AmpM
             nowplayingList.ItemsSource = null;
         }
 
+        private void takeAudioControl_Click(object sender, EventArgs e)
+        {
+            MediaPlayerLauncher m = new MediaPlayerLauncher();
+            m.Media = new Uri("empty.mp3", UriKind.Relative);
+            //m.Orientation = MediaPlayerOrientation.Landscape;
+            m.Location = MediaLocationType.Data;
+            m.Show();
+
+        }
+
         private void songSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             try
