@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
+  <App xmlns="" ProductID="{d109c070-559e-4405-8253-efc9e50a1ed1}" Title="AmpM" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="AmpM author" Description="Sample description" Publisher="AmpM">
+    <IconPath IsRelative="true" IsResource="false">Images\AmpM_62b.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+      <Capability Name="ID_CAP_IDENTITY_USER" />
+      <Capability Name="ID_CAP_LOCATION" />
+      <Capability Name="ID_CAP_MEDIALIB" />
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
+      <ExtendedTask Name="BackgroundTask">
+        <BackgroundServiceAgent Specifier="AudioPlayerAgent" Name="MyAudioPlaybackAgent" Source="MyAudioPlaybackAgent" Type="MyAudioPlaybackAgent.AudioPlayer" />
+        <BackgroundServiceAgent Specifier="ScheduledTaskAgent" Name="AmpmScheduledTaskAgent" Source="AmpmScheduledTaskAgent" Type="AmpmScheduledTaskAgent.ScheduledAgent" />
+      </ExtendedTask>
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="AmpMToken" TaskName="_default">
+        <TemplateType5>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Images\AmpM_173b.png</BackgroundImageURI>
+          <Count>0</Count>
+          <Title>AmpM</Title>
+        </TemplateType5>
+      </PrimaryToken>
+    </Tokens>
+  </App>
+</Deployment>
