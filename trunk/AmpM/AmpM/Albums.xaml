@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<phone:PhoneApplicationPage xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  
     x:Class="AmpM.Albums"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -31,11 +31,12 @@
                 <Image Source="{Binding ArtUrl}" Height="100" Width="100" />
                 <StackPanel >
                     <TextBlock Text="{Binding AlbumName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
-                    <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="30,-5,0,0" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeMedium}" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding AlbumTracks}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
-                        <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                        <TextBlock Text="{Binding AlbumTracks}"  TextWrapping="NoWrap" Margin="40,-5,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                        <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,-5,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
                     </StackPanel>
+                    <TextBlock Text="{Binding Year}"  TextWrapping="NoWrap" Margin="50,-5,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -51,9 +52,16 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
 
-        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <controls:Pivot x:Name="albumsPivot" Title="ALBUMS" Foreground="White" SelectionChanged="albumsPivot_SelectionChanged">
+        <toolkit:PerformanceProgressBar Grid.Row="1" x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
+
+        <my:AdControl Name="adControl1" AdUnitId="78181" ApplicationId="1a2ce3f6-c71d-4e10-87bf-e256042ecbdf" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" />
+
+        <controls:Pivot x:Name="albumsPivot" Grid.Row="1" Title="ALBUMS" Foreground="White" SelectionChanged="albumsPivot_SelectionChanged">
 
             <controls:PivotItem x:Name="albumsAlphaPivot" Header="name" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
@@ -94,14 +102,14 @@
             <controls:PivotItem x:Name="albumsRandomPivot" Header="random" Foreground="White" local:TiltEffect.IsTiltEnabled="False">
 
                 <StackPanel HorizontalAlignment="Left"  local:TiltEffect.IsTiltEnabled="False" >
-                    <Image x:Name="artUrl" Source="{Binding ArtUrl}" Height="320" Width="320" HorizontalAlignment="Left" Tap="randomAlbum_Tap" />
+                    <Image x:Name="artUrl" Source="{Binding ArtUrl}" Height="260" Width="260" HorizontalAlignment="Left" Tap="randomAlbum_Tap" />
                     <TextBlock x:Name="albumName" Text="album: album name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomAlbum_Tap" />
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="albumTracks" Text="0 tracks" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomAlbum_Tap" />
                         <TextBlock Text=", " FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomAlbum_Tap" />
                         <TextBlock x:Name="albumYear" Text="year" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomAlbum_Tap" />
                     </StackPanel>
-                    <TextBlock x:Name="artistName" Text="artist: artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomAartistName_Tap" Margin="0,0,0,20" />
+                    <TextBlock x:Name="artistName" Text="artist: artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomAartistName_Tap" Margin="0,0,0,10" />
                     
                     <!-- StackPanel Orientation="Horizontal">
                         <Button x:Name="randomArtistButton" Content="artist" Click="randomArtistButton_Click" Width="230" />

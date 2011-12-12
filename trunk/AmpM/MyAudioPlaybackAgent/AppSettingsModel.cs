@@ -72,6 +72,7 @@ namespace MyAudioPlaybackAgent
 
         // The isolated storage key names of our settings
         const string FirstRunName = "FirstRun";
+        const string FirstNowplayingName = "FirstNowplaying";
 
         const string HostIndexName = "HostIndex";
         const string HostAddressName = "HostAddress";
@@ -98,7 +99,8 @@ namespace MyAudioPlaybackAgent
 
         // The default value of our settings
         const bool FirstRunDefault = true;
-
+        const bool FirstNowplayingDefault = true;
+        
         const int HostIndexDefault = 0;
         const string HostAddressDefault = "http://google.com";
 
@@ -126,6 +128,11 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<bool>(FirstRunName, FirstRunDefault); }
             set { if (AddOrUpdateValue(FirstRunName, value)) { Save(); } }
+        }
+        public bool FirstNowplayingSetting
+        {
+            get { return GetValueOrDefault<bool>(FirstNowplayingName, FirstNowplayingDefault); }
+            set { if (AddOrUpdateValue(FirstNowplayingName, value)) { Save(); } }
         }
 
         public int HostIndexSetting

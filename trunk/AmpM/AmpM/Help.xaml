@@ -12,17 +12,17 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="true"
     xmlns:local="clr-namespace:AmpM"
     local:TiltEffect.IsTiltEnabled="True"
     >
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
-        <controls:Panorama Title="help" Foreground="White" >
+        <controls:Pivot Title="HELP" Foreground="White" >
 
-            <controls:PanoramaItem Header="faqs" Foreground="White">
+            <controls:PivotItem Header="faqs" Foreground="White">
                 <Grid>
                     <ListBox x:Name="QuestionListBox" Margin="0,0,-12,0" ItemsSource="{Binding Questions}">
                         <ListBox.ItemTemplate>
@@ -35,9 +35,9 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="support" Foreground="White" >
+            <controls:PivotItem Header="support" Foreground="White" >
                 <Grid>
                     <!--
                     <StackPanel Margin="0,0,0,17" Width="432">
@@ -61,7 +61,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
             <!--
             <controls:PanoramaItem Header="changelog">
@@ -69,7 +69,7 @@
             </controls:PanoramaItem>
             -->
 
-        </controls:Panorama>
+        </controls:Pivot>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

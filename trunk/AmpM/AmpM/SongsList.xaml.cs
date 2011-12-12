@@ -39,6 +39,8 @@ namespace AmpM
             //_items.Add(new DataItemViewModel() { PlaylistId = -1, PlaylistName = "playlist name", PlaylistItems = 44, AlbumId = -1, AlbumName = "album name", AlbumTracks = 34, ArtistAlbums = 2, ArtistId = 32, ArtistName = "artist name", ArtistTracks = 23, ArtUrl = "http://www.google.com/", SongId = 343, SongName = "song name", Type = "playlist" });
 
             //songList.ItemsSource = _items;
+
+            FinishedData = false;
         }
 
         public ObservableCollection<DataItemViewModel> _items;
@@ -46,54 +48,75 @@ namespace AmpM
         private int viewsToRemove = 1;
         private string listType;
 
+        private bool FinishedData;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //ApplicationTitle.Text = "AmpM - " + App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting].Name;
 
-            string inValue = "";
-            string inName = "";
-            if (NavigationContext.QueryString.TryGetValue("Playlist", out inValue))
+            if (!FinishedData)
             {
-                viewsToRemove = 2;
-                listType = "Playlist";
+                string inValue = "";
+                string inName = "";
+                if (NavigationContext.QueryString.TryGetValue("Playlist", out inValue))
+                {
+                    viewsToRemove = 2;
+                    listType = "Playlist";
 
-                performanceProgressBarCustomized.IsIndeterminate = true;
+                    performanceProgressBarCustomized.IsIndeterminate = true;
 
-                this._items.Clear();
-                
-                if (NavigationContext.QueryString.TryGetValue("PlaylistName", out inName))
-                    songsAlphaPivot.Header = inName;
+                    this._items.Clear();
+
+                    if (NavigationContext.QueryString.TryGetValue("PlaylistName", out inName))
+                    {
+                        //songsAlphaPivot.Header = inName;
+                        songsPivot.Title = inName;
+                    }
+                    else
+                    {
+                        //songsAlphaPivot.Header = "playlist";
+                        songsPivot.Title = "PLAYLIST";
+                    }
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("playlist_songs", "&filter=" + inValue)));
+                    webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
+                }
+                else if (NavigationContext.QueryString.TryGetValue("Album", out inValue))
+                {
+                    viewsToRemove = 2;
+                    listType = "Album";
+
+                    performanceProgressBarCustomized.IsIndeterminate = true;
+
+                    this._items.Clear();
+
+                    if (NavigationContext.QueryString.TryGetValue("AlbumName", out inName))
+                    {
+                        //songsAlphaPivot.Header = inName;
+                        songsPivot.Title = inName;
+                    }
+                    else
+                    {
+                        //songsAlphaPivot.Header = "album";
+                        songsPivot.Title = "ALBUM";
+                    }
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("album_songs", "&filter=" + inValue)));
+                    webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
+                }
                 else
-                    songsAlphaPivot.Header = "playlist";
+                {
+                    this._items.Clear();
+                    //songList.ItemsSource = null;
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("playlist_songs", "&filter=" + inValue)));
-                webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
-            }
-            else if (NavigationContext.QueryString.TryGetValue("Album", out inValue))
-            {
-                viewsToRemove = 2;
-                listType = "Album";
-
-                performanceProgressBarCustomized.IsIndeterminate = true;
-
-                this._items.Clear();
-
-                if (NavigationContext.QueryString.TryGetValue("AlbumName", out inName))
-                    songsAlphaPivot.Header = inName;
-                else
-                    songsAlphaPivot.Header = "album";
-
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(App.ViewModel.Functions.GetAmpacheDataUrl("album_songs", "&filter=" + inValue)));
-                webRequest.BeginGetResponse(new AsyncCallback(DataCallback), webRequest);
+                    performanceProgressBarCustomized.IsIndeterminate = false;
+                }
             }
             else
             {
-                this._items.Clear();
-                //songList.ItemsSource = null;
-
                 performanceProgressBarCustomized.IsIndeterminate = false;
             }
+
         }
         private void DataCallback(IAsyncResult asynchronousResult)
         {
@@ -209,17 +232,20 @@ namespace AmpM
             SongsLL.ItemsSource = songsByAlbum;
 
             if(listType == "Playlist")
-            {    
-                songsPivot.Title = "PLAYLIST ITEMS (" + this._items.Count + ")";
+            {
+                //songsAlphaPivot.Header = "PLAYLIST ITEMS (" + this._items.Count + ")";
+                //songsAlphaPivot.Header = "songs (" + this._items.Count + ")";
             }
             else if (listType == "Album")
-            {    
-                songsPivot.Title = "ALBUM TRACKS (" + this._items.Count + ")";
+            {
+                //songsAlphaPivot.Header = "tracks (" + this._items.Count + ")";
             }
             else
             {
-                songsPivot.Title = "SONGS (" + this._items.Count + ")";
+                //songsAlphaPivot.Header = "songs (" + this._items.Count + ")";
             }
+
+            FinishedData = true;
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 

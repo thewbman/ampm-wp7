@@ -31,7 +31,14 @@ namespace AmpM
         public Search()
         {
             InitializeComponent();
-        
+
+            AllLL.ItemsSource = null;
+            AlbumsLL.ItemsSource = null;
+            ArtistsLL.ItemsSource = null;
+            TagsLL.ItemsSource = null;
+            PlaylistsLL.ItemsSource = null;
+            SongsLL.ItemsSource = null;
+
             _allItems = new ObservableCollection<DataItemViewModel>();
             _albumItems = new ObservableCollection<DataItemViewModel>();
             _artistItems = new ObservableCollection<DataItemViewModel>();
@@ -52,6 +59,8 @@ namespace AmpM
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            /*
+             
             AllLL.ItemsSource = null;
             AlbumsLL.ItemsSource = null;
             ArtistsLL.ItemsSource = null;
@@ -65,11 +74,11 @@ namespace AmpM
             _tagItems = new ObservableCollection<DataItemViewModel>();
             _playlistItems = new ObservableCollection<DataItemViewModel>();
             _songItems = new ObservableCollection<DataItemViewModel>();
+             
+             */
 
             searchBox.Text = "";
         }
-
-
 
 
 
@@ -1201,7 +1210,8 @@ namespace AmpM
 
             var s = (DataItemViewModel)PlaylistsLL.SelectedItem;
 
-            NavigationService.Navigate(new Uri("/Songs.xaml?Playlist=" + s.PlaylistId, UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Songs.xaml?Playlist=" + s.PlaylistId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SongsList.xaml?Playlist=" + s.PlaylistId, UriKind.Relative));
 
             PlaylistsLL.SelectedItem = null;
         }
