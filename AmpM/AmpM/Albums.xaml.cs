@@ -49,7 +49,7 @@ namespace AmpM
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            this.Perform(() => LoadAlbums(), 50);
+            this.Perform(() => LoadAlbums(), 150);
 
         }
         private void LoadAlbums()

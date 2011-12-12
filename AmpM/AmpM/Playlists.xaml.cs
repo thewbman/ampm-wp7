@@ -54,7 +54,8 @@ namespace AmpM
 
                 if (App.ViewModel.Playlists.Count == 0)
                 {
-                    this.GetPlaylists();
+                    //this.GetPlaylists();
+                    this.Perform(() => GetPlaylists(), 100);
 
                     //this.SortAndDisplay();
                 }
@@ -212,6 +213,63 @@ namespace AmpM
         }
 
 
+
+        public class Group<T> : IEnumerable<T>
+        {
+            public Group(string name, IEnumerable<T> items)
+            {
+                this.Title = name;
+                this.Items = new List<T>(items);
+            }
+
+            public override bool Equals(object obj)
+            {
+                Group<T> that = obj as Group<T>;
+
+                return (that != null) && (this.Title.Equals(that.Title));
+            }
+
+            public string Title
+            {
+                get;
+                set;
+            }
+
+            public IList<T> Items
+            {
+                get;
+                set;
+            }
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+        }
+
+        private void Perform(Action myMethod, int delayInMilliseconds)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) => Thread.Sleep(delayInMilliseconds);
+
+            worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
+
+            worker.RunWorkerAsync();
+        }
 
 
 

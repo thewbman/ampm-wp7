@@ -36,6 +36,8 @@ namespace AmpM
             _songs = new ObservableCollection<DataItemViewModel>();
 
             //songList.ItemsSource = _songs;
+
+            FinishedData = false;
         }
 
         public ObservableCollection<DataItemViewModel> _albums;
@@ -43,13 +45,23 @@ namespace AmpM
 
         private int viewsToRemove = 2;
 
+        private bool FinishedData;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            panoramaTitle.Title = App.ViewModel.SelectedArtist.ArtistName;
+            //panoramaTitle.Title = App.ViewModel.SelectedArtist.ArtistName;
+            pivotTitle.Title = App.ViewModel.SelectedArtist.ArtistName;
 
-            performanceProgressBarCustomized.IsIndeterminate = true;
+            if (!FinishedData)
+            {
+                performanceProgressBarCustomized.IsIndeterminate = true;
 
-            this.Perform(() => GetAlbums(), 50);
+                this.Perform(() => GetAlbums(), 50);
+            }
+            else
+            {
+                performanceProgressBarCustomized.IsIndeterminate = false;
+            }
 
         }
 
@@ -252,6 +264,8 @@ namespace AmpM
         {
             albumList.ItemsSource = _albums;
             songList.ItemsSource = _songs;
+
+            FinishedData = true;
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 

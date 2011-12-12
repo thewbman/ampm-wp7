@@ -48,7 +48,8 @@ namespace AmpM
 
                 if (App.ViewModel.Tags.Count == 0)
                 {
-                    this.GetTags();
+                    //this.GetTags();
+                    this.Perform(() => GetTags(), 100);
 
                     //this.SortAndDisplay();
                 }

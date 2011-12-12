@@ -315,7 +315,7 @@ namespace AmpM
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ping xml error: " + ex.ToString());
+                //MessageBox.Show("ping xml error: " + ex.ToString());
 
                 App.ViewModel.AppSettings.SessionExpireSetting = "1900-01-01T00:00:00";
             }

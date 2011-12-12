@@ -36,11 +36,17 @@ namespace AmpM
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
         }
 
+        private bool CanRemoveBackStack;
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
 
+            CanRemoveBackStack = true;
+
+
+            /*
             string inValue = "";
             if (NavigationContext.QueryString.TryGetValue("Remove", out inValue))
             {
@@ -52,6 +58,9 @@ namespace AmpM
                     if (NavigationService.BackStack.Count() > 1) NavigationService.RemoveBackEntry();
                 }
             }
+             */
+
+            this.Perform(() => RemoveBackStack(), 5000);
 
             if ((null != BackgroundAudioPlayer.Instance.Track) && (App.ViewModel.Nowplaying.Count > App.ViewModel.AppSettings.NowplayingIndexSetting))
             {
@@ -88,6 +97,19 @@ namespace AmpM
                 artistName.Text = "";
                 albumName.Text = "";
             }
+
+            if (App.ViewModel.AppSettings.FirstNowplayingSetting)
+            {
+                MessageBox.Show("If you don't hear any music start shortly, you may need to reset the system audio control using the menu at the bottom of the screen.");
+
+                App.ViewModel.AppSettings.FirstNowplayingSetting = false;
+            }
+        }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            CanRemoveBackStack = false;
+
+            base.OnNavigatedFrom(e);
         }
 
         void Instance_PlayStateChanged(object sender, EventArgs e)
@@ -158,6 +180,32 @@ namespace AmpM
 
             nowplayingList.SelectedItem = null;
         }
+
+        private void RemoveBackStack()
+        {
+            if (CanRemoveBackStack)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    //dont get rid of Home
+                    if (NavigationService.BackStack.Count() > 1) NavigationService.RemoveBackEntry();
+                }
+            }
+        }
+
+
+
+        private void Perform(Action myMethod, int delayInMilliseconds)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) => Thread.Sleep(delayInMilliseconds);
+
+            worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
+
+            worker.RunWorkerAsync();
+        }
+
 
         private void emptyButton_Click(object sender, EventArgs e)
         {
