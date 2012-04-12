@@ -85,8 +85,9 @@ namespace AmpM
 
         private IsolatedStorageSettings prefs;
 
-        //public SterlingEngine engine;
-        //public ISterlingDatabaseInstance databaseInstance;
+        public string LastfmUrl = "http://ws.audioscrobbler.com/2.0/";
+        public string LastfmSecret = "cfaaaa9417b5ded38e6ed30434ca8be7";
+        public string LastfmApikey = "ee337ff6dfdd301251d3e1c234d2ccba";
 
         public bool Connected;
 
@@ -130,6 +131,9 @@ namespace AmpM
 
             //save hosts
             this.saveHosts();
+
+
+            App.ViewModel.AppSettings.AppStartsSetting = 1 + App.ViewModel.AppSettings.AppStartsSetting;
 
 
             this.IsDataLoaded = true;

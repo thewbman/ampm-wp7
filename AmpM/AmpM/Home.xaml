@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
@@ -30,7 +30,7 @@
         <StackPanel x:Name="TitlePanel" Grid.Row="1" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="AmpM" Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeMedium}" />
             <TextBlock x:Name="PageTitle" Text="name" Margin="9,-7,0,0" Style="{StaticResource MainText}" FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" />
-            <TextBlock x:Name="PageSubtitle" Text="address" Style="{StaticResource MainText}" FontSize="{StaticResource PhoneFontSizeSmall}" FontStyle="Italic" Margin="10,0,0,0" />
+            <TextBlock x:Name="PageSubtitle" Text="address" Style="{StaticResource MainText}" FontSize="{StaticResource PhoneFontSizeSmall}" Margin="10,0,0,0" />
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -66,7 +66,13 @@
             <shell:ApplicationBarIconButton x:Name="logoffButton" IconUri="/Images/appbar.back.rest.png" Text="logoff" Click="logoffButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="settingsButton" IconUri="/Images/appbar.feature.settings.rest.png" Text="preferences" Click="settingsButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="helpButton" IconUri="/Images/appbar.questionmark.rest.png" Text="help" Click="helpButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+
+                <shell:ApplicationBarMenuItem Text="stop playback and clear playlist" Click="emptyButton_Click"/>
+                
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
+        
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Phone.Controls">
+      <HintPath>..\..\..\MythMe\MythMe\Bin\Release\Coding4Fun.Phone.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="FlurryWP7SDK">
       <HintPath>..\..\..\..\Dropbox\development\Flurry WindowsPhone SDK v2.0\FlurryWP7SDK.dll</HintPath>
     </Reference>
@@ -114,12 +117,16 @@
     <Compile Include="SongsList.xaml.cs">
       <DependentUpon>SongsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagDetails.xaml.cs">
       <DependentUpon>TagDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tags.xaml.cs">
       <DependentUpon>Tags.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TiltEffect.cs" />
     <Compile Include="ViewModels\FunctionsViewModel.cs" />
     <Compile Include="ViewModels\HostViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -180,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SongsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

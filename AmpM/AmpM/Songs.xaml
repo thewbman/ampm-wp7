@@ -10,7 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
@@ -91,6 +91,18 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="alphaItemHeader">
+
+            <Border Background="#25B8D9" Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <TextBlock Text="{Binding Title}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   FontSize="36"
+                                   Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"/>
+            </Border>
+        </DataTemplate>
+
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -113,8 +125,16 @@
                     <toolkit:LongListSelector x:Name="SongsLL"
                      GroupHeaderTemplate="{StaticResource songGroupHeader}"
                      ItemTemplate="{StaticResource songItemTemplate}" 
-                     GroupItemTemplate="{StaticResource songItemHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="SongsLL_SelectionChanged">
+
+
+                        <toolkit:LongListSelector.GroupItemsPanel>
+                            <ItemsPanelTemplate>
+                                <toolkit:WrapPanel Orientation="Horizontal"  />
+                            </ItemsPanelTemplate>
+                        </toolkit:LongListSelector.GroupItemsPanel>
+                        
                     </toolkit:LongListSelector>
                 </StackPanel>
 
@@ -129,17 +149,24 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBox x:Name="searchBox" Width="370"  BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+                        <TextBox x:Name="searchBox" Width="370"  BorderBrush="White"  Foreground="#262e98" Background="Silver" KeyUp="searchBox_KeyUp" InputScope="Search" />
                         <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
                     </StackPanel>
 
                     <toolkit:LongListSelector x:Name="SongsSearchLL"
                      GroupHeaderTemplate="{StaticResource songGroupHeader}"
                      ItemTemplate="{StaticResource songSearchItemTemplate}" 
-                     GroupItemTemplate="{StaticResource songItemHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="SongsSearchLL_SelectionChanged"
                      Grid.Row="1"
                      >
+
+
+                        <toolkit:LongListSelector.GroupItemsPanel>
+                            <ItemsPanelTemplate>
+                                <toolkit:WrapPanel Orientation="Horizontal"  />
+                            </ItemsPanelTemplate>
+                        </toolkit:LongListSelector.GroupItemsPanel>
 
                     </toolkit:LongListSelector>
 

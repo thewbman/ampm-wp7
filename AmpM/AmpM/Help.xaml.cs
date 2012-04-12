@@ -32,10 +32,12 @@ namespace AmpM
 
             this.Questions = new ObservableCollection<NameContentViewModel>();
             this.Support = new ObservableCollection<NameContentViewModel>();
+            this.Apps = new ObservableCollection<NameContentViewModel>();
         }
 
         public ObservableCollection<NameContentViewModel> Questions { get; private set; }
         public ObservableCollection<NameContentViewModel> Support { get; private set; }
+        public ObservableCollection<NameContentViewModel> Apps { get; private set; }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -52,6 +54,7 @@ namespace AmpM
 
             QuestionListBox.ItemsSource = this.Questions;
 
+
             this.Support.Clear();
 
             this.Support.Add(new NameContentViewModel() { Name = "email", Content = "ampm.wp7@gmail.com" });
@@ -60,6 +63,15 @@ namespace AmpM
             this.Support.Add(new NameContentViewModel() { Name = "leave review", Content = "" });
 
             SupportListBox.ItemsSource = this.Support;
+
+
+            this.Apps.Clear();
+
+            //this.Apps.Add(new NameContentViewModel() { Name = "AmpM", Content = "Streams music from an Ampache server" });
+            this.Apps.Add(new NameContentViewModel() { Name = "KTorrentWP7", Content = "Controls a KTorrent program on a Linux PC" });
+            this.Apps.Add(new NameContentViewModel() { Name = "MythMe", Content = "MythTV remote control and viewer" });
+
+            AppsListBox.ItemsSource = this.Apps;
 
         }
 
@@ -91,14 +103,16 @@ namespace AmpM
 
         private void reviewTitle_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            /*
             MarketplaceReviewTask marketReview = new MarketplaceReviewTask();
             marketReview.Show();
-
-            /*
-            MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
-            marketDetail.ContentIdentifier = "455f5645-0b06-429b-9cac-9097b10ae6d2";
-            marketDetail.Show();
             */
+
+            
+            MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
+            marketDetail.ContentIdentifier = "c4c72638-8a65-4a57-89cb-6c186555b702";
+            marketDetail.Show();
+            
         }
 
         private void SupportListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -123,6 +137,34 @@ namespace AmpM
                     reviewTitle_Tap(sender, new System.Windows.Input.GestureEventArgs());
                     break;
             }
+        }
+
+        private void AppsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (AppsListBox.SelectedItem == null)
+                return;
+
+            var myItem = (NameContentViewModel)AppsListBox.SelectedItem;
+
+
+            MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
+            marketDetail.ContentIdentifier = "455f5645-0b06-429b-9cac-9097b10ae6d2";
+
+            switch (myItem.Name)
+            {
+                case "AmpM":
+                    marketDetail.ContentIdentifier = "c4c72638-8a65-4a57-89cb-6c186555b702";
+                    break;
+                case "KTorrentWP7":
+                    marketDetail.ContentIdentifier = "5b791eb3-9e21-4c51-a086-24c665fbfe77";
+                    break;
+                case "MythMe":
+                    marketDetail.ContentIdentifier = "455f5645-0b06-429b-9cac-9097b10ae6d2";
+                    break;
+            }
+
+            marketDetail.Show();
         }
     }
 }

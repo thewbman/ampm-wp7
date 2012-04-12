@@ -73,6 +73,8 @@ namespace MyAudioPlaybackAgent
         // The isolated storage key names of our settings
         const string FirstRunName = "FirstRun";
         const string FirstNowplayingName = "FirstNowplaying";
+        const string AppStartsName = "AppStarts";
+        const string ReviewedName = "Reviewed";
 
         const string HostIndexName = "HostIndex";
         const string HostAddressName = "HostAddress";
@@ -94,12 +96,21 @@ namespace MyAudioPlaybackAgent
         const string SongsCountName = "SongsCount";
         const string VideosCountName = "VideosCount";
 
+        const string LastfmName = "Lastfm";
+        const string LastfmUsernameName = "LastfmUsername";
+        const string LastfmPasswordName = "LastfmPassword";
+        const string LastfmKeyName = "LastfmKey";
+        const string LastfmImagesName = "LastfmImages";
+
+
 
 
 
         // The default value of our settings
         const bool FirstRunDefault = true;
         const bool FirstNowplayingDefault = true;
+        const int AppStartsDefault = 0;
+        const bool ReviewedDefault = false;
         
         const int HostIndexDefault = 0;
         const string HostAddressDefault = "http://google.com";
@@ -121,6 +132,12 @@ namespace MyAudioPlaybackAgent
         const int SongsCountDefault = 0;
         const int VideosCountDefault = 0;
 
+        const bool LastfmDefault = false;
+        const string LastfmUsernameDefault = "";
+        const string LastfmPasswordDefault = "";
+        const string LastfmKeyDefault = "";
+        const bool LastfmImagesDefault = true;
+
 
 
 
@@ -133,6 +150,16 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<bool>(FirstNowplayingName, FirstNowplayingDefault); }
             set { if (AddOrUpdateValue(FirstNowplayingName, value)) { Save(); } }
+        }
+        public int AppStartsSetting
+        {
+            get { return GetValueOrDefault<int>(AppStartsName, AppStartsDefault); }
+            set { if (AddOrUpdateValue(AppStartsName, value)) { Save(); } }
+        }
+        public bool ReviewedSetting
+        {
+            get { return GetValueOrDefault<bool>(ReviewedName, ReviewedDefault); }
+            set { if (AddOrUpdateValue(ReviewedName, value)) { Save(); } }
         }
 
         public int HostIndexSetting
@@ -213,6 +240,32 @@ namespace MyAudioPlaybackAgent
         {
             get { return GetValueOrDefault<int>(VideosCountName, VideosCountDefault); }
             set { if (AddOrUpdateValue(VideosCountName, value)) { Save(); } }
+        }
+
+        public bool LastfmSetting
+        {
+            get { return GetValueOrDefault<bool>(LastfmName, LastfmDefault); }
+            set { if (AddOrUpdateValue(LastfmName, value)) { Save(); } }
+        }
+        public string LastfmUsernameSetting
+        {
+            get { return GetValueOrDefault<string>(LastfmUsernameName, LastfmUsernameDefault); }
+            set { if (AddOrUpdateValue(LastfmUsernameName, value)) { Save(); } }
+        }
+        public string LastfmPasswordSetting
+        {
+            get { return GetValueOrDefault<string>(LastfmPasswordName, LastfmPasswordDefault); }
+            set { if (AddOrUpdateValue(LastfmPasswordName, value)) { Save(); } }
+        }
+        public string LastfmKeySetting
+        {
+            get { return GetValueOrDefault<string>(LastfmKeyName, LastfmKeyDefault); }
+            set { if (AddOrUpdateValue(LastfmKeyName, value)) { Save(); } }
+        }
+        public bool LastfmImagesSetting
+        {
+            get { return GetValueOrDefault<bool>(LastfmImagesName, LastfmImagesDefault); }
+            set { if (AddOrUpdateValue(LastfmImagesName, value)) { Save(); } }
         }
 
 

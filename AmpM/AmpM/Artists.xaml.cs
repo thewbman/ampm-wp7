@@ -404,6 +404,18 @@ namespace AmpM
 
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (searchBox.Text == "")
+            {
+                MessageBox.Show("You must enter some search text");
+                return;
+            }
+
+            this.StartSearch();
+        }
+
+        private void StartSearch()
+        {
+            this.Focus();
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
@@ -452,6 +464,12 @@ namespace AmpM
 
             NavigationService.Navigate(new Uri("/ArtistDetails.xaml?Artist=" + _randomArtist.ArtistId, UriKind.Relative));
 
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key.ToString() == "Enter")
+                this.StartSearch();
         }
 
     }

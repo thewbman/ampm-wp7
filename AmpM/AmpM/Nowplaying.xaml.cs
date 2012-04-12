@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using System.Security.Cryptography;
 using Microsoft.Phone.BackgroundAudio;
 using MyAudioPlaybackAgent;
+using Coding4Fun.Phone.Controls;
 
 namespace AmpM
 {
@@ -36,7 +37,12 @@ namespace AmpM
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
         }
 
+        private string lastfmImage = "";
+
         private bool CanRemoveBackStack;
+
+        private string lastfmTitle;
+        private string lastfmArtist;
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -104,25 +110,43 @@ namespace AmpM
 
                 App.ViewModel.AppSettings.FirstNowplayingSetting = false;
             }
+
+            
+            this.updateLastfmImage();
+
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             CanRemoveBackStack = false;
+
+            this.CloseBufferingPopup();
 
             base.OnNavigatedFrom(e);
         }
 
         void Instance_PlayStateChanged(object sender, EventArgs e)
         {
+            //BannerMessage("PlayerState: "+BackgroundAudioPlayer.Instance.PlayerState.ToString());
+
             switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
                 case PlayState.Playing:
-                    //
+                    this.bufferingPopup.IsOpen = false;
+                    this.LastfmScrobble(BackgroundAudioPlayer.Instance.Track.Title, BackgroundAudioPlayer.Instance.Track.Artist);
                     break;
 
                 case PlayState.Paused:
                 case PlayState.Stopped:
-                    //
+                    this.bufferingPopup.IsOpen = false;
+                    break;
+                case PlayState.BufferingStarted:
+                    this.bufferingPopup.IsOpen = true;
+                    break;
+                case PlayState.TrackEnded:
+                    //this.bufferingPopup.IsOpen = true;
+                    break;
+                case PlayState.Unknown:
+                    //this.bufferingPopup.IsOpen = true;
                     break;
             }
 
@@ -163,6 +187,8 @@ namespace AmpM
                 artistName.Text = "";
                 albumName.Text = "";
             }
+
+            this.updateLastfmImage();
         }
 
         private void nowplayingList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -170,6 +196,8 @@ namespace AmpM
 
             if (nowplayingList.SelectedItem == null)
                 return;
+
+            this.bufferingPopup.IsOpen = true;
 
             if (App.ViewModel.Nowplaying.Count > 0)
             {
@@ -218,6 +246,8 @@ namespace AmpM
             App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
 
             nowplayingList.ItemsSource = null;
+
+            this.Perform(() => CloseBufferingPopup(), 1000);
         }
 
         private void takeAudioControl_Click(object sender, EventArgs e)
@@ -425,6 +455,260 @@ namespace AmpM
 
             songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
             nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
+        }
+
+        private void CloseBufferingPopup()
+        {
+            this.bufferingPopup.IsOpen = false;
+        }
+
+        private void LastfmScrobble(string inTitle, string inArtist)
+        {
+            lastfmTitle = inTitle;
+            lastfmArtist = inArtist;
+
+            DateTime date = DateTime.Now;
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan span = (date - epoch);
+            string timestamp = span.TotalSeconds.ToString();
+
+            string method = "track.updateNowPlaying";
+
+            string api_sig = MD5Core.GetHashString("api_key" + App.ViewModel.LastfmApikey + "artist" + inArtist + "method" + method + "sk" + App.ViewModel.AppSettings.LastfmKeySetting + "timestamp" + timestamp + "track" + inTitle + App.ViewModel.LastfmSecret).ToLower();
+
+            string fullUrl = App.ViewModel.LastfmUrl;
+            fullUrl += "?api_key=" + App.ViewModel.LastfmApikey;
+            fullUrl += "&method=" + method;
+            fullUrl += "&timestamp=" + timestamp;
+            fullUrl += "&track=" + inTitle;
+            fullUrl += "&artist=" + inArtist;
+            fullUrl += "&sk=" + App.ViewModel.AppSettings.LastfmKeySetting;
+            fullUrl += "&api_sig=" + api_sig.ToLower();
+
+            //MessageBox.Show("fullUrl: " + fullUrl);
+
+            Uri scrobbleuri = new Uri(fullUrl);
+
+            string postData = "";
+            postData += "api_key=" + App.ViewModel.LastfmApikey;
+            postData += "&method=" + method;
+            postData += "&timestamp=" + timestamp;
+            postData += "&track=" + lastfmTitle;
+            postData += "&artist=" + lastfmArtist;
+            postData += "&sk=" + App.ViewModel.AppSettings.LastfmKeySetting;
+            postData += "&api_sig=" + api_sig.ToLower();
+
+            UTF8Encoding encoding=new UTF8Encoding();
+
+            byte[] postDataBytes = encoding.GetBytes(postData);
+
+            /*
+            EmailComposeTask emailcomposer = new EmailComposeTask();
+            emailcomposer.To = "ampm.wp7@gmail.com";
+            emailcomposer.Subject = "Lastfm scrobble";
+            emailcomposer.Body = scrobbleuri.ToString();
+            emailcomposer.Show();
+             */
+
+            if (App.ViewModel.AppSettings.LastfmKeySetting.Length > 0)
+            {
+                /*
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.CreateHttp(new Uri(App.ViewModel.LastfmUrl));
+                webRequest.Method = "POST";
+                webRequest.ContentType = "application/x-www-form-urlencoded";
+                webRequest.BeginGetRequestStream(new AsyncCallback(LastfmScrobbleStreamCallback), webRequest);
+                //webRequest.BeginGetResponse(new AsyncCallback(LastfmScrobbleCallback), webRequest);
+                
+
+
+                WebClient client = new WebClient(); client.UploadStringCompleted += new UploadStringCompletedEventHandler(client_UploadStringCompleted);
+                client.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+                client.Encoding = Encoding.UTF8;
+                client.UploadStringAsync(new Uri(App.ViewModel.LastfmUrl), "POST", postData);
+                
+                 */
+
+            }
+        }
+        private void LastfmScrobbleStreamCallback(IAsyncResult asynchronousResult)
+        {
+            HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
+            // End the stream request operation
+            Stream postStream = webRequest.EndGetRequestStream(asynchronousResult);
+
+
+            DateTime date = DateTime.Now;
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan span = (date - epoch);
+            string timestamp = span.TotalSeconds.ToString();
+
+            string method = "track.updateNowPlaying";
+
+            string api_sig = MD5Core.GetHashString("api_key" + App.ViewModel.LastfmApikey + "artist" + lastfmArtist + "method" + method + "sk" + App.ViewModel.AppSettings.LastfmKeySetting + "timestamp" + timestamp + "track" + lastfmTitle + App.ViewModel.LastfmSecret).ToLower();
+
+            string postData = "";
+            postData += "api_key=" + App.ViewModel.LastfmApikey;
+            postData += "&method=" + method;
+            postData += "&timestamp=" + timestamp;
+            postData += "&track=" + lastfmTitle;
+            postData += "&artist=" + lastfmArtist;
+            postData += "&sk=" + App.ViewModel.AppSettings.LastfmKeySetting;
+            postData += "&api_sig=" + api_sig.ToLower();
+
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            // Add the post data to the web request
+            postStream.Write(byteArray, 0, byteArray.Length);
+            postStream.Close();
+
+
+            webRequest.BeginGetResponse(new AsyncCallback(LastfmScrobbleCallback), webRequest);
+        }
+        private void LastfmScrobbleCallback(IAsyncResult asynchronousResult)
+        {
+            //
+
+        }
+
+        private void client_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            MessageBox.Show(e.Result);
+        }
+
+
+        private void updateLastfmImage()
+        {
+
+            if ((BackgroundAudioPlayer.Instance.Track != null)&&(App.ViewModel.AppSettings.LastfmImagesSetting))
+            {
+
+                lastfmTitle = BackgroundAudioPlayer.Instance.Track.Title;
+                lastfmArtist = BackgroundAudioPlayer.Instance.Track.Artist;
+
+
+                string method = "artist.getimages";
+
+                string fullUrl = App.ViewModel.LastfmUrl;
+                fullUrl += "?api_key=" + App.ViewModel.LastfmApikey;
+                fullUrl += "&method=" + method;
+                fullUrl += "&artist=" + lastfmArtist;
+                fullUrl += "&limit=1";
+
+                //MessageBox.Show("fullUrl: " + fullUrl);
+
+                Uri scrobbleuri = new Uri(fullUrl);
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(fullUrl));
+                webRequest.BeginGetResponse(new AsyncCallback(LastfmImagesCallback), webRequest);
+            }
+        }
+        private void LastfmImagesCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Failed to get data response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
+                });
+
+                string imageType = "";
+                string sizeName = "";
+                string sizeWidth = "";
+                string sizeHeight = "";
+                string sizeUrl = "";
+
+                foreach (XElement singleImage in xdoc.Element("lfm").Element("images").Descendants("image"))
+                {
+                    imageType = singleImage.Element("format").ToString();
+
+                    sizeName = singleImage.Element("sizes").Element("size").Attribute("name").ToString();
+                    sizeWidth = singleImage.Element("sizes").Element("size").Attribute("width").ToString();
+                    sizeHeight = singleImage.Element("sizes").Element("size").Attribute("height").ToString();
+                    sizeUrl = singleImage.Element("sizes").Element("size").FirstNode.ToString();
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+
+                    var app = Application.Current as App;
+                    if (app == null)
+                    {
+                        MessageBox.Show("null app");
+                    }
+
+                    if (sizeUrl == "")
+                    {
+                        LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(255, 19, 00, 49));
+                    }
+                    else
+                    {
+                        System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(sizeUrl));
+
+
+                        var imageBrush = new ImageBrush
+                        {
+                            ImageSource = bmp,
+                            Opacity = 0.5d
+                        };
+                        //app.RootFrame.Background = imageBrush;
+                        LayoutRoot.Background = imageBrush;
+
+                        //MessageBox.Show("Found image '" + sizeName + "' that is " + sizeWidth + " by " + sizeHeight + ": " + sizeUrl + ".", "Last.fm", MessageBoxButton.OK);
+                    }
+
+                });
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Error when getting images data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
+        }
+
+
+        private void BannerMessage(string inMessage)
+        {
+            ToastPrompt toast = new ToastPrompt();
+
+            toast.Title = inMessage;
+            toast.TextOrientation = System.Windows.Controls.Orientation.Horizontal;
+
+            toast.Show();
         }
 
     }

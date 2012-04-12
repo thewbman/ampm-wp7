@@ -46,6 +46,8 @@ namespace AmpM
             _playlistItems = new ObservableCollection<DataItemViewModel>();
             _songItems = new ObservableCollection<DataItemViewModel>();
 
+            searchPivot.SelectedIndex = 1;
+
         }
 
         public ObservableCollection<DataItemViewModel> _allItems;
@@ -77,7 +79,7 @@ namespace AmpM
              
              */
 
-            searchBox.Text = "";
+            //searchBox.Text = "";
         }
 
 
@@ -87,10 +89,16 @@ namespace AmpM
         {
             if (searchBox.Text == "")
             {
-                MessageBox.Show("You must enter somme search text");
+                MessageBox.Show("You must enter some search text");
                 return;
             }
 
+            this.StartSearch();
+        }
+
+        private void StartSearch()
+        {
+            this.Focus();
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
@@ -1255,6 +1263,13 @@ namespace AmpM
         private void ContextMenu_Unloaded_1(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key.ToString() == "Enter")
+                this.StartSearch();
         }
 
     }

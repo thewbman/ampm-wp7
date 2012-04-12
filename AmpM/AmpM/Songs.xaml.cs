@@ -40,6 +40,8 @@ namespace AmpM
             //_items.Add(new DataItemViewModel() { PlaylistId = -1, PlaylistName = "playlist name", PlaylistItems = 44, AlbumId = -1, AlbumName = "album name", AlbumTracks = 34, ArtistAlbums = 2, ArtistId = 32, ArtistName = "artist name", ArtistTracks = 23, ArtUrl = "http://www.google.com/", SongId = 343, SongName = "song name", Type = "playlist" });
 
             //songList.ItemsSource = _items;
+
+            songsPivot.SelectedIndex = 1;
         }
 
         public ObservableCollection<DataItemViewModel> _items;
@@ -578,6 +580,18 @@ namespace AmpM
 
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (searchBox.Text == "")
+            {
+                MessageBox.Show("You must enter some search text");
+                return;
+            }
+
+            this.StartSearch();
+        }
+
+        private void StartSearch()
+        {
+            this.Focus();
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
@@ -828,6 +842,13 @@ namespace AmpM
         private void SearchContextMenu_Unloaded(object sender, RoutedEventArgs e)
         {
             SongsSearchLL.IsEnabled = true;
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key.ToString() == "Enter")
+                this.StartSearch();
         }
     }
 }

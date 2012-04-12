@@ -39,18 +39,25 @@ namespace AmpM
             TogglePlayShuffle.IsChecked = App.ViewModel.AppSettings.DefaultPlayShuffleSetting;
             TogglePlayAll.IsChecked = App.ViewModel.AppSettings.DefaultPlayAllSetting;
 
+            ToggleLastfm.IsChecked = App.ViewModel.AppSettings.LastfmSetting;
+            LastfmUsername.Text = App.ViewModel.AppSettings.LastfmUsernameSetting;
+            LastfmPassword.Password = App.ViewModel.AppSettings.LastfmPasswordSetting;
+            ToggleLastfmImages.IsChecked = App.ViewModel.AppSettings.LastfmImagesSetting;
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
 
-            //App.ViewModel.AppSettings.DefaultPlayAddSetting = (bool)PlayAdd.IsChecked;
-            //App.ViewModel.AppSettings.DefaultPlayShuffleSetting = (bool)PlayShuffle.IsChecked;
-            //App.ViewModel.AppSettings.DefaultPlayAllSetting = (bool)PlayAll.IsChecked;
-
             App.ViewModel.AppSettings.DefaultPlayAddSetting = (bool)TogglePlayAdd.IsChecked;
             App.ViewModel.AppSettings.DefaultPlayShuffleSetting = (bool)TogglePlayShuffle.IsChecked;
             App.ViewModel.AppSettings.DefaultPlayAllSetting = (bool)TogglePlayAll.IsChecked;
+
+            App.ViewModel.AppSettings.LastfmSetting = (bool)ToggleLastfm.IsChecked;
+            App.ViewModel.AppSettings.LastfmUsernameSetting = LastfmUsername.Text;
+            App.ViewModel.AppSettings.LastfmPasswordSetting = LastfmPassword.Password;
+            App.ViewModel.AppSettings.LastfmKeySetting = "";
+            App.ViewModel.AppSettings.LastfmImagesSetting = (bool)ToggleLastfmImages.IsChecked;
 
             base.OnNavigatedFrom(e);
         }

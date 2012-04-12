@@ -10,7 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
@@ -47,6 +47,30 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="yearItemHeader">
+
+            <Border Background="#25B8D9" Width="219" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <TextBlock Text="{Binding Title}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   FontSize="36"
+                                   Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="alphaItemHeader">
+            
+            <Border Background="#25B8D9" Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <TextBlock Text="{Binding Title}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   FontSize="36"
+                                   Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"/>
+            </Border>
+        </DataTemplate>
+
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -67,10 +91,16 @@
 
                 <toolkit:LongListSelector x:Name="AlbumsLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
-                     GroupItemTemplate="{StaticResource albumItemHeader}"
-                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="AlbumsLL_SelectionChanged">
+                     SelectionChanged="AlbumsLL_SelectionChanged">
                     
+                    <toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal"  />
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>
+
                 </toolkit:LongListSelector>
 
             </controls:PivotItem>
@@ -81,8 +111,15 @@
                 <toolkit:LongListSelector x:Name="AlbumsArtistLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
-                     GroupItemTemplate="{StaticResource albumItemHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="AlbumsArtistLL_SelectionChanged">
+
+                    <toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>
+                    
                 </toolkit:LongListSelector>
 
             </controls:PivotItem>
@@ -93,8 +130,14 @@
                 <toolkit:LongListSelector x:Name="AlbumsYearLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
-                     GroupItemTemplate="{StaticResource albumItemHeader}"
+                     GroupItemTemplate="{StaticResource yearItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="AlbumsYearLL_SelectionChanged">
+
+                    <toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>
                 </toolkit:LongListSelector>
                 
             </controls:PivotItem>
@@ -128,18 +171,24 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBox x:Name="searchBox" Width="370" BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+                        <TextBox x:Name="searchBox" Width="370" BorderBrush="White"  Foreground="#262e98" Background="Silver" KeyUp="searchBox_KeyUp" InputScope="Search" />
                         <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
                     </StackPanel>
 
                     <toolkit:LongListSelector x:Name="AlbumsSearchLL"
                      GroupHeaderTemplate="{StaticResource albumGroupHeader}"
                      ItemTemplate="{StaticResource albumItemTemplate}" 
-                     GroupItemTemplate="{StaticResource albumItemHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="AlbumsSearchLL_SelectionChanged"
                      Grid.Row="1"
                      >
-                        
+
+                        <toolkit:LongListSelector.GroupItemsPanel>
+                            <ItemsPanelTemplate>
+                                <toolkit:WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </toolkit:LongListSelector.GroupItemsPanel>
+
                     </toolkit:LongListSelector>
 
                 </Grid>
