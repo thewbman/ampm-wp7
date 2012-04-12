@@ -11,7 +11,7 @@
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     xmlns:local="clr-namespace:AmpM"
@@ -28,11 +28,18 @@
 
         <my:AdControl Name="adControl1" AdUnitId="78179" ApplicationId="1a2ce3f6-c71d-4e10-87bf-e256042ecbdf" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" />
 
+        
         <controls:Pivot x:Name="nowplayingPivot" Grid.Row="1" Title="NOWPLAYING" Foreground="White">
 
             <controls:PivotItem x:Name="songPivot" Header="song" Foreground="White">
-                
-                 <StackPanel HorizontalAlignment="Left" >
+                <Grid>
+
+                    <Popup Height="100" Width="200" x:Name="bufferingPopup" IsOpen="False">
+                        <TextBox Text="Loading ..." />
+                    </Popup>
+                    
+                    <StackPanel HorizontalAlignment="Left" >
+
                     <TextBlock x:Name="songCount" />
                     <Image x:Name="artUrl" Source="{Binding ArtUrl}" Height="280" Width="280" HorizontalAlignment="Left" />
                     <!--
@@ -41,8 +48,11 @@
                     <TextBlock x:Name="artistName" Text="artist name" FontSize="{StaticResource PhoneFontSizeLarge}" />
                     <TextBlock x:Name="songName" Text="song name" FontSize="{StaticResource PhoneFontSizeExtraLarge}" />
                     <TextBlock x:Name="albumName" Text="album name" FontSize="{StaticResource PhoneFontSizeMediumLarge}" />
+
+                    
                 </StackPanel>
-                
+                </Grid>
+
             </controls:PivotItem>
 
 

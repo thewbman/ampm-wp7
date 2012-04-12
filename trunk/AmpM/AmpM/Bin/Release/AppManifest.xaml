@@ -2,6 +2,7 @@
   <Deployment.Parts>
     <AssemblyPart x:Name="AmpM" Source="AmpM.dll" />
     <AssemblyPart x:Name="AmpmScheduledTaskAgent" Source="AmpmScheduledTaskAgent.dll" />
+    <AssemblyPart x:Name="Coding4Fun.Phone.Controls" Source="Coding4Fun.Phone.Controls.dll" />
     <AssemblyPart x:Name="FlurryWP7SDK" Source="FlurryWP7SDK.dll" />
     <AssemblyPart x:Name="IsolatedStorageExplorer" Source="IsolatedStorageExplorer.dll" />
     <AssemblyPart x:Name="Microsoft.Advertising.Mobile.UI" Source="Microsoft.Advertising.Mobile.UI.dll" />

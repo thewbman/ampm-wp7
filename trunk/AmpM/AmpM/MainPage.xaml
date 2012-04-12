@@ -10,7 +10,7 @@
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     xmlns:local="clr-namespace:AmpM"
@@ -66,6 +66,11 @@
             <shell:ApplicationBarIconButton x:Name="addButton" IconUri="/Images/appbar.add.rest.png" Text="add server" Click="addButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="settingsButton" IconUri="/Images/appbar.feature.settings.rest.png" Text="preferences" Click="settingsButton_Click"/>
             <shell:ApplicationBarIconButton x:Name="helpButton" IconUri="/Images/appbar.questionmark.rest.png" Text="help" Click="helpButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+
+                <shell:ApplicationBarMenuItem Text="stop playback and clear playlist" Click="emptyButton_Click"/>
+
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

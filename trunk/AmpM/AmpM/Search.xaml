@@ -10,7 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
@@ -147,7 +147,7 @@
         <my:AdControl Name="adControl1" AdUnitId="78186" ApplicationId="1a2ce3f6-c71d-4e10-87bf-e256042ecbdf" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" />
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" >
-            <TextBox x:Name="searchBox" Width="390"  BorderBrush="White"  Foreground="#262e98" Background="Silver" />
+            <TextBox x:Name="searchBox" Width="390"  BorderBrush="White"  Foreground="#262e98" Background="Silver" InputScope="Search" KeyUp="searchBox_KeyUp" />
             <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
         </StackPanel>
         

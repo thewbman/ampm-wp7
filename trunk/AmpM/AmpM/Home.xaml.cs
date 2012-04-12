@@ -21,6 +21,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using Microsoft.Phone.BackgroundAudio;
+using System.Windows.Media.Imaging;
 
 namespace AmpM
 {
@@ -32,6 +34,7 @@ namespace AmpM
 
             this._items = new ObservableCollection<NameContentViewModel>();
 
+            
             _items.Add(new NameContentViewModel() { Name = "now playing" });
             _items.Add(new NameContentViewModel() { Name = "search" });
             _items.Add(new NameContentViewModel() { Name = "songs" });
@@ -43,11 +46,14 @@ namespace AmpM
 
             itemsList.ItemsSource = _items;
 
+            BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
+
         }
 
         private ObservableCollection<NameContentViewModel> _items;
         private HostViewModel SelectedHost;
 
+        
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -62,8 +68,23 @@ namespace AmpM
                 }
 
                 
-            } 
-            
+            }
+
+            /*
+            if (NavigationContext.QueryString.TryGetValue("NewSession", out inValue3))
+            {
+                this.NewSession = true;
+             
+                List<MyAudioPlaybackAgent.DataItemViewModel> NewNP = new List<MyAudioPlaybackAgent.DataItemViewModel>();
+
+                foreach (var s in App.ViewModel.Nowplaying)
+                {
+                    NewNP.Add(App.ViewModel.Functions.CloneItem(s, App.ViewModel.aut);
+                }
+
+            }
+             */
+
             SelectedHost = App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting];
 
             PageTitle.Text = SelectedHost.Name;
@@ -134,7 +155,14 @@ namespace AmpM
             if (NavigationContext.QueryString.TryGetValue("Ping", out inValue2))
             {
                 if (inValue2 == "true") this.Ping();
+
+                if (App.ViewModel.AppSettings.LastfmSetting)
+                    this.LastfmConnect();
             }
+
+            this.updateLastfmImage();
+
+            NavigationContext.QueryString.Clear();
         }
 
         private void ConnectCallback(IAsyncResult asynchronousResult)
@@ -242,6 +270,30 @@ namespace AmpM
                         App.ViewModel.AppSettings.ArtistsCountSetting = int.Parse(xdoc.Element("root").Element("artists").Value);
                         App.ViewModel.AppSettings.PlaylistsCountSetting = int.Parse(xdoc.Element("root").Element("playlists").Value);
                         App.ViewModel.AppSettings.VideosCountSetting = int.Parse(xdoc.Element("root").Element("videos").Value);
+
+
+                        if (App.ViewModel.Nowplaying.Count > 0)
+                        {
+                            List<MyAudioPlaybackAgent.DataItemViewModel> NewNP = new List<MyAudioPlaybackAgent.DataItemViewModel>();
+
+                            foreach (var s in App.ViewModel.Nowplaying)
+                            {
+                                NewNP.Add(App.ViewModel.Functions.CloneItem(s, App.ViewModel.AppSettings.AuthSetting));
+                            }
+
+                            App.ViewModel.Nowplaying.Clear();
+
+                            foreach (var t in NewNP)
+                            {
+                                App.ViewModel.Nowplaying.Add(t);
+                            }
+
+                            App.ViewModel.saveNowplaying();
+                        }
+
+                        if (App.ViewModel.AppSettings.LastfmSetting)
+                            this.LastfmConnect();
+
 
                         performanceProgressBarCustomized.IsIndeterminate = false;
 
@@ -387,6 +439,251 @@ namespace AmpM
         private void helpButton_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
+        }
+
+        private void emptyButton_Click(object sender, EventArgs e)
+        {
+            MyAudioPlaybackAgent.AudioPlayer.stopAll();
+            MyAudioPlaybackAgent.AudioPlayer.resetList();
+            BackgroundAudioPlayer.Instance.Track = null;
+
+            App.ViewModel.Nowplaying.Clear();
+            App.ViewModel.saveNowplaying();
+            App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
+
+            _items[0].Content = App.ViewModel.Nowplaying.Count.ToString();
+        }
+
+
+        private void LastfmConnect()
+        {
+            //string url = "http://ws.audioscrobbler.com/2.0/";
+            //string secret = "cfaaaa9417b5ded38e6ed30434ca8be7";
+            //string key = "ee337ff6dfdd301251d3e1c234d2ccba";
+            string method = "auth.getMobileSession";
+
+            string authToken = MD5Core.GetHashString(App.ViewModel.AppSettings.LastfmUsernameSetting + MD5Core.GetHashString(App.ViewModel.AppSettings.LastfmPasswordSetting).ToLower()).ToLower();
+
+            string api_sig = MD5Core.GetHashString("api_key" + App.ViewModel.LastfmApikey + "authToken" + authToken + "method" + method + "username" + App.ViewModel.AppSettings.LastfmUsernameSetting + App.ViewModel.LastfmSecret).ToLower();
+
+            string fullUrl = App.ViewModel.LastfmUrl;
+            fullUrl += "?api_key=" + App.ViewModel.LastfmApikey;
+            fullUrl += "&method=" + method;
+            fullUrl += "&username=" + App.ViewModel.AppSettings.LastfmUsernameSetting;
+            fullUrl += "&authToken=" + authToken.ToLower();
+            fullUrl += "&api_sig=" + api_sig.ToLower();
+
+            //fullUrl += "&password=" + App.ViewModel.AppSettings.LastfmPasswordSetting;
+            //fullUrl += "&passhash=" + MD5Core.GetHashString(App.ViewModel.AppSettings.LastfmPasswordSetting);
+
+
+            //MessageBox.Show("fullUrl: " + fullUrl);
+
+            /*
+             
+            EmailComposeTask emailcomposer = new EmailComposeTask();
+            emailcomposer.To = "ampm.wp7@gmail.com";
+            emailcomposer.Subject = "AmpM Help";
+            emailcomposer.Body = fullUrl;
+            emailcomposer.Show();
+             */
+
+            if (App.ViewModel.AppSettings.LastfmKeySetting.Length > 0)
+            {
+                HttpWebRequest webRequest = WebRequest.CreateHttp(new Uri(fullUrl));
+                webRequest.BeginGetResponse(new AsyncCallback(LastfmConnectCallback), webRequest);
+            }
+
+
+        }
+        private void LastfmConnectCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Failed to get last.fm response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    MessageBox.Show("Error logging into last.fm - check your username and password");
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got last.fm login response: " + resultString);
+
+                    XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                    App.ViewModel.AppSettings.LastfmKeySetting = xdoc.Element("lfm").Element("session").Element("key").FirstNode.ToString();
+
+                    //MessageBox.Show("Last.fm key: " + App.ViewModel.AppSettings.LastfmKeySetting);
+
+                });
+            
+            }
+            catch (Exception ex)
+            {
+                
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error getting last.fm login response: " + ex.ToString());
+
+                });
+            }
+             
+
+        }
+
+        void Instance_PlayStateChanged(object sender, EventArgs e)
+        {
+            this.updateLastfmImage();
+        }
+
+        private void updateLastfmImage()
+        {
+
+            if ((BackgroundAudioPlayer.Instance.Track != null) && (App.ViewModel.AppSettings.LastfmImagesSetting))
+            {
+
+                string lastfmTitle = BackgroundAudioPlayer.Instance.Track.Title;
+                string lastfmArtist = BackgroundAudioPlayer.Instance.Track.Artist;
+
+
+                string method = "artist.getimages";
+
+                string fullUrl = App.ViewModel.LastfmUrl;
+                fullUrl += "?api_key=" + App.ViewModel.LastfmApikey;
+                fullUrl += "&method=" + method;
+                fullUrl += "&artist=" + lastfmArtist;
+                fullUrl += "&limit=1";
+
+                //MessageBox.Show("fullUrl: " + fullUrl);
+
+                Uri scrobbleuri = new Uri(fullUrl);
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(fullUrl));
+                webRequest.BeginGetResponse(new AsyncCallback(LastfmImagesCallback), webRequest);
+            }
+        }
+        private void LastfmImagesCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Failed to get data response: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got data response: " + resultString, "Error", MessageBoxButton.OK);
+                });
+
+                string imageType = "";
+                string sizeName = "";
+                string sizeWidth = "";
+                string sizeHeight = "";
+                string sizeUrl = "";
+
+                foreach (XElement singleImage in xdoc.Element("lfm").Element("images").Descendants("image"))
+                {
+                    imageType = singleImage.Element("format").ToString();
+
+                    sizeName = singleImage.Element("sizes").Element("size").Attribute("name").ToString();
+                    sizeWidth = singleImage.Element("sizes").Element("size").Attribute("width").ToString();
+                    sizeHeight = singleImage.Element("sizes").Element("size").Attribute("height").ToString();
+                    sizeUrl = singleImage.Element("sizes").Element("size").FirstNode.ToString();
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+
+                    var app = Application.Current as App;
+                    if (app == null)
+                    {
+                        MessageBox.Show("null app");
+                    }
+
+
+                    if (sizeUrl == "")
+                    {
+                        LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(255, 19, 00, 49));
+                    }
+                    else
+                    {
+                        System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(sizeUrl));
+
+
+                        var imageBrush = new ImageBrush
+                        {
+                            ImageSource = bmp,
+                            Opacity = 0.5d
+                        };
+                        //app.RootFrame.Background = imageBrush;
+                        LayoutRoot.Background = imageBrush;
+
+                        //MessageBox.Show("Found image '" + sizeName + "' that is " + sizeWidth + " by " + sizeHeight + ": " + sizeUrl + ".", "Last.fm", MessageBoxButton.OK);
+                    }
+
+                });
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Error when getting images data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
         }
     }
 }

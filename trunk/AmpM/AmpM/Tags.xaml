@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
@@ -41,6 +41,18 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="alphaItemHeader">
+
+            <Border Background="#25B8D9" Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <TextBlock Text="{Binding Title}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   FontSize="36"
+                                   Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"/>
+            </Border>
+        </DataTemplate>
+
     </phone:PhoneApplicationPage.Resources>
 
 
@@ -67,8 +79,15 @@
             <toolkit:LongListSelector x:Name="TagsLL"
                      GroupHeaderTemplate="{StaticResource tagGroupHeader}"
                      ItemTemplate="{StaticResource tagItemTemplate}" 
-                     GroupItemTemplate="{StaticResource tagItemHeader}"
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="TagsLL_SelectionChanged">
+
+
+                <toolkit:LongListSelector.GroupItemsPanel>
+                    <ItemsPanelTemplate>
+                        <toolkit:WrapPanel Orientation="Horizontal"  />
+                    </ItemsPanelTemplate>
+                </toolkit:LongListSelector.GroupItemsPanel>
             </toolkit:LongListSelector>
 
         </Grid>

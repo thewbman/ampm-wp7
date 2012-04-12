@@ -12,6 +12,8 @@ using System.Net;
 using System.Xml.Linq;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
+using System.Threading;
+using Microsoft.Phone.Tasks;
 //using Coding4Fun.Phone.Controls;
 
 namespace MyAudioPlaybackAgent
@@ -26,6 +28,11 @@ namespace MyAudioPlaybackAgent
         static AppSettingsModel AppSettings = new AppSettingsModel();
 
         public static List<AudioTrack> _playList = new List<AudioTrack>();
+
+        
+        public string LastfmUrl = "http://ws.audioscrobbler.com/2.0/";
+        public string LastfmSecret = "cfaaaa9417b5ded38e6ed30434ca8be7";
+        public string LastfmApikey = "ee337ff6dfdd301251d3e1c234d2ccba";
 
         /// <remarks>
         /// AudioPlayer instances can share the same process. 
@@ -269,9 +276,11 @@ namespace MyAudioPlaybackAgent
                 {
                     case PlayState.TrackEnded:
                         //player.Track = GetPreviousTrack();
+                        this.LastfmScrobble(track.Title, track.Artist);
                         PlayNextTrack(player);
                         break;
                     case PlayState.TrackReady:
+                        this.LastfmNowplaying(track.Title, track.Artist);
                         player.Play();
                         //CheckPingAmpache();
                         AppSettings.StreamSessionExpireSetting = DateTime.Now.AddMinutes(90).ToString("s");
@@ -302,7 +311,7 @@ namespace MyAudioPlaybackAgent
             catch
             { }
 
-            NotifyComplete();
+            this.Perform(() => NotifyComplete(), 1000);
         }
 
 
@@ -366,7 +375,7 @@ namespace MyAudioPlaybackAgent
             catch
             { }
 
-            NotifyComplete();
+            this.Perform(() => NotifyComplete(), 1000);
         }
 
 
@@ -490,7 +499,7 @@ namespace MyAudioPlaybackAgent
             }
             else
             {
-                NotifyComplete();
+                this.Perform(() => NotifyComplete(), 1000);
             }
 
         }
@@ -532,6 +541,7 @@ namespace MyAudioPlaybackAgent
             if (_playList.Count <= AppSettings.NowplayingIndexSetting)
             {
                 //AppSettings.NowplayingIndexSetting = 0;
+                player.Track = null;
             }
             else
             {
@@ -735,6 +745,121 @@ namespace MyAudioPlaybackAgent
             return myRandom();
         }
 
+        private void LastfmNowplaying(string inTitle, string inArtist)
+        {
+
+
+            string method = "track.updateNowPlaying";
+
+            string api_sig = MD5Core.GetHashString("api_key" + this.LastfmApikey + "artist" + inArtist + "method" + method + "sk" + AppSettings.LastfmKeySetting + "track" + inTitle + this.LastfmSecret).ToLower();
+
+
+            string postData = "";
+            postData += "api_key=" + this.LastfmApikey;
+            postData += "&method=" + method;
+            postData += "&track=" + inTitle;
+            postData += "&artist=" + inArtist;
+            postData += "&sk=" + AppSettings.LastfmKeySetting;
+            postData += "&api_sig=" + api_sig.ToLower();
+
+            UTF8Encoding encoding = new UTF8Encoding();
+
+            byte[] postDataBytes = encoding.GetBytes(postData);
+
+
+            if (AppSettings.LastfmKeySetting.Length > 0)
+            {
+                /*
+                HttpWebRequest webRequest = WebRequest.CreateHttp(new Uri(fullUrl));
+                webRequest.Method = "POST";
+                webRequest.BeginGetResponse(new AsyncCallback(LastfmNowplayingCallback), webRequest);
+                */
+
+                WebClient client = new WebClient(); 
+                client.UploadStringCompleted += new UploadStringCompletedEventHandler(LastfmNowplayingStreamCompleted);
+                client.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+                client.Encoding = Encoding.UTF8;
+                client.UploadStringAsync(new Uri(this.LastfmUrl), "POST", postData);
+            }
+        }
+        private void LastfmNowplayingCallback(IAsyncResult asynchronousResult)
+        {
+            //
+        }
+        private void LastfmNowplayingStreamCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            MessageBox.Show(e.Result);
+        }
+
+        private void LastfmScrobble(string inTitle, string inArtist)
+        {
+
+            DateTime date = DateTime.Now;
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan span = (date - epoch);
+            string timestamp = span.TotalSeconds.ToString();
+
+            string method = "track.scrobble";
+
+            string api_sig = MD5Core.GetHashString("api_key" + this.LastfmApikey + "artist" + inArtist + "method" + method + "sk" + AppSettings.LastfmKeySetting + "timestamp" + timestamp + "track" + inTitle + this.LastfmSecret).ToLower();
+
+            string fullUrl = LastfmUrl;
+            fullUrl += "?api_key=" + LastfmApikey;
+            fullUrl += "&method=" + method;
+            fullUrl += "&timestamp=" + timestamp;
+            fullUrl += "&track=" + inTitle;
+            fullUrl += "&artist=" + inArtist;
+            fullUrl += "&sk=" + AppSettings.LastfmKeySetting;
+            fullUrl += "&api_sig=" + api_sig.ToLower();
+
+
+            string postData = "";
+            postData += "api_key=" + this.LastfmApikey;
+            postData += "&method=" + method;
+            postData += "&timestamp=" + timestamp;
+            postData += "&track=" + inTitle;
+            postData += "&artist=" + inArtist;
+            postData += "&sk=" + AppSettings.LastfmKeySetting;
+            postData += "&api_sig=" + api_sig.ToLower();
+
+            UTF8Encoding encoding = new UTF8Encoding();
+
+            byte[] postDataBytes = encoding.GetBytes(postData);
+
+            //MessageBox.Show("fullUrl: " + fullUrl);
+            /*
+            EmailComposeTask emailcomposer = new EmailComposeTask();
+            emailcomposer.To = "ampm.wp7@gmail.com";
+            emailcomposer.Subject = "Lastfm scrobble";
+            emailcomposer.Body = fullUrl;
+            emailcomposer.Show();
+             */
+
+            if (AppSettings.LastfmKeySetting.Length > 0)
+            {
+                /*
+                HttpWebRequest webRequest = WebRequest.CreateHttp(new Uri(fullUrl));
+                webRequest.Method = "POST";
+                webRequest.BeginGetResponse(new AsyncCallback(LastfmScrobbleCallback), webRequest);
+                */
+
+                WebClient client = new WebClient();
+                client.UploadStringCompleted += new UploadStringCompletedEventHandler(LastfmScrobbleStreamCompleted);
+                client.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+                client.Encoding = Encoding.UTF8;
+                client.UploadStringAsync(new Uri(this.LastfmUrl), "POST", postData);
+            }
+        }
+        private void LastfmScrobbleCallback(IAsyncResult asynchronousResult)
+        {
+            //
+        }
+        private void LastfmScrobbleStreamCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            MessageBox.Show(e.Result);
+        } 
+
+
         private static void BannerMessage(string inMessage)
         {
             /*
@@ -745,6 +870,18 @@ namespace MyAudioPlaybackAgent
 
             toast.Show();
              * */
+        }
+
+
+        private void Perform(Action myMethod, int delayInMilliseconds)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) => Thread.Sleep(delayInMilliseconds);
+
+            worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
+
+            worker.RunWorkerAsync();
         }
     }
 }

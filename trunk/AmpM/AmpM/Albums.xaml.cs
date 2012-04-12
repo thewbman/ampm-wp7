@@ -308,10 +308,10 @@ namespace AmpM
             }
 
 
-            var albumsByChar = from t in al
+            var albumsByChar = (from t in al
                                group t by t.ItemChar into c
                                //orderby c.Key
-                               select new Group<DataItemViewModel>(c.Key, c);
+                               select new Group<DataItemViewModel>(c.Key, c));
 
             var albumsByArtist = from t in b2
                                  group t by t.ItemChar into c
@@ -327,8 +327,46 @@ namespace AmpM
                                group t by t.ItemChar into c
                                //orderby c.Key
                                select new Group<DataItemViewModel>(c.Key, c);
+            
+            //not sure how to have blank values for empty groups in LL group picker
+            /*
+            var emptyGroups = new List<Group<DataItemViewModel>>()
+            {
+                new Group<DataItemViewModel>("~", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("#", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("A", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("B", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("C", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("D", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("E", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("F", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("G", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("H", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("I", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("J", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("K", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("L", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("M", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("N", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("O", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("P", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("Q", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("R", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("S", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("T", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("U", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("V", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("W", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("X", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("Y", new List<DataItemViewModel>()),
+                new Group<DataItemViewModel>("Z", new List<DataItemViewModel>())
+            };
 
+            AlbumsLL.ItemsSource = (from t in albumsByChar.Union(emptyGroups)
+                                    orderby t.Title
+                                    select t).ToList();
 
+            */
 
             AlbumsLL.ItemsSource = albumsByChar;
             AlbumsArtistLL.ItemsSource = albumsByArtist;
@@ -375,6 +413,14 @@ namespace AmpM
             {
                 get;
                 set;
+            }
+
+            public bool HasItems
+            {
+                get
+                {
+                    return Items.Count > 0;
+                }
             }
 
             #region IEnumerable<T> Members
@@ -465,6 +511,19 @@ namespace AmpM
 
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (searchBox.Text == "")
+            {
+                MessageBox.Show("You must enter some search text");
+                return;
+            }
+
+            this.StartSearch();
+        }
+
+        private void StartSearch()
+        {
+            this.Focus();
+
             performanceProgressBarCustomized.IsIndeterminate = true;
 
             this._searchItems.Clear();
@@ -526,6 +585,12 @@ namespace AmpM
         private void randomAlbumButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key.ToString() == "Enter")
+                this.StartSearch();
         }
 
 

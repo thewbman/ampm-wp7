@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Phone.BackgroundAgentSharedConsts;
 using Microsoft.Phone.Scheduler;
+using Microsoft.Phone.Tasks;
 
 namespace AmpM
 {
@@ -38,6 +39,7 @@ namespace AmpM
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            /*
             string inValue = "";
             if (NavigationContext.QueryString.TryGetValue("Remove", out inValue))
             {
@@ -47,6 +49,11 @@ namespace AmpM
                 {
                     NavigationService.RemoveBackEntry();
                 }
+            }
+             */
+            while (NavigationService.CanGoBack)
+            {
+                NavigationService.RemoveBackEntry();
             }
 
             if (!App.ViewModel.IsDataLoaded)
@@ -61,9 +68,21 @@ namespace AmpM
 
                 }
 
+                if ((App.ViewModel.AppSettings.AppStartsSetting > 10) && (!App.ViewModel.AppSettings.ReviewedSetting))
+                {
+                    App.ViewModel.AppSettings.ReviewedSetting = true;
+
+                    if (MessageBox.Show("Would you mind taking a minute to review this app in the marketplace?", "App Review", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
+                        marketDetail.ContentIdentifier = "c4c72638-8a65-4a57-89cb-6c186555b702";
+                        marketDetail.Show();
+                    }
+                }
+
             }
 
-            this.StartPeriodicAgent();
+            //this.StartPeriodicAgent();
 
         }
 
@@ -76,7 +95,7 @@ namespace AmpM
 
         private void StartPeriodicAgent()
         {
-
+            
             periodicTask = ScheduledActionService.Find(periodicTaskName) as PeriodicTask;
 
             // If the task already exists and background agents are enabled for the
@@ -148,7 +167,7 @@ namespace AmpM
             App.ViewModel.AppSettings.HostIndexSetting = hostsList.SelectedIndex;
             App.ViewModel.AppSettings.HostAddressSetting = App.ViewModel.Hosts[App.ViewModel.AppSettings.HostIndexSetting].Address;
 
-            NavigationService.Navigate(new Uri("/Home.xaml?Remove=1", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Home.xaml?Remove=1&NewSession=true", UriKind.Relative));
         }
 
 
@@ -188,6 +207,18 @@ namespace AmpM
             App.ViewModel.saveHosts();
         }
 
+
+
+        private void emptyButton_Click(object sender, EventArgs e)
+        {
+            MyAudioPlaybackAgent.AudioPlayer.stopAll();
+            MyAudioPlaybackAgent.AudioPlayer.resetList();
+            BackgroundAudioPlayer.Instance.Track = null;
+
+            App.ViewModel.Nowplaying.Clear();
+            App.ViewModel.saveNowplaying();
+            App.ViewModel.AppSettings.NowplayingIndexSetting = 0;
+        }
 
         
     }
