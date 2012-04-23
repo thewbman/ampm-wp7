@@ -1,0 +1,5 @@
+C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\Bin\Release\AmpmScheduledTaskAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\Bin\Release\AmpmScheduledTaskAgent.pdb
+C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\obj\Release\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\obj\Release\AmpmScheduledTaskAgent.dll
+C:\Users\wes\SVN\ampm\AmpM\AmpmScheduledTaskAgent\obj\Release\AmpmScheduledTaskAgent.pdb

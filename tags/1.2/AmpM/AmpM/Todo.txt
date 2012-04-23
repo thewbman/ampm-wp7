@@ -1,0 +1,10 @@
+﻿Todo:
+
+ - icons/theme
+ - help
+ - zune integration
+ - last.fm
+ - local playlists
+ - all songs
+ - ads
+ - album random select album or artist
