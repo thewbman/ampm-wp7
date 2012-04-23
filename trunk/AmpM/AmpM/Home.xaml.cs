@@ -457,6 +457,9 @@ namespace AmpM
 
         private void LastfmConnect()
         {
+
+            //MessageBox.Show("Starting to connect to last.fm");
+
             //string url = "http://ws.audioscrobbler.com/2.0/";
             //string secret = "cfaaaa9417b5ded38e6ed30434ca8be7";
             //string key = "ee337ff6dfdd301251d3e1c234d2ccba";
@@ -488,7 +491,7 @@ namespace AmpM
             emailcomposer.Show();
              */
 
-            if (App.ViewModel.AppSettings.LastfmKeySetting.Length > 0)
+            if (App.ViewModel.AppSettings.LastfmKeySetting.Length == 0)
             {
                 HttpWebRequest webRequest = WebRequest.CreateHttp(new Uri(fullUrl));
                 webRequest.BeginGetResponse(new AsyncCallback(LastfmConnectCallback), webRequest);
