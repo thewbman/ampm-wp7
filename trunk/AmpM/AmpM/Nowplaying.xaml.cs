@@ -314,7 +314,16 @@ namespace AmpM
 
             //string s = Uri.EscapeUriString(BackgroundAudioPlayer.Instance.Track.Source.ToString());
             
-            int CurrentSongIndex = int.Parse(BackgroundAudioPlayer.Instance.Track.Tag) - 1;
+            int CurrentSongIndex = -1;
+
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                if (int.TryParse(BackgroundAudioPlayer.Instance.Track.Tag, out CurrentSongIndex))
+                {
+                    CurrentSongIndex--;
+                }
+            }
+
             int SelectedIndex = -1;
             int i = 0;
 
@@ -445,15 +454,19 @@ namespace AmpM
 
             int i = inNewIndex + 1;
 
-            AudioTrack track = BackgroundAudioPlayer.Instance.Track;
-            track.BeginEdit();
-            track.Tag = i.ToString();
-            track.EndEdit();
-
             App.ViewModel.AppSettings.NowplayingIndexSetting = inNewIndex;
             App.ViewModel.saveNowplaying();
 
-            songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                AudioTrack track = BackgroundAudioPlayer.Instance.Track;
+                track.BeginEdit();
+                track.Tag = i.ToString();
+                track.EndEdit();
+
+                songCount.Text = BackgroundAudioPlayer.Instance.Track.Tag + "/" + App.ViewModel.Nowplaying.Count;
+            }
+
             nowplayingList.ItemsSource = App.ViewModel.Nowplaying;
         }
 
