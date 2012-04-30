@@ -1,0 +1,68 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AmpM.Preferences"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="White"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="true"
+    >
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
+        <controls:Pivot Title="PREFERENCES" Foreground="White">
+
+
+            <controls:PivotItem Header="play action" Foreground="White">
+                <StackPanel>
+                    <TextBlock Text="default action when selecting a song (long press for more options)" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
+                    
+                    <toolkit:ToggleSwitch x:Name="TogglePlayAll" Content="include all songs" Foreground="White" />
+                    <toolkit:ToggleSwitch x:Name="TogglePlayShuffle" Content="shuffle songs" Foreground="White" />
+                    <toolkit:ToggleSwitch x:Name="TogglePlayAdd" Content="queue songs" Foreground="White" />
+                    
+                </StackPanel>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="last.fm" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <toolkit:ToggleSwitch x:Name="ToggleLastfm" Content="last.fm scrobble" Foreground="White" />
+
+                        <TextBlock Text="username" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="LastfmUsername" Foreground="#800000" Text="username" Background="Silver"/>
+
+                        <TextBlock Text="password" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <PasswordBox x:Name="LastfmPassword" Foreground="#800000" Password="password" Background="Silver" />
+
+                        <toolkit:ToggleSwitch x:Name="ToggleLastfmImages" Content="last.fm artist images" Foreground="White" />
+
+                        <TextBlock Height="300" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="Black" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarSave" IconUri="/Images/appbar.save.rest.png" Text="save" Click="appbarSave_Click" />
+            <!-- -->
+            <shell:ApplicationBar.MenuItems>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

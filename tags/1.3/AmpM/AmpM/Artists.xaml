@@ -1,0 +1,148 @@
+﻿<phone:PhoneApplicationPage xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"  
+    x:Class="AmpM.Artists"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="White"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:AmpM"
+    >
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="artistGroupHeader">
+            <Border Background="#25B8D9" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="artistItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding ArtistName}"  TextWrapping="NoWrap" Margin="20,0,0,0"  Style="{StaticResource MainText}"  FontSize="{StaticResource PhoneFontSizeExtraLarge}" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ArtistAlbums}"  TextWrapping="NoWrap" Margin="40,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" albums" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ArtistTracks}"  TextWrapping="NoWrap" Margin="60,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                    <TextBlock Text=" tracks" TextWrapping="NoWrap" Margin="0,0,0,0" Style="{StaticResource SecondaryText}" FontSize="{StaticResource PhoneFontSizeMedium}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="artistItemHeader">
+            <Border Background="#25B8D9" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="alphaItemHeader">
+
+            <Border Background="#25B8D9" Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                <TextBlock Text="{Binding Title}"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                   FontSize="36"
+                                   Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="{StaticResource BackgroundImageBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <toolkit:PerformanceProgressBar Grid.Row="1" x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
+
+        <my:AdControl Name="adControl1" AdUnitId="78182" ApplicationId="1a2ce3f6-c71d-4e10-87bf-e256042ecbdf" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" />
+
+        <controls:Pivot x:Name="artistsPivot" Grid.Row="1" Title="ARTISTS" Foreground="White" SelectionChanged="artistsPivot_SelectionChanged">
+
+            <controls:PivotItem x:Name="artsitsAlphaPivot" Header="name" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
+
+                <toolkit:LongListSelector x:Name="ArtistsLL"
+                     GroupHeaderTemplate="{StaticResource artistGroupHeader}"
+                     ItemTemplate="{StaticResource artistItemTemplate}" 
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="ArtistsLL_SelectionChanged">
+
+                    <toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal"  />
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>
+                    
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="artistsRandomPivot" Header="random" Foreground="White">
+
+                <StackPanel HorizontalAlignment="Left" >
+                    <TextBlock x:Name="artistName" Text="artist name" FontSize="{StaticResource PhoneFontSizeLarge}" Tap="randomArtist_Tap" />
+                    <TextBlock x:Name="artistAlbums" Text="0 albums" FontSize="{StaticResource PhoneFontSizeMediumLarge}" Tap="randomArtist_Tap" />
+                    <TextBlock x:Name="artistTracks" Text="0 tracks" FontSize="{StaticResource PhoneFontSizeMedium}" Tap="randomArtist_Tap" />
+                    <Button x:Name="nextRandomButton" Content="next random" Click="nextRandomButton_Click" Width="460" HorizontalAlignment="Center" local:TiltEffect.IsTiltEnabled="False" Foreground="White" BorderBrush="White" />
+                </StackPanel>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="artistsSearchPivot" Header="search" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBox x:Name="searchBox" Width="370"   BorderBrush="White"  Foreground="#262e98" Background="Silver" KeyUp="searchBox_KeyUp" InputScope="Search" />
+                        <Button x:Name="searchBoxButton" Content="Go" Tap="searchBoxButton_Tap" Foreground="White" BorderBrush="White" />
+                    </StackPanel>
+
+                    <toolkit:LongListSelector x:Name="ArtistsSearchLL"
+                     GroupHeaderTemplate="{StaticResource artistGroupHeader}"
+                     ItemTemplate="{StaticResource artistItemTemplate}" 
+                     GroupItemTemplate="{StaticResource alphaItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="ArtistsSearchLL_SelectionChanged"
+                     Grid.Row="1"
+                     >
+
+                        <toolkit:LongListSelector.GroupItemsPanel>
+                            <ItemsPanelTemplate>
+                                <toolkit:WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </toolkit:LongListSelector.GroupItemsPanel>
+
+                    </toolkit:LongListSelector>
+
+                </Grid>
+
+            </controls:PivotItem>
+
+
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True"  ForegroundColor="White" BackgroundColor="Black">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="ApplicationBarIconButton_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
+</phone:PhoneApplicationPage>
